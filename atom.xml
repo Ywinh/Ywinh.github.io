@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2023-03-17T02:55:34.768Z</updated>
+  <updated>2023-03-16T13:51:36.544Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,26 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>oi</title>
-    <link href="http://example.com/2023/03/17/oi/"/>
-    <id>http://example.com/2023/03/17/oi/</id>
-    <published>2023-03-17T02:54:37.000Z</published>
-    <updated>2023-03-17T02:55:34.768Z</updated>
-    
-    <content type="html"><![CDATA[<h4 id="The-Core-Idea-of-Tony’s-Sort-Partitioning"><a href="#The-Core-Idea-of-Tony’s-Sort-Partitioning" class="headerlink" title="The Core Idea of Tony’s Sort: Partitioning"></a><strong>The Core Idea of Tony’s Sort: Partitioning</strong></h4><p>To partition an array a[] on element x=a[i] is to rearrange a[] so that: (partition作用的那个i，就叫做pivot)</p><ul><li>x moves to position j (may be the same as i)</li><li>All entries to the left of x are &lt;= x.</li><li>All entries to the right of x are &gt;= x.</li></ul><p>实现：</p><ul><li>可以用BST，把pivot当做root，比他小的都在left，比他大的都在right</li><li>simple but not fastest: 3 scan<ul><li>Create another array. Scan and copy all the red items to the first R spaces. Then scan for and copy the white item. Then scan and copy the blue items to the last B spaces.</li></ul></li></ul><p>observations:</p><ul><li>当我们partition(k=a[i])之后，k就在它的最终位置上不动了了(左边的都比他小，右边的都比他大)</li><li>Can sort two halves separately, e.g. through recursive use of partitioning.左右两边完全独立了</li></ul><p><strong>步骤：</strong></p><ul><li>Pick the pivot to be partitioned:  e.g.Partition on leftmost item. </li><li>Quicksort left half.</li><li>Quicksort right half.</li></ul>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h4 id=&quot;The-Core-Idea-of-Tony’s-Sort-Partitioning&quot;&gt;&lt;a href=&quot;#The-Core-Idea-of-Tony’s-Sort-Partitioning&quot; class=&quot;headerlink&quot; title=&quot;The Core I</summary>
-      
-    
-    
-    
-    
-  </entry>
   
   <entry>
     <title>Hello World</title>
