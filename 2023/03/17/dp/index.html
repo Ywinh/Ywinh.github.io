@@ -27,13 +27,13 @@
 <meta property="og:site_name" content="Yinsist">
 <meta property="og:description" content="DP(动态规划)-背包01背包 题目 有 N 件物品和一个容量是 V 的背包。每件物品只能使用一次。第 i 件物品的体积是 v~i~，价值是 w~i~。 求解将哪些物品装入背包，可使这些物品的总体积不超过背包容量，且总价值最大。输出最大价值。  为什么称作01背包，因为对于每个物品，只对应选或者不选两种状态，因此称为01背包   主要思想：  状态表示: 我们用f[i][j]来表示，前i个物品，最">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/119dcd0622ed424783892acdc976a3f5.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/119dcd0622ed424783892acdc976a3f5.png">
 <meta property="article:published_time" content="2023-03-17T09:39:30.000Z">
-<meta property="article:modified_time" content="2023-03-17T09:40:06.618Z">
+<meta property="article:modified_time" content="2023-03-17T10:31:06.900Z">
 <meta property="article:author" content="Jianhui Yin">
 <meta property="article:tag" content="c++">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/119dcd0622ed424783892acdc976a3f5.png">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/119dcd0622ed424783892acdc976a3f5.png">
 
 <link rel="canonical" href="http://example.com/2023/03/17/dp/">
 
@@ -214,7 +214,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2023-03-17 17:39:30 / 修改时间：17:40:06" itemprop="dateCreated datePublished" datetime="2023-03-17T17:39:30+08:00">2023-03-17</time>
+              <time title="创建时间：2023-03-17 17:39:30 / 修改时间：18:31:06" itemprop="dateCreated datePublished" datetime="2023-03-17T17:39:30+08:00">2023-03-17</time>
             </span>
 
           
@@ -249,7 +249,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="https://img-blog.csdnimg.cn/119dcd0622ed424783892acdc976a3f5.png" alt="img" style="zoom: 50%;" /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/119dcd0622ed424783892acdc976a3f5.png" alt="119dcd0622ed424783892acdc976a3f5"></p>
 <h3 id="二维朴素版"><a href="#二维朴素版" class="headerlink" title="二维朴素版"></a>二维朴素版</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> N = <span class="number">1010</span>;</span><br><span class="line"><span class="type">int</span> v[N],w[N];</span><br><span class="line"><span class="type">int</span> f[N][N];</span><br><span class="line"><span class="comment">//对于f[i][j]，当i或者j为0时，f[i][j] = 0</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="type">int</span> n,m;</span><br><span class="line">    cin&gt;&gt;n&gt;&gt;m;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span> ; i &lt;= n ; i++) cin&gt;&gt;v[i]&gt;&gt;w[i];</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span> ; i &lt;= n; i++ )&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">0</span> ; j &lt;= m ;j++)&#123;</span><br><span class="line">            <span class="comment">// 当前背包容量装不进第i个物品，则价值等于前i-1个物品</span></span><br><span class="line">            <span class="keyword">if</span>(j &lt; v[i]) f[i][j] = f[i<span class="number">-1</span>][j];</span><br><span class="line">            <span class="comment">// 可以装第i个物品，决策是否选他，用max来比较</span></span><br><span class="line">            <span class="keyword">else</span> f[i][j] = <span class="built_in">max</span>(f[i<span class="number">-1</span>][j],f[i<span class="number">-1</span>][j-v[i]]+w[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    cout&lt;&lt;f[n][m]&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="一维终极版"><a href="#一维终极版" class="headerlink" title="一维终极版"></a>一维终极版</h3><p>可以看做我们将 i-1 层的拷贝下来</p>
 <p>01背包从大到小</p>
