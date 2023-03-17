@@ -185,6 +185,89 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/17/oi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ym.png">
+      <meta itemprop="name" content="Jianhui Yin">
+      <meta itemprop="description" content="绳锯木断,水滴石穿">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yinsist">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/03/17/oi/" class="post-title-link" itemprop="url">oi</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-03-17 10:54:37 / 修改时间：10:55:34" itemprop="dateCreated datePublished" datetime="2023-03-17T10:54:37+08:00">2023-03-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="The-Core-Idea-of-Tony’s-Sort-Partitioning"><a href="#The-Core-Idea-of-Tony’s-Sort-Partitioning" class="headerlink" title="The Core Idea of Tony’s Sort: Partitioning"></a><strong>The Core Idea of Tony’s Sort: Partitioning</strong></h4><p>To partition an array a[] on element x=a[i] is to rearrange a[] so that: (partition作用的那个i，就叫做pivot)</p>
+<ul>
+<li>x moves to position j (may be the same as i)</li>
+<li>All entries to the left of x are &lt;= x.</li>
+<li>All entries to the right of x are &gt;= x.</li>
+</ul>
+<p>实现：</p>
+<ul>
+<li>可以用BST，把pivot当做root，比他小的都在left，比他大的都在right</li>
+<li>simple but not fastest: 3 scan<ul>
+<li>Create another array. Scan and copy all the red items to the first R spaces. Then scan for and copy the white item. Then scan and copy the blue items to the last B spaces.</li>
+</ul>
+</li>
+</ul>
+<p>observations:</p>
+<ul>
+<li>当我们partition(k=a[i])之后，k就在它的最终位置上不动了了(左边的都比他小，右边的都比他大)</li>
+<li>Can sort two halves separately, e.g. through recursive use of partitioning.左右两边完全独立了</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>Pick the pivot to be partitioned:  e.g.Partition on leftmost item. </li>
+<li>Quicksort left half.</li>
+<li>Quicksort right half.</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/17/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -322,7 +405,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

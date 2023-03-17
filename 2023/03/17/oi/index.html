@@ -20,18 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":5,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="绳锯木断,水滴石穿">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Yinsist">
-<meta property="og:url" content="http://example.com/archives/2023/03/index.html">
+  <meta name="description" content="The Core Idea of Tony’s Sort: PartitioningTo partition an array a[] on element x&#x3D;a[i] is to rearrange a[] so that: (partition作用的那个i，就叫做pivot)  x moves to position j (may be the same as i) All entries">
+<meta property="og:type" content="article">
+<meta property="og:title" content="oi">
+<meta property="og:url" content="http://example.com/2023/03/17/oi/index.html">
 <meta property="og:site_name" content="Yinsist">
-<meta property="og:description" content="绳锯木断,水滴石穿">
+<meta property="og:description" content="The Core Idea of Tony’s Sort: PartitioningTo partition an array a[] on element x&#x3D;a[i] is to rearrange a[] so that: (partition作用的那个i，就叫做pivot)  x moves to position j (may be the same as i) All entries">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-17T02:54:37.000Z">
+<meta property="article:modified_time" content="2023-03-17T02:55:34.768Z">
 <meta property="article:author" content="Jianhui Yin">
 <meta property="article:tag" content="cs61ABC c++ python java system">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/archives/2023/03/">
+<link rel="canonical" href="http://example.com/2023/03/17/oi/">
 
 
 <script id="page-configurations">
@@ -39,12 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>归档 | Yinsist</title>
+  <title>oi | Yinsist</title>
   
 
 
@@ -179,76 +181,108 @@
         <div class="content-wrap">
           
 
-          <div class="content archive">
+          <div class="content post posts-expand">
             
 
+    
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 目前共计 2 篇日志。 继续努力。</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/17/oi/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ym.png">
+      <meta itemprop="name" content="Jianhui Yin">
+      <meta itemprop="description" content="绳锯木断,水滴石穿">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yinsist">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          oi
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-03-17 10:54:37 / 修改时间：10:55:34" itemprop="dateCreated datePublished" datetime="2023-03-17T10:54:37+08:00">2023-03-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2023</span>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2023-03-17T10:54:37+08:00"
-              content="2023-03-17">
-          03-17
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2023/03/17/oi/" itemprop="url">
-            <span itemprop="name">oi</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2023-03-17T09:51:08+08:00"
-              content="2023-03-17">
-          03-17
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2023/03/17/hello-world/" itemprop="url">
-            <span itemprop="name">Hello World</span>
-          </a>
-      </div>
-
-    </header>
-  </article>
-
+        <h4 id="The-Core-Idea-of-Tony’s-Sort-Partitioning"><a href="#The-Core-Idea-of-Tony’s-Sort-Partitioning" class="headerlink" title="The Core Idea of Tony’s Sort: Partitioning"></a><strong>The Core Idea of Tony’s Sort: Partitioning</strong></h4><p>To partition an array a[] on element x=a[i] is to rearrange a[] so that: (partition作用的那个i，就叫做pivot)</p>
+<ul>
+<li>x moves to position j (may be the same as i)</li>
+<li>All entries to the left of x are &lt;= x.</li>
+<li>All entries to the right of x are &gt;= x.</li>
+</ul>
+<p>实现：</p>
+<ul>
+<li>可以用BST，把pivot当做root，比他小的都在left，比他大的都在right</li>
+<li>simple but not fastest: 3 scan<ul>
+<li>Create another array. Scan and copy all the red items to the first R spaces. Then scan for and copy the white item. Then scan and copy the blue items to the last B spaces.</li>
+</ul>
+</li>
+</ul>
+<p>observations:</p>
+<ul>
+<li>当我们partition(k=a[i])之后，k就在它的最终位置上不动了了(左边的都比他小，右边的都比他大)</li>
+<li>Can sort two halves separately, e.g. through recursive use of partitioning.左右两边完全独立了</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>Pick the pivot to be partitioned:  e.g.Partition on leftmost item. </li>
+<li>Quicksort left half.</li>
+<li>Quicksort right half.</li>
+</ul>
 
     </div>
-  </div>
-  
-  
-  
 
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/03/17/hello-world/" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
   
 
 
 
           </div>
           
+    <div class="comments" id="gitalk-container"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -295,6 +329,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#The-Core-Idea-of-Tony%E2%80%99s-Sort-Partitioning"><span class="nav-number">1.</span> <span class="nav-text">The Core Idea of Tony’s Sort: Partitioning</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -466,6 +501,25 @@ window.addEventListener('pjax:success', () => {
 
   
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '2f172b03ca5680b5dc0d',
+      clientSecret: 'c38c3f3a9a7a5f1c19341bcc0e1892dc72eb5f06',
+      repo        : 'Ywinh.github.io',
+      owner       : 'Ywinh',
+      admin       : ['Ywinh'],
+      id          : 'bfed91a76d70afd4f25142992615aa2a',
+        language: 'zh-CN',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
 
     </div>
 </body>
