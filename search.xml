@@ -1,41 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2023/03/17/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>树状数组</title>
-    <url>/2023/03/23/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/</url>
-    <content><![CDATA[<h3 id="树状数组"><a href="#树状数组" class="headerlink" title="树状数组"></a>树状数组</h3><h4 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h4><ul>
-<li><p>单点修改，区间求和  O(logN)</p>
-</li>
-<li><p>可以在，O(logN)的时间内，动态求前缀和 ( 对比前缀和，修改的话需要O(N) )</p>
-</li>
-</ul>
-<p>注意：树状数组下标一定要<strong>从1开始</strong></p>
-<h4 id="树状数组初始化"><a href="#树状数组初始化" class="headerlink" title="树状数组初始化"></a>树状数组初始化</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span> ; i&lt;=n ; i++) <span class="built_in">add</span>(i,a[i]);</span><br></pre></td></tr></table></figure>
-<p>小小地解释一下原理：</p>
-<ul>
-<li><p>树状数组中奇数下标和原数组相等</p>
-</li>
-<li><p><code>c[x] = 原数组中下标从(x-lowbit(x)，x]的和</code> 左开右闭</p>
-</li>
-</ul>
-<h4 id="三个基本操作："><a href="#三个基本操作：" class="headerlink" title="三个基本操作："></a>三个基本操作：</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a[N],c[N];<span class="comment">//a[N]为原数组，c[N]为树状数组</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">lowbit</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x &amp; -x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> x , <span class="type">int</span> v )</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=x;i&lt;=n;i+=<span class="built_in">lowbit</span>(i)) c[i] += v;    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = x ; i&gt;=<span class="number">1</span> ; i-=<span class="built_in">lowbit</span>(i) )  res += c[i];<span class="comment">//for循环截止条件写成 i!=0 即 i也可以</span></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
     <title>dp</title>
     <url>/2023/03/17/dp/</url>
     <content><![CDATA[<h1 id="DP-动态规划-背包"><a href="#DP-动态规划-背包" class="headerlink" title="DP(动态规划)-背包"></a>DP(动态规划)-背包</h1><h2 id="01背包"><a href="#01背包" class="headerlink" title="01背包"></a>01背包</h2><ul>
@@ -105,5 +70,65 @@
       <tags>
         <tag>c++</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>树状数组</title>
+    <url>/2023/03/23/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/</url>
+    <content><![CDATA[<h3 id="树状数组"><a href="#树状数组" class="headerlink" title="树状数组"></a>树状数组</h3><h4 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h4><ul>
+<li><p>单点修改，区间求和  O(logN)</p>
+</li>
+<li><p>可以在，O(logN)的时间内，动态求前缀和 ( 对比前缀和，修改的话需要O(N) )</p>
+</li>
+</ul>
+<p>注意：树状数组下标一定要<strong>从1开始</strong></p>
+<h4 id="树状数组初始化"><a href="#树状数组初始化" class="headerlink" title="树状数组初始化"></a>树状数组初始化</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span> ; i&lt;=n ; i++) <span class="built_in">add</span>(i,a[i]);</span><br></pre></td></tr></table></figure>
+<p>小小地解释一下原理：</p>
+<ul>
+<li><p>树状数组中奇数下标和原数组相等</p>
+</li>
+<li><p><code>c[x] = 原数组中下标从(x-lowbit(x)，x]的和</code> 左开右闭</p>
+</li>
+</ul>
+<h4 id="三个基本操作："><a href="#三个基本操作：" class="headerlink" title="三个基本操作："></a>三个基本操作：</h4><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a[N],c[N];<span class="comment">//a[N]为原数组，c[N]为树状数组</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">lowbit</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> x &amp; -x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//一般情况下只支持add，如果要实现修改某一个数，可以add他们的差值</span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> x , <span class="type">int</span> v )</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=x;i&lt;=n;i+=<span class="built_in">lowbit</span>(i)) c[i] += v;    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//查询</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">    <span class="type">int</span> res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = x ; i&gt;=<span class="number">1</span> ; i-=<span class="built_in">lowbit</span>(i) )  res += c[i];<span class="comment">//for循环截止条件写成 i!=0 即 i也可以</span></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="线段树"><a href="#线段树" class="headerlink" title="线段树"></a>线段树</h3><p>每个结点都是一个结构体</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span>&#123;</span><br><span class="line">    <span class="type">int</span> L,R;</span><br><span class="line">    <span class="type">int</span> sum;</span><br><span class="line">&#125;tr[N*<span class="number">4</span>];</span><br></pre></td></tr></table></figure>
+<p>线段树存储</p>
+<p>注意结点个数要开 <code>4n</code> 其中n是有多少个数</p>
+<p>类似于堆的存储方式，存在一维数组，对于一个序号为x的节点</p>
+<ul>
+<li>父节点为 x/2 (下取整) <code>x&gt;&gt;1</code></li>
+<li>左子节点为 x*2  <code>x&lt;&lt;1</code></li>
+<li>右子节点为 x*2+1  <code>x&lt;&lt; 1 | 1</code></li>
+</ul>
+<h4 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h4><ul>
+<li><p>单点修改 O(logN)</p>
+</li>
+<li><p>区间查询 O(logN)</p>
+</li>
+</ul>
+<p>四个函数</p>
+<p>pushup 用子节点信息更新当前节点信息</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">pushup</span><span class="params">(<span class="type">int</span> u)</span></span>&#123;</span><br><span class="line">    tr[u].sum = tr[u&lt;&lt;<span class="number">1</span>].sum + tr[u&lt;&lt;<span class="number">1</span> | <span class="number">1</span>].sum;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>build  在一段区间上初始化线段树</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">build</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> l, <span class="type">int</span> r)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(l == r) tr[u] = &#123;l,r,w[r]&#125;;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        tr[u] = &#123;l,r&#125;;</span><br><span class="line">        <span class="type">int</span> mid = tr[u].l + tr[u].r &gt;&gt; <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">build</span>(u&lt;&lt;<span class="number">1</span>,l,mid), <span class="built_in">build</span>(u&lt;&lt;<span class="number">1</span> | <span class="number">1</span> , mid+<span class="number">1</span> ,r);</span><br><span class="line">        <span class="built_in">pushup</span>(u);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>modify  修改某个点的值</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">modify</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> x, <span class="type">int</span> v)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(tr[u].l == tr[u].r ) tr[u].sum += v;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="type">int</span> mid = tr[u].l + tr[u].r &gt;&gt; <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">if</span>(x &lt;= mid) <span class="built_in">modify</span>(u&lt;&lt;<span class="number">1</span>, x , v);</span><br><span class="line">        <span class="keyword">else</span> <span class="built_in">modify</span>(u&lt;&lt;<span class="number">1</span>|<span class="number">1</span> , x , v);</span><br><span class="line">        <span class="built_in">pushup</span>(u);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>query   查询</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> l, <span class="type">int</span> r)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(tr[u].l&gt;=l &amp;&amp; tr[u].r&lt;=r) <span class="keyword">return</span> tr[u].sum;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="type">int</span> mid = tr[u].l + tr[u].r &gt;&gt; <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> sum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span>(l &lt;= mid) sum += <span class="built_in">query</span>(u&lt;&lt;<span class="number">1</span> , l ,mid);</span><br><span class="line">        <span class="keyword">if</span>(r &gt; mid)  sum += <span class="built_in">query</span>(u&lt;&lt;<span class="number">1</span>|<span class="number">1</span>,l,r);</span><br><span class="line">        <span class="keyword">return</span> sum</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2023/03/17/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
 </search>
