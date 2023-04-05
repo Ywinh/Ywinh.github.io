@@ -185,6 +185,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/03/%E6%95%B0%E8%AE%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/ym.png">
+      <meta itemprop="name" content="Jianhui Yin">
+      <meta itemprop="description" content="绳锯木断,水滴石穿">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yinsist">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/04/03/%E6%95%B0%E8%AE%BA/" class="post-title-link" itemprop="url">数论</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-04-03 18:59:14" itemprop="dateCreated datePublished" datetime="2023-04-03T18:59:14+08:00">2023-04-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-04-05 23:11:12" itemprop="dateModified" datetime="2023-04-05T23:11:12+08:00">2023-04-05</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="欧几里得-辗转相除法"><a href="#欧几里得-辗转相除法" class="headerlink" title="欧几里得(辗转相除法)"></a>欧几里得(辗转相除法)</h1><p>求a，b的最大公因数</p>
+<p>gcd(a,b) = gcd(b,a%b) = ….. 直到(a,b)中b为0，那么结果就为a</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">gcd</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> b?<span class="built_in">gcd</span>(a,b):a ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="筛法求素数"><a href="#筛法求素数" class="headerlink" title="筛法求素数"></a>筛法求素数</h1><h2 id="埃氏筛"><a href="#埃氏筛" class="headerlink" title="埃氏筛"></a>埃氏筛</h2><p>从2开始的 x ，划掉每个x的倍数，优化一下可以从x^2^开始划</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> primes[N],cnt;</span><br><span class="line"><span class="type">bool</span> st[N];<span class="comment">//初始为false，true表示被筛掉了，最后为false的都是质数</span></span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">2</span>; i&lt;=n ;i++)&#123;</span><br><span class="line">    <span class="keyword">if</span>(!st[i])&#123;</span><br><span class="line">        primes[cnt++] = i;</span><br><span class="line">    	<span class="keyword">for</span>(<span class="type">int</span> j=i*i; j&lt;=n; j++) st[i]=<span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="欧拉筛"><a href="#欧拉筛" class="headerlink" title="欧拉筛"></a>欧拉筛</h2><ul>
+<li>每个合数只被划掉一次，而且是被它的最小质因子划掉的 (原理是：每个合数都有一个&lt;= sqrt(x) 的质因子 )<ul>
+<li>由于被它的最小质因子划掉的，因此还可以求每个数的最小质因子</li>
+</ul>
+</li>
+<li>筛的过程，为了避免重复筛<ul>
+<li>对于每个数x，乘上 &lt;= x的最小质因子的质数，就可以保证不重复筛</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> primes[N],cnt;</span><br><span class="line"><span class="type">bool</span> st[N];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">get_primes</span><span class="params">(<span class="type">int</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">2</span>; i&lt;=n; i++)&#123;</span><br><span class="line">        <span class="keyword">if</span>(!st[i]) primes[cnt++] = i;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>; primes[j]*i&lt;=n;j++ )&#123;<span class="comment">//此时primes[]数组里面的都是 &lt;= i的</span></span><br><span class="line">            <span class="type">int</span> t = primes[j]*i ;</span><br><span class="line">            st[t] = <span class="literal">true</span>;<span class="comment">//筛掉</span></span><br><span class="line">            <span class="keyword">if</span>(i % primes[j] == <span class="number">0</span> ) <span class="keyword">break</span>;<span class="comment">//primes[j]就是最小质因子，因为前面两行代码已经实现了乘primes[j],直接退出</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="裴蜀定理-扩展欧几里得算法"><a href="#裴蜀定理-扩展欧几里得算法" class="headerlink" title="裴蜀定理(扩展欧几里得算法)"></a>裴蜀定理(扩展欧几里得算法)</h1><p>(a,b) = d   </p>
+<p>裴蜀定理可以求出一组x，y 使得 d = ax~0~ + by~0~</p>
+<p>并且只要求出满足的一组解x，y，就可以求出所有解</p>
+<p>a’ = a/d  b’ = b/d</p>
+<p>x = x~0~ + k<em>b’    y = y~0~ - k</em>a’</p>
+<p><strong>运用</strong></p>
+<p>(a,b) = (b,a%b) =… = d</p>
+<p>因此 b<em>y + (a % b) </em> x = d</p>
+<p>即    b<em>y + (a - a/b </em> b ) <em> x = a</em>x + (y-a/b <em> x ) </em> b = d</p>
+<p>=&gt;   x’ = x    y’ = y - a/b*x  (b = 0 时停止)</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//exgcd可以找出满足的 d = ax + by 中的x，y并且返回d</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">exgcd</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b, <span class="type">int</span> &amp;x, <span class="type">int</span> &amp;y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!b)&#123;</span><br><span class="line">        x = <span class="number">1</span>, y = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> d = <span class="built_in">exgcd</span>(b, a%b, y, x);</span><br><span class="line">    y -= a / b * x;</span><br><span class="line">    <span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/23/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -548,12 +639,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
