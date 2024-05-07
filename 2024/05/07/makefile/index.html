@@ -1,13 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
 
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <title>makefile | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="makefile有点像跟手动编译过程反着来，一步步去找依赖项 规则的构成1234targets: prerequisites	command	command	command   targets（目标）：是文件名，通常一个规则只有一个targets  command（命令&#x2F;方法）：创建目标的一系列步骤，需要用tab开头，  prerequisites（依赖）：也是文件名，可以有多个，用空格分隔，在运">
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="John Doe">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="makefile有点像跟手动编译过程反着来，一步步去找依赖项 规则的构成1234targets: prerequisites	command	command	command   targets（目标）：是文件名，通常一个规则只有一个targets  command（命令&#x2F;方法）：创建目标的一系列步骤，需要用tab开头，  prerequisites（依赖）：也是文件名，可以有多个，用空格分隔，在运">
 <meta property="og:type" content="article">
 <meta property="og:title" content="makefile">
 <meta property="og:url" content="http://example.com/2024/05/07/makefile/index.html">
@@ -17,79 +26,254 @@
 <meta property="article:published_time" content="2024-05-07T15:02:17.000Z">
 <meta property="article:modified_time" content="2024-05-07T15:04:16.649Z">
 <meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+<meta name="twitter:card" content="summary_large_image">
   
   
-    <link rel="icon" href="/favicon.png">
   
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+  <title>makefile - Hexo</title>
 
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
 <meta name="generator" content="Hexo 5.4.2"></head>
 
+
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-makefile" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2024/05/07/makefile/" class="article-date">
-  <time datetime="2024-05-07T15:02:17.000Z" itemprop="datePublished">2024-05-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      makefile
-    </h1>
   
 
-      </header>
+  <header>
     
-    <div class="article-entry" itemprop="articleBody">
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Fluid</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="makefile"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-07 23:02" pubdate>
+          May 7, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          51 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
       
-        <p>makefile有点像跟手动编译过程反着来，一步步去找依赖项</p>
-<h1 id="规则的构成"><a href="#规则的构成" class="headerlink" title="规则的构成"></a><strong>规则</strong>的构成</h1><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">targets: prerequisites</span></span><br><span class="line">	command</span><br><span class="line">	command</span><br><span class="line">	command</span><br></pre></td></tr></table></figure>
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">makefile</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>makefile有点像跟手动编译过程反着来，一步步去找依赖项</p>
+<h1 id="规则的构成"><a href="#规则的构成" class="headerlink" title="规则的构成"></a><strong>规则</strong>的构成</h1><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">targets: prerequisites</span><br>	command<br>	command<br>	command<br></code></pre></td></tr></table></figure>
 
 <ul>
 <li><p>targets（目标）：是文件名，通常一个规则只有一个targets</p>
@@ -101,21 +285,21 @@
 </ul>
 <h1 id="命令和执行"><a href="#命令和执行" class="headerlink" title="命令和执行"></a>命令和执行</h1><h2 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h2><p>command其实就是执行shell的指令，默认一个command都是<strong>一个独立的shell</strong>来执行，如果需要所有command都在一个shell执行，需要<code>.ONESHELL</code></p>
 <p>一个例子</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all: </span></span><br><span class="line">	cd ..</span><br><span class="line">	<span class="comment">#上面的cd不会影响这个echo，因为每行命令都在一个独立的shell里面运行</span></span><br><span class="line">	echo `pwd`</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 这个cd会影响echo，因为他们都在同一行，因此会打印出上级目录的路径</span></span><br><span class="line">	cd ..;echo `pwd`</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 和第二个一样，\表示在同一行</span></span><br><span class="line">	cd ..; \</span><br><span class="line">	echo `pwd`</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">all: </span><br>	cd ..<br>	<span class="hljs-comment">#上面的cd不会影响这个echo，因为每行命令都在一个独立的shell里面运行</span><br>	echo `pwd`<br><br>	<span class="hljs-comment"># 这个cd会影响echo，因为他们都在同一行，因此会打印出上级目录的路径</span><br>	cd ..;echo `pwd`<br><br>	<span class="hljs-comment"># 和第二个一样，\表示在同一行</span><br>	cd ..; \<br>	echo `pwd`<br></code></pre></td></tr></table></figure>
 
 
 
 <h2 id="command回显"><a href="#command回显" class="headerlink" title="command回显"></a><strong>command回显</strong></h2><p>command默认是先打印出语句，再执行内容，如果不需要先打印语句，在command前面加上<code>@</code></p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">a: a.o</span></span><br><span class="line">	@echo hello</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">a: a.o</span><br>	@echo hello<br></code></pre></td></tr></table></figure>
 
 <p>也可以使用<code>.SILENT + 文件名</code>，表示直接执行不打印</p>
 <h2 id="错误处理"><a href="#错误处理" class="headerlink" title="错误处理"></a>错误处理</h2><p>如果一条规则当中包含多条Shell指令，每条指令执行完之后make都会检查返回状态，如果返回状态是0，则执行成功，继续执行下一条指令，直到最后一条指令执行完成之后，一条规则也就结束了。</p>
 <p>如果过程中发生了错误，即某一条指令的返回值不是0，那么make就会终止执行当前规则中剩下的Shell指令。</p>
 <p>例如</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">clean:</span></span><br><span class="line">    rm main.o hello.o</span><br><span class="line">    rm main.exe</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">clean:</span><br>    rm main.o hello.o<br>    rm main.exe<br></code></pre></td></tr></table></figure>
 
 <p>这时如果第一条rm main.o hello.o出错，第二条rm main.exe就不会执行。类似情况下，希望make忽视错误继续下一条指令。在指令开头<code>-</code>可以达到这种效果。</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">clean:</span></span><br><span class="line">    -rm main.o hello.o</span><br><span class="line">    -rm main.exe</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">clean:</span><br>    -rm main.o hello.o<br>    -rm main.exe<br></code></pre></td></tr></table></figure>
 
 <p>也可以<code>make -k</code>，即使遇到错误也能继续执行，如果想一次查看Make的所有错误，可以使用<code>-k</code></p>
 <h1 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h1><p>在终端执行命令时，如果没有将目标作为 <code>make</code> 参数提供给命令，将运行第一个目标</p>
@@ -125,7 +309,7 @@
 <li>targets的依赖项更新了 （使用文件系统时间戳作为代理来确定是否有任何变化）</li>
 </ul>
 <p>一个示例</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">blah: blah.o</span></span><br><span class="line">	cc blah.o -o blah <span class="comment"># Runs third</span></span><br><span class="line"></span><br><span class="line"><span class="section">blah.o: blah.c</span></span><br><span class="line">	cc -c blah.c -o blah.o <span class="comment"># Runs second</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Typically blah.c would already exist, but I want to limit any additional required files</span></span><br><span class="line"><span class="section">blah.c:</span></span><br><span class="line">	echo <span class="string">&quot;int main() &#123; return 0; &#125;&quot;</span> &gt; blah.c <span class="comment"># Runs first</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">blah: blah.o</span><br>	cc blah.o -o blah <span class="hljs-comment"># Runs third</span><br><br><span class="hljs-section">blah.o: blah.c</span><br>	cc -c blah.c -o blah.o <span class="hljs-comment"># Runs second</span><br><br><span class="hljs-comment"># Typically blah.c would already exist, but I want to limit any additional required files</span><br><span class="hljs-section">blah.c:</span><br>	echo <span class="hljs-string">&quot;int main() &#123; return 0; &#125;&quot;</span> &gt; blah.c <span class="hljs-comment"># Runs first</span><br></code></pre></td></tr></table></figure>
 
 <p>以下 Makefile 最终运行所有三个目标。当您在终端中运行时 <code>make</code> ，它将构建一个按一系列步骤调用 <code>blah</code> 的程序：</p>
 <ul>
@@ -140,30 +324,30 @@
 <p>可以看出targets会事先搜索依赖项是否已经创建，如果一个targets没有依赖项，那么会直接运行</p>
 <p><strong>all</strong></p>
 <p>运行all后面的所有目标</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all: one two three</span></span><br><span class="line"></span><br><span class="line"><span class="section">one:</span></span><br><span class="line">	touch one</span><br><span class="line"><span class="section">two:</span></span><br><span class="line">	touch two</span><br><span class="line"><span class="section">three:</span></span><br><span class="line">	touch three</span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -f one two three</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">all: one two three</span><br><br><span class="hljs-section">one:</span><br>	touch one<br><span class="hljs-section">two:</span><br>	touch two<br><span class="hljs-section">three:</span><br>	touch three<br><br><span class="hljs-section">clean:</span><br>	rm -f one two three<br></code></pre></td></tr></table></figure>
 
 
 
 <h2 id="一个规则多个目标"><a href="#一个规则多个目标" class="headerlink" title="一个规则多个目标"></a><strong>一个规则多个目标</strong></h2><p>当一个规则有多个目标时，将针对每个目标运行，<code>$@</code>是包含目标名称的<strong>auto</strong> 变量</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all: f1.o f2.o</span></span><br><span class="line"></span><br><span class="line">f1.o f2.o:</span><br><span class="line">	echo <span class="variable">$@</span></span><br><span class="line"><span class="comment"># Equivalent to:</span></span><br><span class="line"><span class="comment"># f1.o:</span></span><br><span class="line"><span class="comment">#	 echo f1.o</span></span><br><span class="line"><span class="comment"># f2.o:</span></span><br><span class="line"><span class="comment">#	 echo f2.o</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">all: f1.o f2.o</span><br><br>f1.o f2.o:<br>	echo <span class="hljs-variable">$@</span><br><span class="hljs-comment"># Equivalent to:</span><br><span class="hljs-comment"># f1.o:</span><br><span class="hljs-comment">#	 echo f1.o</span><br><span class="hljs-comment"># f2.o:</span><br><span class="hljs-comment">#	 echo f2.o</span><br></code></pre></td></tr></table></figure>
 
 
 
 <h2 id="同一目标多条规则"><a href="#同一目标多条规则" class="headerlink" title="同一目标多条规则"></a><strong>同一目标多条规则</strong></h2><p>同一目标可以对应多条规则。同一目标的所有规则中的依赖会被<strong>合并</strong>。但如果同一目标对应的多条规则都写了更新的command，则会使用最新的一条更新方法，并且会输出警告信息。</p>
 <p>同一目标多规则通常用来给多个目标添加依赖而不用改动已写好的部分。</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">input.o: input.cpp utility.inl</span></span><br><span class="line">    g++ -c input.cpp</span><br><span class="line"><span class="section">main.o: main.cpp scene.h input.h test.h</span></span><br><span class="line">    g++ -c main.cpp</span><br><span class="line"><span class="section">scene.o: scene.cpp scene.h utility.inl</span></span><br><span class="line">    g++ -c scene.cpp</span><br><span class="line"></span><br><span class="line">input.o main.o scene.o : common.h</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">input.o: input.cpp utility.inl</span><br>    g++ -c input.cpp<br><span class="hljs-section">main.o: main.cpp scene.h input.h test.h</span><br>    g++ -c main.cpp<br><span class="hljs-section">scene.o: scene.cpp scene.h utility.inl</span><br>    g++ -c scene.cpp<br><br>input.o main.o scene.o : common.h<br></code></pre></td></tr></table></figure>
 
 <p>同时给三个目标添加了一个依赖common.h，但是不用修改上面已写好的部分。</p>
 <p>作用是可以在后面给目标添加依赖</p>
 <h2 id="为特定目标-模式-设置变量"><a href="#为特定目标-模式-设置变量" class="headerlink" title="为特定目标/模式 设置变量"></a>为特定目标/模式 设置变量</h2><p><strong>特定目标</strong></p>
 <p>makefile的变量一般都是全局的，我们可以给特定目标设置只能他使用的变量</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">all: one = cool</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: </span></span><br><span class="line">	echo one is defined: <span class="variable">$(one)</span></span><br><span class="line"></span><br><span class="line"><span class="section">other:</span></span><br><span class="line">	echo one is nothing: <span class="variable">$(one)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">all: one = cool</span><br><br><span class="hljs-section">all: </span><br>	echo one is defined: <span class="hljs-variable">$(one)</span><br><br><span class="hljs-section">other:</span><br>	echo one is nothing: <span class="hljs-variable">$(one)</span><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>other目标看到的<code>$one</code>会打印一个空串</li>
 </ul>
 <p><strong>特定模式</strong></p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">%.c: one = cool</span></span><br><span class="line"></span><br><span class="line"><span class="section">blah.c: </span></span><br><span class="line">	echo one is defined: <span class="variable">$(one)</span></span><br><span class="line"></span><br><span class="line"><span class="section">other:</span></span><br><span class="line">	echo one is nothing: <span class="variable">$(one)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">%.c: one = cool</span><br><br><span class="hljs-section">blah.c: </span><br>	echo one is defined: <span class="hljs-variable">$(one)</span><br><br><span class="hljs-section">other:</span><br>	echo one is nothing: <span class="hljs-variable">$(one)</span><br></code></pre></td></tr></table></figure>
 
 
 
@@ -175,7 +359,7 @@
 <h2 id="order-only依赖"><a href="#order-only依赖" class="headerlink" title="order-only依赖"></a><strong>order-only依赖</strong></h2><p>依赖文件不存在时，会执行对应的方法生成，但<strong>依赖文件更新并不会导致目标文件的更新</strong></p>
 <p>如果目标文件已存在，order-only依赖中的文件即使修改时间比目标文件晚，目标文件也不会更新。</p>
 <p>定义方法如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">targets : normal-prerequisites | order-only-prerequisites</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql">targets : normal<span class="hljs-operator">-</span>prerequisites <span class="hljs-operator">|</span> <span class="hljs-keyword">order</span><span class="hljs-operator">-</span><span class="hljs-keyword">only</span><span class="hljs-operator">-</span>prerequisites<br></code></pre></td></tr></table></figure>
 
 <p>normal-prerequisites部分可以为空</p>
 <h1 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h1><blockquote>
@@ -184,15 +368,15 @@
 <p>变量只能是字符串。使用<code>:=</code> 或 <code>=</code></p>
 <p><code>$(x)</code>就是用x这个字符串变量的值来替换<code>$(x)</code></p>
 <p><code>$&#123;x&#125;</code>与<code>$(x)</code>等价</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">files := file1 file2</span><br><span class="line"><span class="section">some_file: </span></span><br><span class="line">	echo <span class="string">&quot;Look at this variable: &quot;</span> <span class="variable">$(files)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs makefile">files := file1 file2<br><span class="hljs-section">some_file: </span><br>	echo <span class="hljs-string">&quot;Look at this variable: &quot;</span> <span class="hljs-variable">$(files)</span><br></code></pre></td></tr></table></figure>
 
 <p>会打印出<code>Look at this variable:  file1 file2</code></p>
 <p>双<code>$</code>符号</p>
 <p>如果想表示<code>$</code>这个符号</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># a 是 $b 这个字符串</span></span><br><span class="line">a = $$b</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-comment"># a 是 $b 这个字符串</span><br>a = $$b<br></code></pre></td></tr></table></figure>
 
 <p>例子：</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">make_var = I am a make variable</span><br><span class="line"><span class="section">all:</span></span><br><span class="line">	<span class="comment"># Same as running &quot;sh_var=&#x27;I am a shell variable&#x27;; echo $sh_var&quot; in the shell</span></span><br><span class="line">	sh_var=&#x27;I am a shell variable&#x27;; echo $$sh_var</span><br><span class="line"></span><br><span class="line">	<span class="comment"># Same as running &quot;echo I am a make variable&quot; in the shell</span></span><br><span class="line">	echo <span class="variable">$(make_var)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile">make_var = I am a make variable<br><span class="hljs-section">all:</span><br>	<span class="hljs-comment"># Same as running &quot;sh_var=&#x27;I am a shell variable&#x27;; echo $sh_var&quot; in the shell</span><br>	sh_var=&#x27;I am a shell variable&#x27;; echo $$sh_var<br><br>	<span class="hljs-comment"># Same as running &quot;echo I am a make variable&quot; in the shell</span><br>	echo <span class="hljs-variable">$(make_var)</span><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>对于<code>echo $$sh_var</code>，实际上等价于<code>echo $sh_var</code></li>
@@ -200,7 +384,7 @@
 </ul>
 <h2 id="通配符"><a href="#通配符" class="headerlink" title="通配符"></a>通配符</h2><p>wildcard(通配符)</p>
 <p><code>wildcard</code>函数：用于匹配文件名模式，可与<code>*</code>或<code>?</code>配合使用</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查找当前目录下所有的 .c 文件</span></span><br><span class="line">C_FILES := <span class="variable">$(<span class="built_in">wildcard</span> *.c)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 打印找到的 .c 文件列表</span></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="string">&quot;C files: <span class="variable">$(C_FILES)</span>&quot;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-comment"># 查找当前目录下所有的 .c 文件</span><br>C_FILES := <span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span> *.c)</span><br><br><span class="hljs-comment"># 打印找到的 .c 文件列表</span><br><span class="hljs-section">all:</span><br>    @echo <span class="hljs-string">&quot;C files: <span class="hljs-variable">$(C_FILES)</span>&quot;</span><br></code></pre></td></tr></table></figure>
 
 
 
@@ -210,7 +394,7 @@
 <li>当<code>*</code>没有匹配任何文件时，它将保持原样（除非在<code>wildcard</code>函数中运行）</li>
 <li>建议<code>*</code>永远与wildcard配合使用</li>
 </ul>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">thing_wrong := *.o <span class="comment"># Don&#x27;t do this! &#x27;*&#x27; will not get expanded</span></span><br><span class="line">thing_right := <span class="variable">$(<span class="built_in">wildcard</span> *.o)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: one two three four</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Fails, because $(thing_wrong) is the string &quot;*.o&quot;</span></span><br><span class="line"><span class="section">one: <span class="variable">$(thing_wrong)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Stays as *.o if there are no files that match this pattern :(</span></span><br><span class="line"><span class="section">two: *.o </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Works as you would expect! In this case, it does nothing.</span></span><br><span class="line"><span class="section">three: <span class="variable">$(thing_right)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Same as rule three</span></span><br><span class="line"><span class="section">four: $(wildcard *.o)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs makefile">thing_wrong := *.o <span class="hljs-comment"># Don&#x27;t do this! &#x27;*&#x27; will not get expanded</span><br>thing_right := <span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span> *.o)</span><br><br><span class="hljs-section">all: one two three four</span><br><br><span class="hljs-comment"># Fails, because $(thing_wrong) is the string &quot;*.o&quot;</span><br><span class="hljs-section">one: <span class="hljs-variable">$(thing_wrong)</span></span><br><br><span class="hljs-comment"># Stays as *.o if there are no files that match this pattern :(</span><br><span class="hljs-section">two: *.o </span><br><br><span class="hljs-comment"># Works as you would expect! In this case, it does nothing.</span><br><span class="hljs-section">three: <span class="hljs-variable">$(thing_right)</span></span><br><br><span class="hljs-comment"># Same as rule three</span><br><span class="hljs-section">four: $(wildcard *.o)</span><br></code></pre></td></tr></table></figure>
 
 
 
@@ -225,12 +409,12 @@
 <p><code>$^</code>：所有依赖文件名，文件名不会重复，不包含order-only依赖 (就是<code>|</code>右边的)</p>
 <p><code>$\*</code>：(简单理解)目标文件名的主干部分(即<u>不包括后缀名</u>)</p>
 <h2 id="伪目标-PHONY"><a href="#伪目标-PHONY" class="headerlink" title="伪目标 .PHONY"></a><strong>伪目标 .PHONY</strong></h2><p>如果一个目标并不是一个文件，则这个目标就是伪目标。例如前面的clean目标。如果说在当前目录下有一个文件名称和这个目标名称冲突了，则这个目标就没法执行。这时候需要用到一个特殊的目标 .PHONY，将上面的clean目标改写如下</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: clean</span></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">    rm block.o command.o input.o main.o scene.o test.o</span><br><span class="line">    rm sudoku.exe</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-meta"><span class="hljs-keyword">.PHONY</span>: clean</span><br><span class="hljs-section">clean:</span><br>    rm block.o command.o input.o main.o scene.o test.o<br>    rm sudoku.exe<br></code></pre></td></tr></table></figure>
 
 <p>这样即使当前目录下存在与目标同名的文件，该目标也能正常执行。</p>
 <p><strong>伪目标的其他应用方式</strong></p>
 <p>如果一条规则的依赖文件没有改动，则不会执行对应的更新方法。如果需要每次不论有没有改动都执行某一目标的更新方法，可以把对应的目标添加到.PHONY的依赖中，例如下面这种方式，则每次执行make都会更新test.o，不管其依赖文件有没有改动</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">test.o: test.cpp test.h</span><br><span class="line">        g++ -c test.cpp</span><br><span class="line"></span><br><span class="line">.PHONY: clean test.o</span><br></pre></td></tr></table></figure>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cmake"><span class="hljs-keyword">test</span>.o: <span class="hljs-keyword">test</span>.cpp <span class="hljs-keyword">test</span>.h<br>        g++ -c <span class="hljs-keyword">test</span>.cpp<br><br>.PHONY: clean <span class="hljs-keyword">test</span>.o<br></code></pre></td></tr></table></figure>
 
 
 
@@ -258,59 +442,59 @@
 </ul>
 <p><strong>显式规则中，目标和依赖部分都是立即展开，在更新方法中延迟展开</strong></p>
 <p>一个例子：</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = ok</span><br><span class="line"></span><br><span class="line"><span class="comment">#file是=,所以延迟展开</span></span><br><span class="line">file = <span class="variable">$(a)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">	@echo <span class="variable">$(file)</span></span><br><span class="line"><span class="comment"># a在第一阶段被覆盖为no，最后echo出no</span></span><br><span class="line">a = no</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs makefile">a = ok<br><br><span class="hljs-comment">#file是=,所以延迟展开</span><br>file = <span class="hljs-variable">$(a)</span><br><br><span class="hljs-section">all:</span><br>	@echo <span class="hljs-variable">$(file)</span><br><span class="hljs-comment"># a在第一阶段被覆盖为no，最后echo出no</span><br>a = no<br></code></pre></td></tr></table></figure>
 
 <h2 id="变量赋值"><a href="#变量赋值" class="headerlink" title="变量赋值"></a>变量赋值</h2><h3 id="递归展开赋值（延迟展开）"><a href="#递归展开赋值（延迟展开）" class="headerlink" title="递归展开赋值（延迟展开）"></a><strong>递归展开赋值（延迟展开）</strong></h3><p>第一种方式就是直接使用=，这种方式如果赋值的时候右边是其他变量引用或者函数调用之类的，将不会做处理，直接保留原样，在使用到该变量的时候再来进行处理得到变量值（Makefile执行的第二个阶段再进行变量展开得到变量值）</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">bar2 = ThisIsBar2No.1</span><br><span class="line">foo = <span class="variable">$(bar)</span></span><br><span class="line">foo2 = <span class="variable">$(bar2)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(foo)</span>  <span class="comment"># Huh?</span></span><br><span class="line">    @echo <span class="variable">$(foo2)</span>  <span class="comment"># ThisIsBar2No.2</span></span><br><span class="line">    @echo <span class="variable">$(ugh)</span>   <span class="comment"># Huh?</span></span><br><span class="line"></span><br><span class="line">bar = <span class="variable">$(ugh)</span></span><br><span class="line">ugh = Huh?</span><br><span class="line">bar2 = ThisIsBar2No.2</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs makefile">bar2 = ThisIsBar2No.1<br>foo = <span class="hljs-variable">$(bar)</span><br>foo2 = <span class="hljs-variable">$(bar2)</span><br><br><span class="hljs-section">all:</span><br>    @echo <span class="hljs-variable">$(foo)</span>  <span class="hljs-comment"># Huh?</span><br>    @echo <span class="hljs-variable">$(foo2)</span>  <span class="hljs-comment"># ThisIsBar2No.2</span><br>    @echo <span class="hljs-variable">$(ugh)</span>   <span class="hljs-comment"># Huh?</span><br><br>bar = <span class="hljs-variable">$(ugh)</span><br>ugh = Huh?<br>bar2 = ThisIsBar2No.2<br></code></pre></td></tr></table></figure>
 
 <h3 id="简单赋值-立即展开"><a href="#简单赋值-立即展开" class="headerlink" title="简单赋值(立即展开)"></a><strong>简单赋值(立即展开)</strong></h3><p>简单赋值使用:=或::=，这种方式如果等号右边是其他变量或者引用的话，将会在赋值的时候就进行处理得到变量值。（Makefile执行第一阶段进行变量展开）</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">bar2 := ThisIsBar2No.1</span><br><span class="line">foo := <span class="variable">$(bar)</span></span><br><span class="line">foo2 := <span class="variable">$(bar2)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(foo)</span>    <span class="comment"># 空串，没有内容 ！！</span></span><br><span class="line">    @echo <span class="variable">$(foo2)</span>    <span class="comment"># ThisIsBar2No.1</span></span><br><span class="line">    @echo <span class="variable">$(ugh)</span>    <span class="comment"># </span></span><br><span class="line"></span><br><span class="line">bar := <span class="variable">$(ugh)</span></span><br><span class="line">ugh := Huh?</span><br><span class="line">bar2 := ThisIsBar2No.2</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs makefile">bar2 := ThisIsBar2No.1<br>foo := <span class="hljs-variable">$(bar)</span><br>foo2 := <span class="hljs-variable">$(bar2)</span><br><br><span class="hljs-section">all:</span><br>    @echo <span class="hljs-variable">$(foo)</span>    <span class="hljs-comment"># 空串，没有内容 ！！</span><br>    @echo <span class="hljs-variable">$(foo2)</span>    <span class="hljs-comment"># ThisIsBar2No.1</span><br>    @echo <span class="hljs-variable">$(ugh)</span>    <span class="hljs-comment"># </span><br><br>bar := <span class="hljs-variable">$(ugh)</span><br>ugh := Huh?<br>bar2 := ThisIsBar2No.2<br></code></pre></td></tr></table></figure>
 
 <h3 id="条件赋值"><a href="#条件赋值" class="headerlink" title="条件赋值"></a>条件赋值</h3><p>条件赋值使用?=，如果变量已经定义过了（即已经有值了），那么就保持原来的值，如果变量还没赋值过，就把右边的值赋给变量。</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var1 = 100</span><br><span class="line">var1 ?= 200</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(var1)</span> <span class="comment"># 100 注释var1 = 100之后为200</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs makefile">var1 = 100<br>var1 ?= 200<br><br><span class="hljs-section">all:</span><br>    @echo <span class="hljs-variable">$(var1)</span> <span class="hljs-comment"># 100 注释var1 = 100之后为200</span><br></code></pre></td></tr></table></figure>
 
 <h3 id="Shell运行赋值"><a href="#Shell运行赋值" class="headerlink" title="Shell运行赋值"></a>Shell运行赋值</h3><p>使用<code>!=</code>，运行一个Shell指令后将返回值赋给一个变量</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gcc_version != gcc --version</span><br><span class="line">files != ls .</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs makefile">gcc_version != gcc --version<br>files != ls .<br></code></pre></td></tr></table></figure>
 
 <h3 id="追加"><a href="#追加" class="headerlink" title="追加"></a>追加</h3><p> 使用 <code>+=</code> 用于追加</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">foo := start</span><br><span class="line">foo += more</span><br><span class="line"><span class="comment"># foo变为 start more，中间有个空格</span></span><br><span class="line"><span class="section">all: </span></span><br><span class="line">	echo <span class="variable">$(foo)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs makefile">foo := start<br>foo += more<br><span class="hljs-comment"># foo变为 start more，中间有个空格</span><br><span class="hljs-section">all: </span><br>	echo <span class="hljs-variable">$(foo)</span><br></code></pre></td></tr></table></figure>
 
 
 
 <h2 id="取消变量"><a href="#取消变量" class="headerlink" title="取消变量"></a>取消变量</h2><p>如果想清除一个变量，用以下方法，变量就会变为空</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">undefine</span> &lt;变量名&gt;   如 <span class="keyword">undefine</span> files,  <span class="keyword">undefine</span> obj</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-keyword">undefine</span> &lt;变量名&gt;   如 <span class="hljs-keyword">undefine</span> files,  <span class="hljs-keyword">undefine</span> obj<br></code></pre></td></tr></table></figure>
 
 
 
 <h2 id="变量替换引用"><a href="#变量替换引用" class="headerlink" title="变量替换引用"></a>变量替换引用</h2><p>语法：**$(var:a=b)<strong>，意思是将变量var的值当中每一项</strong>结尾**的a替换为b，直接上例子</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">files = main.cpp hello.cpp</span><br><span class="line">objs := $(files:.cpp=.o) <span class="comment"># main.o hello.o</span></span><br><span class="line"><span class="comment"># 另一种写法</span></span><br><span class="line">objs := $(files:%.cpp=%.o)</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs makefile">files = main.cpp hello.cpp<br>objs := $(files:.cpp=.o) <span class="hljs-comment"># main.o hello.o</span><br><span class="hljs-comment"># 另一种写法</span><br>objs := $(files:%.cpp=%.o)<br></code></pre></td></tr></table></figure>
 
 
 
 <h2 id="变量覆盖"><a href="#变量覆盖" class="headerlink" title="变量覆盖"></a>变量覆盖</h2><p>所有在Makefile中的变量，都可以在执行make时能过指定参数的方式进行覆盖。</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">OverridDemo := ThisIsInMakefile</span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(OverridDemo)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs makefile">OverridDemo := ThisIsInMakefile<br><span class="hljs-section">all:</span><br>    @echo <span class="hljs-variable">$(OverridDemo)</span><br></code></pre></td></tr></table></figure>
 
 <p>如果直接执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">make</span><br></code></pre></td></tr></table></figure>
 
 <p>则上面的输出内容为<em>ThisIsInMakefile</em>，但可以在执行make时指定参数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">make OverridDemo=ThisIsFromOutShell # 等号两边不能有空格 !!</span><br><span class="line"># 如果变量值中有空格，需要用引号</span><br><span class="line">make OverridDemo=“This Is From Out Shell”</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros">make <span class="hljs-attribute">OverridDemo</span>=ThisIsFromOutShell # 等号两边不能有空格 !!<br><span class="hljs-comment"># 如果变量值中有空格，需要用引号</span><br>make <span class="hljs-attribute">OverridDemo</span>=“This Is <span class="hljs-keyword">From</span> Out Shell”<br></code></pre></td></tr></table></figure>
 
 <p>则输出OverridDemo的值是ThisIsFromOutShell或This Is From Out Shell。</p>
 <p>用这样的命令参数会覆盖Makefile中对应变量的值，如果不想被覆盖，可以在变量前加上<strong>override</strong>指令，override具有较高优先级，不会被命令参数覆盖</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> OverridDemo := ThisIsInMakefile</span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(OverridDemo)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-keyword">override</span> OverridDemo := ThisIsInMakefile<br><span class="hljs-section">all:</span><br>    @echo <span class="hljs-variable">$(OverridDemo)</span><br></code></pre></td></tr></table></figure>
 
 <p>这样即使命令行指定参数，也只会为<code>ThisIsInMakefile</code></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make OverridDemo=ThisIsFromOutShell</span><br></pre></td></tr></table></figure>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">make <span class="hljs-attribute">OverridDemo</span>=ThisIsFromOutShell<br></code></pre></td></tr></table></figure>
 
 
 
 <h2 id="绑定目标的变量"><a href="#绑定目标的变量" class="headerlink" title="绑定目标的变量"></a>绑定目标的变量</h2><p>Makefile中的变量一般是全局变量。也就是说定义之后在Makefile的任意位置都可以使用。但也可以将变量指定在某个目标的范围内，这样这个变量就只能在这个目标对应的规则里面保用</p>
 <p>语法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">target … : variable-assignment</span><br><span class="line">target … : prerequisites</span><br><span class="line">    recipes</span><br><span class="line">    …</span><br></pre></td></tr></table></figure>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ada">target … : <span class="hljs-type">variable</span>-assignment<br>target … : <span class="hljs-type">prerequisites</span><br>    recipes<br>    …<br></code></pre></td></tr></table></figure>
 
 <p>例</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var1 = Global Var</span><br><span class="line"></span><br><span class="line"><span class="section">first: all t2</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: var2 = Target All Var</span></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(var1)</span></span><br><span class="line">    @echo <span class="variable">$(var2)</span></span><br><span class="line"></span><br><span class="line"><span class="section">t2:</span></span><br><span class="line">    @echo <span class="variable">$(var1)</span></span><br><span class="line">    @echo <span class="variable">$(var2)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs makefile">var1 = Global Var<br><br><span class="hljs-section">first: all t2</span><br><br><span class="hljs-section">all: var2 = Target All Var</span><br><span class="hljs-section">all:</span><br>    @echo <span class="hljs-variable">$(var1)</span><br>    @echo <span class="hljs-variable">$(var2)</span><br><br><span class="hljs-section">t2:</span><br>    @echo <span class="hljs-variable">$(var1)</span><br>    @echo <span class="hljs-variable">$(var2)</span><br></code></pre></td></tr></table></figure>
 
 
 
@@ -318,24 +502,24 @@
 
 <h1 id="静态模式规则"><a href="#静态模式规则" class="headerlink" title="静态模式规则"></a>静态模式规则</h1><p>静态模式就是用<code>%</code>进行文件匹配来推导出对应的依赖。</p>
 <p><strong>语法</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">targets …: target-pattern(目标模式): prereq-patterns(依赖模式) …</span><br><span class="line">        recipe</span><br><span class="line">        …</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs css">targets …: <span class="hljs-built_in">target-pattern</span>(目标模式): <span class="hljs-built_in">prereq-patterns</span>(依赖模式) …<br>        recipe<br>        …<br></code></pre></td></tr></table></figure>
 
 <p>一个例子</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">objects = foo.o bar.o all.o</span><br><span class="line"><span class="section">all: <span class="variable">$(objects)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment"># These files compile via implicit rules</span></span><br><span class="line"><span class="comment"># Syntax - targets ...: target-pattern: prereq-patterns ...</span></span><br><span class="line"><span class="comment"># In the case of the first target, foo.o, the target-pattern matches foo.o and sets the &quot;stem&quot; to be &quot;foo&quot;.</span></span><br><span class="line"><span class="comment"># It then replaces the &#x27;%&#x27; in prereq-patterns with that stem</span></span><br><span class="line"><span class="variable">$(objects)</span>: %.o: %.c</span><br><span class="line"></span><br><span class="line"><span class="section">all.c:</span></span><br><span class="line">	echo <span class="string">&quot;int main() &#123; return 0; &#125;&quot;</span> &gt; all.c</span><br><span class="line"></span><br><span class="line"><span class="section">%.c:</span></span><br><span class="line">	touch <span class="variable">$@</span></span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	rm -f *.c *.o all</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs makefile">objects = foo.o bar.o all.o<br><span class="hljs-section">all: <span class="hljs-variable">$(objects)</span></span><br><br><span class="hljs-comment"># These files compile via implicit rules</span><br><span class="hljs-comment"># Syntax - targets ...: target-pattern: prereq-patterns ...</span><br><span class="hljs-comment"># In the case of the first target, foo.o, the target-pattern matches foo.o and sets the &quot;stem&quot; to be &quot;foo&quot;.</span><br><span class="hljs-comment"># It then replaces the &#x27;%&#x27; in prereq-patterns with that stem</span><br><span class="hljs-variable">$(objects)</span>: %.o: %.c<br><br><span class="hljs-section">all.c:</span><br>	echo <span class="hljs-string">&quot;int main() &#123; return 0; &#125;&quot;</span> &gt; all.c<br><br><span class="hljs-section">%.c:</span><br>	touch <span class="hljs-variable">$@</span><br><br><span class="hljs-section">clean:</span><br>	rm -f *.c *.o all<br></code></pre></td></tr></table></figure>
 
 
 
 
 
-<h1 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h1><h2 id="ifeq判断两个值是否相等"><a href="#ifeq判断两个值是否相等" class="headerlink" title="ifeq判断两个值是否相等"></a>ifeq判断两个值是否相等</h2><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">version = 3.0</span><br><span class="line"></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(version)</span>,1.0)            <span class="comment"># ifeq后一定要一个空格</span></span><br><span class="line">    msg := 版本太旧了，请更新版本</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">ifeq</span> (<span class="variable">$(version)</span>, 3.0)</span><br><span class="line">    msg := 版本太新了，也不行</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    msg := 版本可以用</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 另外的写法</span></span><br><span class="line">msg = Other</span><br><span class="line"><span class="keyword">ifeq</span> <span class="string">&quot;<span class="variable">$(OS)</span>&quot;</span> <span class="string">&quot;Windows_NT&quot;</span></span><br><span class="line">    msg = This is a Windows Platform</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ifeq</span> &#x27;<span class="variable">$(OS)</span>&#x27; &#x27;Windows_NT&#x27;</span><br><span class="line"></span><br><span class="line"><span class="keyword">ifeq</span> &#x27;<span class="variable">$(OS)</span>&#x27; <span class="string">&quot;Windows_NT&quot;</span></span><br></pre></td></tr></table></figure>
+<h1 id="条件判断"><a href="#条件判断" class="headerlink" title="条件判断"></a>条件判断</h1><h2 id="ifeq判断两个值是否相等"><a href="#ifeq判断两个值是否相等" class="headerlink" title="ifeq判断两个值是否相等"></a>ifeq判断两个值是否相等</h2><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs makefile">version = 3.0<br><br><span class="hljs-keyword">ifeq</span> (<span class="hljs-variable">$(version)</span>,1.0)            <span class="hljs-comment"># ifeq后一定要一个空格</span><br>    msg := 版本太旧了，请更新版本<br><span class="hljs-keyword">else</span> <span class="hljs-keyword">ifeq</span> (<span class="hljs-variable">$(version)</span>, 3.0)<br>    msg := 版本太新了，也不行<br><span class="hljs-keyword">else</span><br>    msg := 版本可以用<br><span class="hljs-keyword">endif</span><br><br><br><span class="hljs-comment"># 另外的写法</span><br>msg = Other<br><span class="hljs-keyword">ifeq</span> <span class="hljs-string">&quot;<span class="hljs-variable">$(OS)</span>&quot;</span> <span class="hljs-string">&quot;Windows_NT&quot;</span><br>    msg = This is a Windows Platform<br><span class="hljs-keyword">endif</span><br><br><span class="hljs-keyword">ifeq</span> &#x27;<span class="hljs-variable">$(OS)</span>&#x27; &#x27;Windows_NT&#x27;<br><br><span class="hljs-keyword">ifeq</span> &#x27;<span class="hljs-variable">$(OS)</span>&#x27; <span class="hljs-string">&quot;Windows_NT&quot;</span><br></code></pre></td></tr></table></figure>
 
 <p>还有<code>ifneq</code>，用法相同，只是结果相反</p>
 <h2 id="ifdef判断变量是否已经定义"><a href="#ifdef判断变量是否已经定义" class="headerlink" title="ifdef判断变量是否已经定义"></a>ifdef判断变量是否已经定义</h2><p><code>ifdef</code>不展开变量，他只是查看是否定义了变量</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">bar =</span><br><span class="line">foo = <span class="variable">$(bar)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line"><span class="keyword">ifdef</span> foo</span><br><span class="line">	echo <span class="string">&quot;foo is defined&quot;</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"><span class="keyword">ifndef</span> bar</span><br><span class="line">	echo <span class="string">&quot;but bar is not&quot;</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs makefile">bar =<br>foo = <span class="hljs-variable">$(bar)</span><br><br><span class="hljs-section">all:</span><br><span class="hljs-keyword">ifdef</span> foo<br>	echo <span class="hljs-string">&quot;foo is defined&quot;</span><br><span class="hljs-keyword">endif</span><br><span class="hljs-keyword">ifndef</span> bar<br>	echo <span class="hljs-string">&quot;but bar is not&quot;</span><br><span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure>
 
 
 
-<h2 id="ifndef-判断一个变量是否没被定义"><a href="#ifndef-判断一个变量是否没被定义" class="headerlink" title="ifndef 判断一个变量是否没被定义"></a><strong>ifndef</strong> 判断一个变量是否没被定义</h2><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ifndef</span> FLAGS</span><br><span class="line">    FLAGS = -finput-charset=utf-8</span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+<h2 id="ifndef-判断一个变量是否没被定义"><a href="#ifndef-判断一个变量是否没被定义" class="headerlink" title="ifndef 判断一个变量是否没被定义"></a><strong>ifndef</strong> 判断一个变量是否没被定义</h2><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-keyword">ifndef</span> FLAGS<br>    FLAGS = -finput-charset=utf-8<br><span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure>
 
 
 
@@ -346,268 +530,471 @@
 <h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><p><strong>调用函数的语法</strong></p>
 <p><code>$(fn, arguments)</code> 或 <code>$&#123;fn, arguments&#125;</code>，注意参数之间不要有空格，如果有空格的话将视为参数的一部分    </p>
 <h2 id="字符替换与分析"><a href="#字符替换与分析" class="headerlink" title="字符替换与分析"></a>字符替换与分析</h2><h4 id="subst"><a href="#subst" class="headerlink" title="subst"></a><strong>subst</strong></h4><p>文本替换函数，返回替换后的文本</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">subst</span> target,replacement,text)</span></span><br><span class="line">        --- 在text中，把target替换为replacement</span><br><span class="line">        --- target 需要替换的内容</span><br><span class="line">        --- replacement 替换为的内容</span><br><span class="line">        --- text 需要处理的内容，可以是任意字符串</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">objs = main.o hello.o</span><br><span class="line">srcs = <span class="variable">$(<span class="built_in">subst</span> .o,.cpp,<span class="variable">$(objs)</span>)</span></span><br><span class="line">headers = <span class="variable">$(<span class="built_in">subst</span> .cpp,.h,<span class="variable">$(srcs)</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(srcs)</span></span><br><span class="line">    @echo <span class="variable">$(headers)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">subst</span> target,replacement,text)</span><br>        --- 在text中，把target替换为replacement<br>        --- target 需要替换的内容<br>        --- replacement 替换为的内容<br>        --- text 需要处理的内容，可以是任意字符串<br><br><br><br>objs = main.o hello.o<br>srcs = <span class="hljs-variable">$(<span class="hljs-built_in">subst</span> .o,.cpp,<span class="hljs-variable">$(objs)</span>)</span><br>headers = <span class="hljs-variable">$(<span class="hljs-built_in">subst</span> .cpp,.h,<span class="hljs-variable">$(srcs)</span>)</span><br><br><span class="hljs-section">all:</span><br>    @echo <span class="hljs-variable">$(srcs)</span><br>    @echo <span class="hljs-variable">$(headers)</span><br></code></pre></td></tr></table></figure>
 
 <ul>
 <li><p>如果要替换空格或者逗号，使用变量</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">comma := ,</span><br><span class="line">empty:=</span><br><span class="line">space := <span class="variable">$(empty)</span> <span class="variable">$(empty)</span></span><br><span class="line">foo := a b c</span><br><span class="line">bar := <span class="variable">$(<span class="built_in">subst</span> <span class="variable">$(space)</span>,<span class="variable">$(comma)</span>,<span class="variable">$(foo)</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: </span></span><br><span class="line">	@echo <span class="variable">$(bar)</span></span><br></pre></td></tr></table></figure></li>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs makefile">comma := ,<br>empty:=<br>space := <span class="hljs-variable">$(empty)</span> <span class="hljs-variable">$(empty)</span><br>foo := a b c<br>bar := <span class="hljs-variable">$(<span class="hljs-built_in">subst</span> <span class="hljs-variable">$(space)</span>,<span class="hljs-variable">$(comma)</span>,<span class="hljs-variable">$(foo)</span>)</span><br><br><span class="hljs-section">all: </span><br>	@echo <span class="hljs-variable">$(bar)</span><br></code></pre></td></tr></table></figure></li>
 </ul>
 <h4 id="patsubst"><a href="#patsubst" class="headerlink" title="patsubst"></a><strong>patsubst</strong></h4><p>模式替换， 返回替换后的文本</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">patsubst</span> pattern,replacement,text)</span></span><br><span class="line">        --- pattern 需要替换的模式</span><br><span class="line">        --- replacement 需要替换为</span><br><span class="line">        --- text 待处理内容，各项内容需要用空格隔开</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">foo := a.o b.o l.a c.o</span><br><span class="line">one := <span class="variable">$(<span class="built_in">patsubst</span> %.o,%.c,<span class="variable">$(foo)</span>)</span></span><br><span class="line"><span class="comment"># This is a shorthand for the above</span></span><br><span class="line">two := $(foo:%.o=%.c)</span><br><span class="line"><span class="comment"># This is the suffix-only shorthand, and is also equivalent to the above.</span></span><br><span class="line">three := $(foo:.o=.c)</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">	echo <span class="variable">$(one)</span></span><br><span class="line">	echo <span class="variable">$(two)</span></span><br><span class="line">	echo <span class="variable">$(three)</span>   </span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">patsubst</span> pattern,replacement,text)</span><br>        --- pattern 需要替换的模式<br>        --- replacement 需要替换为<br>        --- text 待处理内容，各项内容需要用空格隔开<br><br><br>foo := a.o b.o l.a c.o<br>one := <span class="hljs-variable">$(<span class="hljs-built_in">patsubst</span> %.o,%.c,<span class="hljs-variable">$(foo)</span>)</span><br><span class="hljs-comment"># This is a shorthand for the above</span><br>two := $(foo:%.o=%.c)<br><span class="hljs-comment"># This is the suffix-only shorthand, and is also equivalent to the above.</span><br>three := $(foo:.o=.c)<br><br><span class="hljs-section">all:</span><br>	echo <span class="hljs-variable">$(one)</span><br>	echo <span class="hljs-variable">$(two)</span><br>	echo <span class="hljs-variable">$(three)</span>   <br></code></pre></td></tr></table></figure>
 
 <ul>
 <li>注意上面<code>two</code>和<code>three</code>的简写，也很常用</li>
 </ul>
 <h4 id="strip"><a href="#strip" class="headerlink" title="strip"></a><strong>strip</strong></h4><p>去除字符串头部和尾部的空格，中间如果连续有多个空格，则用一个空格替换，返回去除空格后的文本</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">strip</span> string)</span></span><br><span class="line">        --- string 需要去除空格的字符串</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">files =     hello.cpp      main.cpp     test.cpp</span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">strip</span> <span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">strip</span> string)</span><br>        --- string 需要去除空格的字符串<br><br><br>files =     hello.cpp      main.cpp     test.cpp<br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">strip</span> <span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="findstring"><a href="#findstring" class="headerlink" title="findstring"></a>findstring</h4><p>查找字符串，如果找到了，则返回对应的字符串，如果没找到，则反回空串</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">findstring</span> find,string)</span></span><br><span class="line">        --- find 需要查找的字符串</span><br><span class="line">        --- string 用来查找的内容</span><br><span class="line"></span><br><span class="line">files = hello.cpp main.cpp test.cpp</span><br><span class="line"><span class="comment">#返回&quot;hel&quot;</span></span><br><span class="line">find = <span class="variable">$(<span class="built_in">findstring</span> hel,<span class="variable">$(files)</span>)</span> </span><br><span class="line"><span class="comment">#返回空串</span></span><br><span class="line">find = <span class="variable">$(<span class="built_in">findstring</span> HEL,<span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">findstring</span> find,string)</span><br>        --- find 需要查找的字符串<br>        --- string 用来查找的内容<br><br>files = hello.cpp main.cpp test.cpp<br><span class="hljs-comment">#返回&quot;hel&quot;</span><br>find = <span class="hljs-variable">$(<span class="hljs-built_in">findstring</span> hel,<span class="hljs-variable">$(files)</span>)</span> <br><span class="hljs-comment">#返回空串</span><br>find = <span class="hljs-variable">$(<span class="hljs-built_in">findstring</span> HEL,<span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="filter"><a href="#filter" class="headerlink" title="filter"></a>filter</h4><p>从文本中筛选出符合模式的内容并返回</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">filter</span> pattern…,text)</span></span><br><span class="line">        --- pattern 模式，可以有多个，用空格隔开</span><br><span class="line">        --- text 用来筛选的文本，多项内容需要用空格隔开，否则只会当一项来处理</span><br><span class="line"></span><br><span class="line">files = hello.cpp main.cpp test.cpp main.o hello.o hello.h</span><br><span class="line"><span class="comment">#files2:main.o hello.o hello.h</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">filter</span> %.o %.h,<span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">filter</span> pattern…,text)</span><br>        --- pattern 模式，可以有多个，用空格隔开<br>        --- text 用来筛选的文本，多项内容需要用空格隔开，否则只会当一项来处理<br><br>files = hello.cpp main.cpp test.cpp main.o hello.o hello.h<br><span class="hljs-comment">#files2:main.o hello.o hello.h</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">filter</span> %.o %.h,<span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="filter-out"><a href="#filter-out" class="headerlink" title="filter-out"></a>filter-out</h4><p>与filter相反，过滤掉符合模式的，返回剩下的内容</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">filter</span>-out pattern…,text)</span></span><br><span class="line">        --- pattern 模式，可以有多个，用空格隔开</span><br><span class="line">        --- text 用来筛选的文本，多项内容需要用空格隔开，否则只会当一项来处理</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">files = hello.cpp main.cpp test.cpp main.o hello.o hello.h</span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">filter</span>-out %.o %.cpp,<span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">filter</span>-out pattern…,text)</span><br>        --- pattern 模式，可以有多个，用空格隔开<br>        --- text 用来筛选的文本，多项内容需要用空格隔开，否则只会当一项来处理<br><br><br>files = hello.cpp main.cpp test.cpp main.o hello.o hello.h<br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">filter</span>-out %.o %.cpp,<span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h4><p>将文本内的各项按字典顺序排列，并且移除重复项</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">sort</span> list)</span></span><br><span class="line">        --- list 需要排序内容</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">files = hello.cpp main.cpp test.cpp main.o hello.o hello.h main.cpp hello.cpp</span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">sort</span> <span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">sort</span> list)</span><br>        --- list 需要排序内容<br><br><br>files = hello.cpp main.cpp test.cpp main.o hello.o hello.h main.cpp hello.cpp<br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">sort</span> <span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="word"><a href="#word" class="headerlink" title="word"></a>word</h4><p>用于返回文本中第n个单词 (注意下标从1开始的，不是0)</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">word</span> n,text)</span></span><br><span class="line">        --- n 第n个单词，从1开始，如果n大于总单词数，则返回空串</span><br><span class="line">        --- text 待处理文本</span><br><span class="line"></span><br><span class="line">files = hello.cpp main.cpp test.cpp main.o hello.o hello.h main.cpp hello.cpp</span><br><span class="line"><span class="comment">#files2:test.cpp</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">word</span> 3,<span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">word</span> n,text)</span><br>        --- n 第n个单词，从1开始，如果n大于总单词数，则返回空串<br>        --- text 待处理文本<br><br>files = hello.cpp main.cpp test.cpp main.o hello.o hello.h main.cpp hello.cpp<br><span class="hljs-comment">#files2:test.cpp</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">word</span> 3,<span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="wordlist"><a href="#wordlist" class="headerlink" title="wordlist"></a>wordlist</h4><p>用于返回文本指定范围内的单词列表</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">wordlist</span> start,end,text)</span></span><br><span class="line">        --- start 起始位置，如果大于单词总数，则返回空串</span><br><span class="line">        --- end 结束位置，如果大于单词总数，则返回起始位置之后全部，如果start &gt; end，什么都不返回</span><br><span class="line"></span><br><span class="line">files = hello.cpp main.cpp test.cpp main.o hello.o hello.h main.cpp hello.cpp</span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">wordlist</span> 3,6,<span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">wordlist</span> start,end,text)</span><br>        --- start 起始位置，如果大于单词总数，则返回空串<br>        --- end 结束位置，如果大于单词总数，则返回起始位置之后全部，如果start &gt; end，什么都不返回<br><br>files = hello.cpp main.cpp test.cpp main.o hello.o hello.h main.cpp hello.cpp<br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">wordlist</span> 3,6,<span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="words"><a href="#words" class="headerlink" title="words"></a>words</h4><p>返回文本中单词数</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(words text)</span></span><br><span class="line">        --- text 需要处理的文本</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">files = hello.cpp main.cpp test.cpp main.o hello.o hello.h main.cpp hello.cpp</span><br><span class="line">nums = <span class="variable">$(words <span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(words text)</span><br>        --- text 需要处理的文本<br><br><br>files = hello.cpp main.cpp test.cpp main.o hello.o hello.h main.cpp hello.cpp<br>nums = <span class="hljs-variable">$(words <span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="firstword"><a href="#firstword" class="headerlink" title="firstword"></a>firstword</h4><p>返回第一个单词</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(firstword text)</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-constructor">$(<span class="hljs-params">firstword</span> <span class="hljs-params">text</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="lastword"><a href="#lastword" class="headerlink" title="lastword"></a>lastword</h4><p>返回最后一个单词</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(lastword text)</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-constructor">$(<span class="hljs-params">lastword</span> <span class="hljs-params">text</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="文件名处理函数"><a href="#文件名处理函数" class="headerlink" title="文件名处理函数"></a>文件名处理函数</h2><h4 id="dir"><a href="#dir" class="headerlink" title="dir"></a>dir</h4><p>返回文件目录</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">dir</span> files)</span></span><br><span class="line">        --- files 需要返回目录的文件名，可以有多个，用空格隔开</span><br><span class="line"></span><br><span class="line">files = src/hello.cpp main.cpp</span><br><span class="line"><span class="comment">#files2:src/ ./</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">dir</span> <span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">dir</span> files)</span><br>        --- files 需要返回目录的文件名，可以有多个，用空格隔开<br><br>files = src/hello.cpp main.cpp<br><span class="hljs-comment">#files2:src/ ./</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">dir</span> <span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="notdir"><a href="#notdir" class="headerlink" title="notdir"></a>notdir</h4><p>返回除目录部分的文件名</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">notdir</span> files)</span></span><br><span class="line">        --- files 需要返回文件列表，可以有多个，用空格隔开</span><br><span class="line"></span><br><span class="line">files = src/hello.cpp main.cpp</span><br><span class="line"><span class="comment">#files2:hello.cpp main.cpp</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">notdir</span> <span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">notdir</span> files)</span><br>        --- files 需要返回文件列表，可以有多个，用空格隔开<br><br>files = src/hello.cpp main.cpp<br><span class="hljs-comment">#files2:hello.cpp main.cpp</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">notdir</span> <span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="suffix"><a href="#suffix" class="headerlink" title="suffix"></a>suffix</h4><p>返回文件后缀名，如果没有后缀返回空</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">suffix</span> files)</span></span><br><span class="line">        --- files 需要返回后缀的文件名，可以有多个，用空格隔开</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">files = src/hello.cpp main.cpp hello.o hello.hpp hello</span><br><span class="line"><span class="comment">#files2:.cpp .cpp .o .hpp</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">suffix</span> <span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">suffix</span> files)</span><br>        --- files 需要返回后缀的文件名，可以有多个，用空格隔开<br><br><br>files = src/hello.cpp main.cpp hello.o hello.hpp hello<br><span class="hljs-comment">#files2:.cpp .cpp .o .hpp</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">suffix</span> <span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="basename"><a href="#basename" class="headerlink" title="basename"></a>basename</h4><p>返回文件名除后缀的部分</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">basename</span> files)</span></span><br><span class="line">        --- files 需要返回的文件名，可以有多个，用空格隔开</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">files = src/hello.cpp main.cpp hello.o hello.hpp hello</span><br><span class="line"><span class="comment">#files2:src/hello main hello hello hello</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">basename</span> <span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">basename</span> files)</span><br>        --- files 需要返回的文件名，可以有多个，用空格隔开<br><br><br>files = src/hello.cpp main.cpp hello.o hello.hpp hello<br><span class="hljs-comment">#files2:src/hello main hello hello hello</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">basename</span> <span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="addsuffix"><a href="#addsuffix" class="headerlink" title="addsuffix"></a>addsuffix</h4><p>给文件名添加后缀</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">addsuffix</span> <span class="built_in">suffix</span>,files)</span></span><br><span class="line">        --- suffix 需要添加的后缀</span><br><span class="line">        --- files 需要添加后缀的文件名，可以有多个，用空格隔开</span><br><span class="line"></span><br><span class="line">files = src/hello.cpp main.cpp hello.o hello.hpp hello</span><br><span class="line"><span class="comment">#files2:src/hello.cpp.exe main.cpp.exe hello.o.exe hello.hpp.exe hello.exe</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">addsuffix</span> .exe,<span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">addsuffix</span> <span class="hljs-built_in">suffix</span>,files)</span><br>        --- suffix 需要添加的后缀<br>        --- files 需要添加后缀的文件名，可以有多个，用空格隔开<br><br>files = src/hello.cpp main.cpp hello.o hello.hpp hello<br><span class="hljs-comment">#files2:src/hello.cpp.exe main.cpp.exe hello.o.exe hello.hpp.exe hello.exe</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">addsuffix</span> .exe,<span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="addprefix"><a href="#addprefix" class="headerlink" title="addprefix"></a>addprefix</h4><p>给文件名添加前缀</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">addprefix</span> prefix,files)</span></span><br><span class="line">        --- prefix 需要添加的前缀</span><br><span class="line">        --- files 需要添加前缀的文件名，可以有多个，用空格隔开</span><br><span class="line"></span><br><span class="line">files = src/hello.cpp main.cpp hello.o hello.hpp hello</span><br><span class="line"><span class="comment">#files2:make/src/hello.cpp make/main.cpp make/hello.o make/hello.hpp make/hello</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">addprefix</span> make/,<span class="variable">$(files)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">addprefix</span> prefix,files)</span><br>        --- prefix 需要添加的前缀<br>        --- files 需要添加前缀的文件名，可以有多个，用空格隔开<br><br>files = src/hello.cpp main.cpp hello.o hello.hpp hello<br><span class="hljs-comment">#files2:make/src/hello.cpp make/main.cpp make/hello.o make/hello.hpp make/hello</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">addprefix</span> make/,<span class="hljs-variable">$(files)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="join"><a href="#join" class="headerlink" title="join"></a>join</h4><p>将两个列表中的内容一对一连接，如果两个列表内容数量不相等，则多出来的部分原样返回，注意是有顺序之分的，比如下面这个例子如果改为<code>files2 = $(join $(f2),$(f1))</code>，结果是相反的</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">join</span> list1,list2)</span></span><br><span class="line">        --- list1 第一个列表</span><br><span class="line">        --- list2 需要连接的第二个列表</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">f1 = hello main test</span><br><span class="line">f2 = .cpp .hpp</span><br><span class="line"><span class="comment">#files2:hello.cpp main.hpp test</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">join</span> <span class="variable">$(f1)</span>,<span class="variable">$(f2)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">join</span> list1,list2)</span><br>        --- list1 第一个列表<br>        --- list2 需要连接的第二个列表<br><br><br>f1 = hello main test<br>f2 = .cpp .hpp<br><span class="hljs-comment">#files2:hello.cpp main.hpp test</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">join</span> <span class="hljs-variable">$(f1)</span>,<span class="hljs-variable">$(f2)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="wildcard"><a href="#wildcard" class="headerlink" title="wildcard"></a>wildcard</h4><p>返回符合通配符的文件列表</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">wildcard</span> pattern)</span></span><br><span class="line">        --- pattern 通配符</span><br><span class="line"></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">wildcard</span> *.cpp)</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">wildcard</span> *)</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">wildcard</span> src/*.cpp)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span> pattern)</span><br>        --- pattern 通配符<br><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span> *.cpp)</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span> *)</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span> src/*.cpp)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="realpath"><a href="#realpath" class="headerlink" title="realpath"></a>realpath</h4><p>返回文件的绝对路径</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">realpath</span> files)</span></span><br><span class="line">        --- files 需要返回绝对路径的文件，可以有多个，用空格隔开</span><br><span class="line"></span><br><span class="line">f3 = <span class="variable">$(<span class="built_in">wildcard</span> src/*)</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">realpath</span> <span class="variable">$(f3)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">realpath</span> files)</span><br>        --- files 需要返回绝对路径的文件，可以有多个，用空格隔开<br><br>f3 = <span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span> src/*)</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">realpath</span> <span class="hljs-variable">$(f3)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="abspath"><a href="#abspath" class="headerlink" title="abspath"></a>abspath</h4><p>返回绝对路径，用法同realpath，如果一个文件名不存在，realpath不会返回内容，abspath则会返回一个当前文件夹一下的绝对路径</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(abspath files)</span><br></pre></td></tr></table></figure>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml"><span class="hljs-constructor">$(<span class="hljs-params">abspath</span> <span class="hljs-params">files</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="条件函数"><a href="#条件函数" class="headerlink" title="条件函数"></a>条件函数</h2><h4 id="if"><a href="#if" class="headerlink" title="if"></a>if</h4><p><code>if</code> 检查第一个参数是否为<strong>非空</strong>。如果是这样，则运行第二个参数，否则运行第三个参数</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">if</span> condition,then-part[,else-part])</span></span><br><span class="line">        --- condition 条件部分</span><br><span class="line">        --- then-part 条件为真时执行的部分</span><br><span class="line">        --- else-part 条件为假时执行的部分，如果省略则为假时返回空串</span><br><span class="line"></span><br><span class="line">files = src/hello.cpp main.cpp hello.o hello.hpp hello</span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">if</span> <span class="variable">$(files)</span>,有文件,没有文件)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">if</span> condition,then-part[,else-part])</span><br>        --- condition 条件部分<br>        --- then-part 条件为真时执行的部分<br>        --- else-part 条件为假时执行的部分，如果省略则为假时返回空串<br><br>files = src/hello.cpp main.cpp hello.o hello.hpp hello<br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">if</span> <span class="hljs-variable">$(files)</span>,有文件,没有文件)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="or"><a href="#or" class="headerlink" title="or"></a>or</h4><p>返回条件中第一个不为空的部分</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">or</span> condition1[,condition2[,condition3…]])</span></span><br><span class="line"></span><br><span class="line">f1 = </span><br><span class="line">f2 = </span><br><span class="line">f3 = hello.cpp</span><br><span class="line">f4 = main.cpp</span><br><span class="line"><span class="comment">#files2:hello.cpp</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">or</span> <span class="variable">$(f1)</span>,<span class="variable">$(f2)</span>,<span class="variable">$(f3)</span>,<span class="variable">$(f4)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">or</span> condition1[,condition2[,condition3…]])</span><br><br>f1 = <br>f2 = <br>f3 = hello.cpp<br>f4 = main.cpp<br><span class="hljs-comment">#files2:hello.cpp</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">or</span> <span class="hljs-variable">$(f1)</span>,<span class="hljs-variable">$(f2)</span>,<span class="hljs-variable">$(f3)</span>,<span class="hljs-variable">$(f4)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="and"><a href="#and" class="headerlink" title="and"></a>and</h4><p>如果条件中有一个为空串，则返回空，如果全都不为空，则返回最后一个条件</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">and</span> condition1[,condition2[,condition3…]])</span></span><br><span class="line"></span><br><span class="line">f1 = 12</span><br><span class="line">f2 = 34</span><br><span class="line">f3 = hello.cpp</span><br><span class="line">f4 = main.cpp</span><br><span class="line"><span class="comment">#files2:main.cpp</span></span><br><span class="line">files2 = <span class="variable">$(<span class="built_in">and</span> <span class="variable">$(f1)</span>,<span class="variable">$(f2)</span>,<span class="variable">$(f3)</span>,<span class="variable">$(f4)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">and</span> condition1[,condition2[,condition3…]])</span><br><br>f1 = 12<br>f2 = 34<br>f3 = hello.cpp<br>f4 = main.cpp<br><span class="hljs-comment">#files2:main.cpp</span><br>files2 = <span class="hljs-variable">$(<span class="hljs-built_in">and</span> <span class="hljs-variable">$(f1)</span>,<span class="hljs-variable">$(f2)</span>,<span class="hljs-variable">$(f3)</span>,<span class="hljs-variable">$(f4)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="intcmp"><a href="#intcmp" class="headerlink" title="intcmp"></a>intcmp</h4><p>比较两个整数大小，并返回对应操作结果（GNU make 4.4以上版本）</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(intcmp lhs,rhs[,lt-part[,eq-part[,gt-part]]])</span> </span><br><span class="line">        --- lhs 第一个数</span><br><span class="line">        --- rhs 第二个数</span><br><span class="line">        --- lt-part  lhs &lt; rhs时执行</span><br><span class="line">        --- eq-part  lhs = rhs时执行</span><br><span class="line">        --- gt-part  lhs &gt; rhs时执行</span><br><span class="line">        --- 如果只提供前两个参数，则lhs == rhs时返回数值，否则返回空串</span><br><span class="line">            参数为lhs,rhs,lt-part时，当lhs &lt; rhs时返回lt-part结果，否则返回空</span><br><span class="line">            参数为lhs,rhs,lt-part,eq-part，lhs &lt; rhs返回lt-part结果，否则都返回eq-part结果</span><br><span class="line">            参数全时，lhs &lt; rhs返回lt-part，lhs == rhs返回eq-part, lhs &gt; rhs返回gt-part</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@echo <span class="variable">$(intcmp 2,2,-1,0,1)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(intcmp lhs,rhs[,lt-part[,eq-part[,gt-part]]])</span> <br>        --- lhs 第一个数<br>        --- rhs 第二个数<br>        --- lt-part  lhs &lt; rhs时执行<br>        --- eq-part  lhs = rhs时执行<br>        --- gt-part  lhs &gt; rhs时执行<br>        --- 如果只提供前两个参数，则lhs == rhs时返回数值，否则返回空串<br>            参数为lhs,rhs,lt-part时，当lhs &lt; rhs时返回lt-part结果，否则返回空<br>            参数为lhs,rhs,lt-part,eq-part，lhs &lt; rhs返回lt-part结果，否则都返回eq-part结果<br>            参数全时，lhs &lt; rhs返回lt-part，lhs == rhs返回eq-part, lhs &gt; rhs返回gt-part<br><br><br><br>@echo <span class="hljs-variable">$(intcmp 2,2,-1,0,1)</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="file"><a href="#file" class="headerlink" title="file"></a>file</h2><p>读写文件</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">file</span> op filename[,text])</span></span><br><span class="line">        --- op 操作</span><br><span class="line">                &gt; 覆盖</span><br><span class="line">                &gt;&gt; 追加</span><br><span class="line">                &lt; 读</span><br><span class="line">        --- filename 需要操作的文件名</span><br><span class="line">        --- text 写入的文本内容，读取是不需要这个参数</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">files = src/hello.cpp main.cpp hello.o hello.hpp hello</span><br><span class="line">write = <span class="variable">$(<span class="built_in">file</span> &gt; makewrite.txt,<span class="variable">$(files)</span>)</span></span><br><span class="line">read = <span class="variable">$(<span class="built_in">file</span> &lt; makewrite.txt)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">file</span> op filename[,text])</span><br>        --- op 操作<br>                &gt; 覆盖<br>                &gt;&gt; 追加<br>                &lt; 读<br>        --- filename 需要操作的文件名<br>        --- text 写入的文本内容，读取是不需要这个参数<br><br><br>files = src/hello.cpp main.cpp hello.o hello.hpp hello<br>write = <span class="hljs-variable">$(<span class="hljs-built_in">file</span> &gt; makewrite.txt,<span class="hljs-variable">$(files)</span>)</span><br>read = <span class="hljs-variable">$(<span class="hljs-built_in">file</span> &lt; makewrite.txt)</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="foreach"><a href="#foreach" class="headerlink" title="foreach"></a>foreach</h2><p>对一列用空格隔开的字符序列中每一项进行处理，并返回处理后的列表（将一个单词列表（用空格分隔）转换为另一个单词列表）</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">foreach</span> each,list,process)</span></span><br><span class="line">        --- each list中的每一项</span><br><span class="line">        --- list 需要处理的字符串序列，用空格隔开</span><br><span class="line">        --- process 需要对每一项进行的处理</span><br><span class="line"></span><br><span class="line">foo := who are you</span><br><span class="line"><span class="comment"># For each &quot;word&quot; in foo, output that same word with an exclamation after</span></span><br><span class="line">bar := <span class="variable">$(<span class="built_in">foreach</span> wrd,<span class="variable">$(foo)</span>,<span class="variable">$(wrd)</span>!)</span></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">	<span class="comment"># Output is &quot;who! are! you!&quot;</span></span><br><span class="line">	@echo <span class="variable">$(bar)</span></span><br><span class="line"></span><br><span class="line">list = 1 2 3 4 5</span><br><span class="line">result = <span class="variable">$(<span class="built_in">foreach</span> each,<span class="variable">$(list)</span>,$(<span class="built_in">addprefix</span> cpp,$(<span class="built_in">addsuffix</span> .cpp,<span class="variable">$(each)</span>)</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">foreach</span> each,list,process)</span><br>        --- each list中的每一项<br>        --- list 需要处理的字符串序列，用空格隔开<br>        --- process 需要对每一项进行的处理<br><br>foo := who are you<br><span class="hljs-comment"># For each &quot;word&quot; in foo, output that same word with an exclamation after</span><br>bar := <span class="hljs-variable">$(<span class="hljs-built_in">foreach</span> wrd,<span class="hljs-variable">$(foo)</span>,<span class="hljs-variable">$(wrd)</span>!)</span><br><span class="hljs-section">all:</span><br>	<span class="hljs-comment"># Output is &quot;who! are! you!&quot;</span><br>	@echo <span class="hljs-variable">$(bar)</span><br><br>list = 1 2 3 4 5<br>result = <span class="hljs-variable">$(<span class="hljs-built_in">foreach</span> each,<span class="hljs-variable">$(list)</span>,$(<span class="hljs-built_in">addprefix</span> cpp,$(<span class="hljs-built_in">addsuffix</span> .cpp,<span class="hljs-variable">$(each)</span>)</span>))<br></code></pre></td></tr></table></figure>
 
 <p>第二个例子作用类似C/C++中的循环</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> list[<span class="number">5</span>] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;;</span><br><span class="line"><span class="type">int</span> result[<span class="number">5</span>];</span><br><span class="line"><span class="type">int</span> each;</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++)</span><br><span class="line">&#123;</span><br><span class="line">    each = list[i];</span><br><span class="line">    result[i] = <span class="built_in">process</span>(each);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 此时result即为返回结果</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> list[<span class="hljs-number">5</span>] = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>&#125;;<br><span class="hljs-type">int</span> result[<span class="hljs-number">5</span>];<br><span class="hljs-type">int</span> each;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++)<br>&#123;<br>    each = list[i];<br>    result[i] = <span class="hljs-built_in">process</span>(each);<br>&#125;<br><span class="hljs-comment">// 此时result即为返回结果</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="call"><a href="#call" class="headerlink" title="call"></a>call</h2><ul>
 <li>Make支持创建函数，可以通过创建变量来定义函数，但使用参数 <code>$(0)</code> 、 <code>$(1)</code> 等，<code>$(0)</code> 是变量，而 <code>$(1)</code> 、 <code>$(2)</code> 等是参数</li>
 </ul>
 <p>将一些复杂的表达式写成一个变量，用call可以像调用函数一样进行调用。类似于编程语言中的自定义函数。在函数中可以用$(n)来访问第n个参数</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">call</span> funcname,param1,param2,…)</span></span><br><span class="line">        --- funcname 自定义函数（变量名）</span><br><span class="line">        --- 参数至少一个，可以有多个，用逗号隔开</span><br><span class="line"></span><br><span class="line">sweet_new_fn = Variable Name: $(0) First: $(1) Second: $(2) Empty Variable: $(3)</span><br><span class="line"></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">	<span class="comment"># Outputs &quot;Variable Name: sweet_new_fn First: go Second: tigers Empty Variable:&quot;</span></span><br><span class="line">	@echo <span class="variable">$(<span class="built_in">call</span> sweet_new_fn, go, tigers)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">call</span> funcname,param1,param2,…)</span><br>        --- funcname 自定义函数（变量名）<br>        --- 参数至少一个，可以有多个，用逗号隔开<br><br>sweet_new_fn = Variable Name: $(0) First: $(1) Second: $(2) Empty Variable: $(3)<br><br><span class="hljs-section">all:</span><br>	<span class="hljs-comment"># Outputs &quot;Variable Name: sweet_new_fn First: go Second: tigers Empty Variable:&quot;</span><br>	@echo <span class="hljs-variable">$(<span class="hljs-built_in">call</span> sweet_new_fn, go, tigers)</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="value"><a href="#value" class="headerlink" title="value"></a>value</h2><p>对于不是立即展开的变量，可以查看变量的原始定义；对于立即展开的变量，直接返回变量值</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">value</span> variable)</span></span><br><span class="line"></span><br><span class="line">var = value function test</span><br><span class="line">var2 = <span class="variable">$(var)</span></span><br><span class="line">var3 := <span class="variable">$(var)</span></span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(<span class="built_in">value</span> var2)</span></span><br><span class="line">    @echo <span class="variable">$(<span class="built_in">value</span> var3)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">value</span> variable)</span><br><br>var = value function test<br>var2 = <span class="hljs-variable">$(var)</span><br>var3 := <span class="hljs-variable">$(var)</span><br><span class="hljs-section">all:</span><br>    @echo <span class="hljs-variable">$(<span class="hljs-built_in">value</span> var2)</span><br>    @echo <span class="hljs-variable">$(<span class="hljs-built_in">value</span> var3)</span><br></code></pre></td></tr></table></figure>
 
 <h2 id=""><a href="#" class="headerlink" title=""></a></h2><p>查看一个变量定义来源</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">origin</span> variable)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">var2 = origin function </span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(<span class="built_in">origin</span> var1)</span>    <span class="comment"># undefined 未定义</span></span><br><span class="line">    @echo <span class="variable">$(<span class="built_in">origin</span> CC)</span>        <span class="comment"># default 默认变量</span></span><br><span class="line">    @echo <span class="variable">$(<span class="built_in">origin</span> JAVA_HOME)</span> <span class="comment"># environment 环境变量</span></span><br><span class="line">    @echo <span class="variable">$(<span class="built_in">origin</span> var2)</span>    <span class="comment"># file 在Makefile文件中定义的变量</span></span><br><span class="line">    @echo <span class="variable">$(<span class="built_in">origin</span> @)</span>        <span class="comment"># automatic 自动变量</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">origin</span> variable)</span><br><br><br>var2 = origin function <br><span class="hljs-section">all:</span><br>    @echo <span class="hljs-variable">$(<span class="hljs-built_in">origin</span> var1)</span>    <span class="hljs-comment"># undefined 未定义</span><br>    @echo <span class="hljs-variable">$(<span class="hljs-built_in">origin</span> CC)</span>        <span class="hljs-comment"># default 默认变量</span><br>    @echo <span class="hljs-variable">$(<span class="hljs-built_in">origin</span> JAVA_HOME)</span> <span class="hljs-comment"># environment 环境变量</span><br>    @echo <span class="hljs-variable">$(<span class="hljs-built_in">origin</span> var2)</span>    <span class="hljs-comment"># file 在Makefile文件中定义的变量</span><br>    @echo <span class="hljs-variable">$(<span class="hljs-built_in">origin</span> @)</span>        <span class="hljs-comment"># automatic 自动变量</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="flavor"><a href="#flavor" class="headerlink" title="flavor"></a>flavor</h2><p>查看一个变量的赋值方式</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">flavor</span> variable)</span></span><br><span class="line"></span><br><span class="line">var2 = flavor function</span><br><span class="line">var3 := flavor funciton</span><br><span class="line"><span class="section">all:</span></span><br><span class="line">    @echo <span class="variable">$(<span class="built_in">flavor</span> var1)</span>    <span class="comment"># undefined 未定义</span></span><br><span class="line">    @echo <span class="variable">$(<span class="built_in">flavor</span> var2)</span>    <span class="comment"># recursive 递归展开赋值</span></span><br><span class="line">    @echo <span class="variable">$(<span class="built_in">flavor</span> var3)</span>    <span class="comment"># simple 简单赋值</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">flavor</span> variable)</span><br><br>var2 = flavor function<br>var3 := flavor funciton<br><span class="hljs-section">all:</span><br>    @echo <span class="hljs-variable">$(<span class="hljs-built_in">flavor</span> var1)</span>    <span class="hljs-comment"># undefined 未定义</span><br>    @echo <span class="hljs-variable">$(<span class="hljs-built_in">flavor</span> var2)</span>    <span class="hljs-comment"># recursive 递归展开赋值</span><br>    @echo <span class="hljs-variable">$(<span class="hljs-built_in">flavor</span> var3)</span>    <span class="hljs-comment"># simple 简单赋值</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="eval"><a href="#eval" class="headerlink" title="eval"></a>eval</h2><p>可以将一段文本生成Makefile的内容</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">eval</span> text)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">define</span> eval_target = </span><br><span class="line"><span class="section">eval:</span></span><br><span class="line">    @echo Target Eval Test</span><br><span class="line"><span class="keyword">endef</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$(<span class="built_in">eval</span> <span class="variable">$(eval_target)</span>)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">eval</span> text)</span><br><br><span class="hljs-keyword">define</span> eval_target = <br><span class="hljs-section">eval:</span><br>    @echo Target Eval Test<br><span class="hljs-keyword">endef</span><br><br><span class="hljs-variable">$(<span class="hljs-built_in">eval</span> <span class="hljs-variable">$(eval_target)</span>)</span><br></code></pre></td></tr></table></figure>
 
 <p>以上，运行make时将会执行eval目标，输出<code>Target Eval Test</code></p>
 <h2 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h2><p>用于执行Shell命令</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">files = <span class="variable">$(<span class="built_in">shell</span> ls *.cpp)</span></span><br><span class="line"><span class="variable">$(<span class="built_in">shell</span> echo This is from <span class="built_in">shell</span> function)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs makefile">files = <span class="hljs-variable">$(<span class="hljs-built_in">shell</span> ls *.cpp)</span><br><span class="hljs-variable">$(<span class="hljs-built_in">shell</span> echo This is from <span class="hljs-built_in">shell</span> function)</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="let"><a href="#let" class="headerlink" title="let"></a>let</h2><p>将一个字符串序列中的项拆开放入多个变量中，并对各个变量进行操作（GNU make 4.4以上版本），有点像rust里的解构</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(let var1 [var2 ...],[list],proc)</span></span><br><span class="line">        --- var 变量，可以有多个，用空格隔开</span><br><span class="line">        --- list 待处理字符串，各项之间空格隔开</span><br><span class="line">        --- proc 对变量进行的操作，结果为let的返回值</span><br><span class="line">            将list中的值依次一项一项放到var中，如果var的个数多于list项数，那多出来的var是空串。如果</span><br><span class="line">            var的个数小于list项数，则先依次把前而的项放入var中，剩下的list所有项都放入最后一个var中</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">list = a b c d</span><br><span class="line">letfirst = <span class="variable">$(let first second rest,<span class="variable">$(list)</span>,<span class="variable">$(first)</span>)</span></span><br><span class="line">letrest = <span class="variable">$(let first second rest,<span class="variable">$(list)</span>,<span class="variable">$(rest)</span>)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 结合call可以对所有项进行递归处理</span></span><br><span class="line">reverse = <span class="variable">$(let first rest,$(1)</span>,<span class="variable">$(<span class="built_in">if</span> <span class="variable">$(rest)</span>,$(<span class="built_in">call</span> reverse,<span class="variable">$(rest)</span>)</span> )<span class="variable">$(first)</span>)</span><br><span class="line"><span class="section">all: ; @echo $(call reverse,d c b a)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(let var1 [var2 ...],[list],proc)</span><br>        --- var 变量，可以有多个，用空格隔开<br>        --- list 待处理字符串，各项之间空格隔开<br>        --- proc 对变量进行的操作，结果为let的返回值<br>            将list中的值依次一项一项放到var中，如果var的个数多于list项数，那多出来的var是空串。如果<br>            var的个数小于list项数，则先依次把前而的项放入var中，剩下的list所有项都放入最后一个var中<br><br><br>list = a b c d<br>letfirst = <span class="hljs-variable">$(let first second rest,<span class="hljs-variable">$(list)</span>,<span class="hljs-variable">$(first)</span>)</span><br>letrest = <span class="hljs-variable">$(let first second rest,<span class="hljs-variable">$(list)</span>,<span class="hljs-variable">$(rest)</span>)</span><br><br><br><span class="hljs-comment"># 结合call可以对所有项进行递归处理</span><br>reverse = <span class="hljs-variable">$(let first rest,$(1)</span>,<span class="hljs-variable">$(<span class="hljs-built_in">if</span> <span class="hljs-variable">$(rest)</span>,$(<span class="hljs-built_in">call</span> reverse,<span class="hljs-variable">$(rest)</span>)</span> )<span class="hljs-variable">$(first)</span>)<br><span class="hljs-section">all: ; @echo $(call reverse,d c b a)</span><br></code></pre></td></tr></table></figure>
 
 <h2 id="信息提示函数"><a href="#信息提示函数" class="headerlink" title="信息提示函数"></a>信息提示函数</h2><h4 id="error"><a href="#error" class="headerlink" title="error"></a>error</h4><p>提示错误信息并终止make执行</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">error</span> text)</span></span><br><span class="line">        --- text 提示信息</span><br><span class="line"></span><br><span class="line">EXIT_STATUS = -1</span><br><span class="line"><span class="keyword">ifneq</span> (0, <span class="variable">$(EXIT_STATUS)</span>)</span><br><span class="line">    <span class="variable">$(<span class="built_in">error</span> An <span class="built_in">error</span> occured! make stopped!)</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">error</span> text)</span><br>        --- text 提示信息<br><br>EXIT_STATUS = -1<br><span class="hljs-keyword">ifneq</span> (0, <span class="hljs-variable">$(EXIT_STATUS)</span>)<br>    <span class="hljs-variable">$(<span class="hljs-built_in">error</span> An <span class="hljs-built_in">error</span> occured! make stopped!)</span><br><span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="warning"><a href="#warning" class="headerlink" title="warning"></a>warning</h4><p>提示警告信息，make不会终止</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(<span class="built_in">warning</span> text)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ifneq</span> (0, <span class="variable">$(EXIT_STATUS)</span>)</span><br><span class="line">    <span class="variable">$(<span class="built_in">warning</span> This is a <span class="built_in">warning</span> message)</span></span><br><span class="line"><span class="keyword">endif</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(<span class="hljs-built_in">warning</span> text)</span><br><br><span class="hljs-keyword">ifneq</span> (0, <span class="hljs-variable">$(EXIT_STATUS)</span>)<br>    <span class="hljs-variable">$(<span class="hljs-built_in">warning</span> This is a <span class="hljs-built_in">warning</span> message)</span><br><span class="hljs-keyword">endif</span><br></code></pre></td></tr></table></figure>
 
 <h4 id="info"><a href="#info" class="headerlink" title="info"></a>info</h4><p>输出一些信息</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$(info text…)</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$(info 编译开始.......)</span></span><br><span class="line"><span class="variable">$(info 编译结束)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-variable">$(info text…)</span><br><br><span class="hljs-variable">$(info 编译开始.......)</span><br><span class="hljs-variable">$(info 编译结束)</span><br></code></pre></td></tr></table></figure>
 
 
 
 <h1 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h1><p>试试分析一下这个rust的makefile把，来自rCore</p>
-<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">TARGET := riscv64gc-unknown-none-elf</span><br><span class="line">MODE := release</span><br><span class="line">APP_DIR := src/bin</span><br><span class="line">TARGET_DIR := target/<span class="variable">$(TARGET)</span>/<span class="variable">$(MODE)</span></span><br><span class="line">BUILD_DIR := build</span><br><span class="line">OBJDUMP := rust-objdump --arch-name=riscv64</span><br><span class="line">OBJCOPY := rust-objcopy --binary-architecture=riscv64</span><br><span class="line">PY := python3</span><br><span class="line"></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(MODE)</span>, release)</span><br><span class="line">	MODE_ARG := --release</span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line">BASE ?= 0</span><br><span class="line">CHAPTER ?= 0</span><br><span class="line">TEST ?= <span class="variable">$(CHAPTER)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">ifeq</span> (<span class="variable">$(TEST)</span>, 0) <span class="comment"># No test, deprecated, previously used in v3</span></span><br><span class="line">	APPS :=  <span class="variable">$(<span class="built_in">filter</span>-out $(<span class="built_in">wildcard</span> <span class="variable">$(APP_DIR)</span>/ch*.rs)</span>, <span class="variable">$(<span class="built_in">wildcard</span> <span class="variable">$(APP_DIR)</span>/*.rs)</span>)</span><br><span class="line"><span class="keyword">else</span> <span class="keyword">ifeq</span> (<span class="variable">$(TEST)</span>, 1) <span class="comment"># All test</span></span><br><span class="line">	APPS :=  <span class="variable">$(<span class="built_in">wildcard</span> <span class="variable">$(APP_DIR)</span>/ch*.rs)</span></span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">	TESTS := <span class="variable">$(<span class="built_in">shell</span> seq <span class="variable">$(BASE)</span> <span class="variable">$(TEST)</span>)</span></span><br><span class="line">	<span class="keyword">ifeq</span> (<span class="variable">$(BASE)</span>, 0) <span class="comment"># Normal tests only</span></span><br><span class="line">		APPS := <span class="variable">$(<span class="built_in">foreach</span> T, <span class="variable">$(TESTS)</span>, $(<span class="built_in">wildcard</span> <span class="variable">$(APP_DIR)</span>/ch<span class="variable">$(T)</span>_*.rs)</span>)</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">ifeq</span> (<span class="variable">$(BASE)</span>, 1) <span class="comment"># Basic tests only</span></span><br><span class="line">		APPS := <span class="variable">$(<span class="built_in">foreach</span> T, <span class="variable">$(TESTS)</span>, $(<span class="built_in">wildcard</span> <span class="variable">$(APP_DIR)</span>/ch<span class="variable">$(T)</span>b_*.rs)</span>)</span><br><span class="line">	<span class="keyword">else</span> <span class="comment"># Basic and normal</span></span><br><span class="line">		APPS := <span class="variable">$(<span class="built_in">foreach</span> T, <span class="variable">$(TESTS)</span>, $(<span class="built_in">wildcard</span> <span class="variable">$(APP_DIR)</span>/ch<span class="variable">$(T)</span>*.rs)</span>)</span><br><span class="line">	<span class="keyword">endif</span></span><br><span class="line"><span class="keyword">endif</span></span><br><span class="line"></span><br><span class="line">ELFS := <span class="variable">$(<span class="built_in">patsubst</span> <span class="variable">$(APP_DIR)</span>/%.rs, <span class="variable">$(TARGET_DIR)</span>/%, <span class="variable">$(APPS)</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="section">binary:</span></span><br><span class="line">	@echo <span class="variable">$(ELFS)</span></span><br><span class="line">	@if [ $&#123;CHAPTER&#125; -gt 3 ]; then \</span><br><span class="line">		cargo build <span class="variable">$(MODE_ARG)</span> ;\</span><br><span class="line">	<span class="keyword">else</span> \</span><br><span class="line">		CHAPTER=<span class="variable">$(CHAPTER)</span> python3 build.py ;\</span><br><span class="line">	fi</span><br><span class="line">	@<span class="variable">$(<span class="built_in">foreach</span> elf, <span class="variable">$(ELFS)</span>, \</span></span><br><span class="line"><span class="variable">		<span class="variable">$(OBJCOPY)</span> <span class="variable">$(elf)</span> --<span class="built_in">strip</span>-all -O binary $(<span class="built_in">patsubst</span> <span class="variable">$(TARGET_DIR)</span>/%, <span class="variable">$(TARGET_DIR)</span>/%.bin, <span class="variable">$(elf)</span>)</span>; \</span><br><span class="line">		cp <span class="variable">$(elf)</span> <span class="variable">$(<span class="built_in">patsubst</span> <span class="variable">$(TARGET_DIR)</span>/%, <span class="variable">$(TARGET_DIR)</span>/%.elf, <span class="variable">$(elf)</span>)</span>;)</span><br><span class="line"></span><br><span class="line"><span class="section">disasm:</span></span><br><span class="line">	@<span class="variable">$(<span class="built_in">foreach</span> elf, <span class="variable">$(ELFS)</span>, \</span></span><br><span class="line"><span class="variable">		<span class="variable">$(OBJDUMP)</span> <span class="variable">$(elf)</span> -S &gt; $(<span class="built_in">patsubst</span> <span class="variable">$(TARGET_DIR)</span>/%, <span class="variable">$(TARGET_DIR)</span>/%.asm, <span class="variable">$(elf)</span>)</span>;)</span><br><span class="line">	@<span class="variable">$(<span class="built_in">foreach</span> t, <span class="variable">$(ELFS)</span>, cp <span class="variable">$(t)</span>.asm <span class="variable">$(BUILD_DIR)</span>/asm/;)</span></span><br><span class="line"></span><br><span class="line"><span class="section">pre:</span></span><br><span class="line">	@mkdir -p <span class="variable">$(BUILD_DIR)</span>/bin/</span><br><span class="line">	@mkdir -p <span class="variable">$(BUILD_DIR)</span>/elf/</span><br><span class="line">	@mkdir -p <span class="variable">$(BUILD_DIR)</span>/app/</span><br><span class="line">	@mkdir -p <span class="variable">$(BUILD_DIR)</span>/asm/</span><br><span class="line">	@<span class="variable">$(<span class="built_in">foreach</span> t, <span class="variable">$(APPS)</span>, cp <span class="variable">$(t)</span> <span class="variable">$(BUILD_DIR)</span>/app/;)</span></span><br><span class="line"></span><br><span class="line"><span class="section">build: clean pre binary</span></span><br><span class="line">	@<span class="variable">$(<span class="built_in">foreach</span> t, <span class="variable">$(ELFS)</span>, cp <span class="variable">$(t)</span>.bin <span class="variable">$(BUILD_DIR)</span>/bin/;)</span></span><br><span class="line">	@<span class="variable">$(<span class="built_in">foreach</span> t, <span class="variable">$(ELFS)</span>, cp <span class="variable">$(t)</span>.elf <span class="variable">$(BUILD_DIR)</span>/elf/;)</span></span><br><span class="line"></span><br><span class="line"><span class="section">clean:</span></span><br><span class="line">	@cargo clean</span><br><span class="line">	@rm -rf <span class="variable">$(BUILD_DIR)</span></span><br><span class="line"></span><br><span class="line"><span class="section">all: build</span></span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="keyword">.PHONY</span>: elf binary build clean all</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs makefile">TARGET := riscv64gc-unknown-none-elf<br>MODE := release<br>APP_DIR := src/bin<br>TARGET_DIR := target/<span class="hljs-variable">$(TARGET)</span>/<span class="hljs-variable">$(MODE)</span><br>BUILD_DIR := build<br>OBJDUMP := rust-objdump --arch-name=riscv64<br>OBJCOPY := rust-objcopy --binary-architecture=riscv64<br>PY := python3<br><br><span class="hljs-keyword">ifeq</span> (<span class="hljs-variable">$(MODE)</span>, release)<br>	MODE_ARG := --release<br><span class="hljs-keyword">endif</span><br><br>BASE ?= 0<br>CHAPTER ?= 0<br>TEST ?= <span class="hljs-variable">$(CHAPTER)</span><br><br><span class="hljs-keyword">ifeq</span> (<span class="hljs-variable">$(TEST)</span>, 0) <span class="hljs-comment"># No test, deprecated, previously used in v3</span><br>	APPS :=  <span class="hljs-variable">$(<span class="hljs-built_in">filter</span>-out $(<span class="hljs-built_in">wildcard</span> <span class="hljs-variable">$(APP_DIR)</span>/ch*.rs)</span>, <span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span> <span class="hljs-variable">$(APP_DIR)</span>/*.rs)</span>)<br><span class="hljs-keyword">else</span> <span class="hljs-keyword">ifeq</span> (<span class="hljs-variable">$(TEST)</span>, 1) <span class="hljs-comment"># All test</span><br>	APPS :=  <span class="hljs-variable">$(<span class="hljs-built_in">wildcard</span> <span class="hljs-variable">$(APP_DIR)</span>/ch*.rs)</span><br><span class="hljs-keyword">else</span><br>	TESTS := <span class="hljs-variable">$(<span class="hljs-built_in">shell</span> seq <span class="hljs-variable">$(BASE)</span> <span class="hljs-variable">$(TEST)</span>)</span><br>	<span class="hljs-keyword">ifeq</span> (<span class="hljs-variable">$(BASE)</span>, 0) <span class="hljs-comment"># Normal tests only</span><br>		APPS := <span class="hljs-variable">$(<span class="hljs-built_in">foreach</span> T, <span class="hljs-variable">$(TESTS)</span>, $(<span class="hljs-built_in">wildcard</span> <span class="hljs-variable">$(APP_DIR)</span>/ch<span class="hljs-variable">$(T)</span>_*.rs)</span>)<br>	<span class="hljs-keyword">else</span> <span class="hljs-keyword">ifeq</span> (<span class="hljs-variable">$(BASE)</span>, 1) <span class="hljs-comment"># Basic tests only</span><br>		APPS := <span class="hljs-variable">$(<span class="hljs-built_in">foreach</span> T, <span class="hljs-variable">$(TESTS)</span>, $(<span class="hljs-built_in">wildcard</span> <span class="hljs-variable">$(APP_DIR)</span>/ch<span class="hljs-variable">$(T)</span>b_*.rs)</span>)<br>	<span class="hljs-keyword">else</span> <span class="hljs-comment"># Basic and normal</span><br>		APPS := <span class="hljs-variable">$(<span class="hljs-built_in">foreach</span> T, <span class="hljs-variable">$(TESTS)</span>, $(<span class="hljs-built_in">wildcard</span> <span class="hljs-variable">$(APP_DIR)</span>/ch<span class="hljs-variable">$(T)</span>*.rs)</span>)<br>	<span class="hljs-keyword">endif</span><br><span class="hljs-keyword">endif</span><br><br>ELFS := <span class="hljs-variable">$(<span class="hljs-built_in">patsubst</span> <span class="hljs-variable">$(APP_DIR)</span>/%.rs, <span class="hljs-variable">$(TARGET_DIR)</span>/%, <span class="hljs-variable">$(APPS)</span>)</span><br><br><span class="hljs-section">binary:</span><br>	@echo <span class="hljs-variable">$(ELFS)</span><br>	@if [ $&#123;CHAPTER&#125; -gt 3 ]; then \<br>		cargo build <span class="hljs-variable">$(MODE_ARG)</span> ;\<br>	<span class="hljs-keyword">else</span> \<br>		CHAPTER=<span class="hljs-variable">$(CHAPTER)</span> python3 build.py ;\<br>	fi<br>	@<span class="hljs-variable">$(<span class="hljs-built_in">foreach</span> elf, <span class="hljs-variable">$(ELFS)</span>, \</span><br><span class="hljs-variable">		<span class="hljs-variable">$(OBJCOPY)</span> <span class="hljs-variable">$(elf)</span> --<span class="hljs-built_in">strip</span>-all -O binary $(<span class="hljs-built_in">patsubst</span> <span class="hljs-variable">$(TARGET_DIR)</span>/%, <span class="hljs-variable">$(TARGET_DIR)</span>/%.bin, <span class="hljs-variable">$(elf)</span>)</span>; \<br>		cp <span class="hljs-variable">$(elf)</span> <span class="hljs-variable">$(<span class="hljs-built_in">patsubst</span> <span class="hljs-variable">$(TARGET_DIR)</span>/%, <span class="hljs-variable">$(TARGET_DIR)</span>/%.elf, <span class="hljs-variable">$(elf)</span>)</span>;)<br><br><span class="hljs-section">disasm:</span><br>	@<span class="hljs-variable">$(<span class="hljs-built_in">foreach</span> elf, <span class="hljs-variable">$(ELFS)</span>, \</span><br><span class="hljs-variable">		<span class="hljs-variable">$(OBJDUMP)</span> <span class="hljs-variable">$(elf)</span> -S &gt; $(<span class="hljs-built_in">patsubst</span> <span class="hljs-variable">$(TARGET_DIR)</span>/%, <span class="hljs-variable">$(TARGET_DIR)</span>/%.asm, <span class="hljs-variable">$(elf)</span>)</span>;)<br>	@<span class="hljs-variable">$(<span class="hljs-built_in">foreach</span> t, <span class="hljs-variable">$(ELFS)</span>, cp <span class="hljs-variable">$(t)</span>.asm <span class="hljs-variable">$(BUILD_DIR)</span>/asm/;)</span><br><br><span class="hljs-section">pre:</span><br>	@mkdir -p <span class="hljs-variable">$(BUILD_DIR)</span>/bin/<br>	@mkdir -p <span class="hljs-variable">$(BUILD_DIR)</span>/elf/<br>	@mkdir -p <span class="hljs-variable">$(BUILD_DIR)</span>/app/<br>	@mkdir -p <span class="hljs-variable">$(BUILD_DIR)</span>/asm/<br>	@<span class="hljs-variable">$(<span class="hljs-built_in">foreach</span> t, <span class="hljs-variable">$(APPS)</span>, cp <span class="hljs-variable">$(t)</span> <span class="hljs-variable">$(BUILD_DIR)</span>/app/;)</span><br><br><span class="hljs-section">build: clean pre binary</span><br>	@<span class="hljs-variable">$(<span class="hljs-built_in">foreach</span> t, <span class="hljs-variable">$(ELFS)</span>, cp <span class="hljs-variable">$(t)</span>.bin <span class="hljs-variable">$(BUILD_DIR)</span>/bin/;)</span><br>	@<span class="hljs-variable">$(<span class="hljs-built_in">foreach</span> t, <span class="hljs-variable">$(ELFS)</span>, cp <span class="hljs-variable">$(t)</span>.elf <span class="hljs-variable">$(BUILD_DIR)</span>/elf/;)</span><br><br><span class="hljs-section">clean:</span><br>	@cargo clean<br>	@rm -rf <span class="hljs-variable">$(BUILD_DIR)</span><br><br><span class="hljs-section">all: build</span><br><br><span class="hljs-meta"><span class="hljs-keyword">.PHONY</span>: elf binary build clean all</span><br></code></pre></td></tr></table></figure>
 
 
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>makefile</div>
+      <div>http://example.com/2024/05/07/makefile/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>John Doe</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 7, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2024/05/07/makefile/" data-id="clvwiwutf0002jouhbfrze9m5" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-    
-<nav id="article-nav">
-  
-  
-    <a href="/2024/05/07/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Hello World</div>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95/" rel="tag">欧几里得算法</a></li></ul>
-    </div>
+    <div class="license-icon iconfont"></div>
   </div>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/c/" style="font-size: 10px;">c++</a> <a href="/tags/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95/" style="font-size: 10px;">欧几里得算法</a>
-    </div>
-  </div>
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/05/">May 2024</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li></ul>
-    </div>
-  </div>
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/07/hello-world/" title="Hello World">
+                        <span class="hidden-mobile">Hello World</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2024/05/07/makefile/">makefile</a>
-          </li>
-        
-          <li>
-            <a href="/2024/05/07/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2023/04/03/%E6%95%B0%E8%AE%BA/">数论</a>
-          </li>
-        
-          <li>
-            <a href="/2023/03/23/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/">树状数组</a>
-          </li>
-        
-          <li>
-            <a href="/2023/03/17/dp/">dp</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
+            
+          </article>
+        </div>
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2024 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
     </div>
   </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
+</div>
+
+
+
+
+
   
-    <a href="/" class="mobile-nav-link">Home</a>
+
+
+
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
+
+
+
   
-</nav>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
     
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
 
-
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-
-  
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
   </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
 </body>
 </html>
