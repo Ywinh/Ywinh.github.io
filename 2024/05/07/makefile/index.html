@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
+<html lang="en" data-default-color-scheme=auto>
 
 
 
@@ -16,21 +16,22 @@
   <meta name="author" content="Jianhui Yin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="makefile有点像跟手动编译过程反着来，一步步去找依赖项 规则的构成1234targets: prerequisites	command	command	command   targets（目标）：是文件名，通常一个规则只有一个targets  command（命令&#x2F;方法）：创建目标的一系列步骤，需要用tab开头，  prerequisites（依赖）：也是文件名，可以有多个，用空格分隔，在运">
+    <meta name="description" content="笔者上手一些大型项目时，常常会看不懂Makefile而造成一些困难，因此参考资料形成了一篇文章，从完全零基础过来的，用时也不多。文末附上一个笔者最近学习的rCore的Makefile，看完全篇文章后一定可以看懂的，本文也可用于一个简单的中文手册查询。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="makefile">
+<meta property="og:title" content="从零到一的makefile">
 <meta property="og:url" content="http://example.com/2024/05/07/makefile/index.html">
 <meta property="og:site_name" content="yinsist">
-<meta property="og:description" content="makefile有点像跟手动编译过程反着来，一步步去找依赖项 规则的构成1234targets: prerequisites	command	command	command   targets（目标）：是文件名，通常一个规则只有一个targets  command（命令&#x2F;方法）：创建目标的一系列步骤，需要用tab开头，  prerequisites（依赖）：也是文件名，可以有多个，用空格分隔，在运">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:description" content="笔者上手一些大型项目时，常常会看不懂Makefile而造成一些困难，因此参考资料形成了一篇文章，从完全零基础过来的，用时也不多。文末附上一个笔者最近学习的rCore的Makefile，看完全篇文章后一定可以看懂的，本文也可用于一个简单的中文手册查询。">
+<meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2024-05-07T15:02:17.000Z">
-<meta property="article:modified_time" content="2024-05-07T15:04:16.649Z">
+<meta property="article:modified_time" content="2024-05-08T03:05:03.852Z">
 <meta property="article:author" content="Jianhui Yin">
+<meta property="article:tag" content="Makefile">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>makefile - yinsist</title>
+  <title>从零到一的makefile - yinsist</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -68,7 +69,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -114,7 +115,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
+                <span>Home</span>
               </a>
             </li>
           
@@ -126,7 +127,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
+                <span>Archives</span>
               </a>
             </li>
           
@@ -138,7 +139,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
+                <span>Categories</span>
               </a>
             </li>
           
@@ -150,7 +151,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
+                <span>Tags</span>
               </a>
             </li>
           
@@ -162,7 +163,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
+                <span>About</span>
               </a>
             </li>
           
@@ -196,7 +197,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="makefile"></span>
+            <span id="subtitle" data-typed-text="从零到一的makefile"></span>
           
         </div>
 
@@ -208,7 +209,7 @@
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
         <time datetime="2024-05-07 23:02" pubdate>
-          2024年5月7日 晚上
+          May 7, 2024 pm
         </time>
       </span>
     
@@ -219,7 +220,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          6k 字
+          6.2k words
         
       </span>
     
@@ -230,7 +231,7 @@
         
         
         
-          51 分钟
+          52 mins
         
       </span>
     
@@ -260,6 +261,19 @@
   <div class="row nomargin-x">
     <div class="side-col d-none d-lg-block col-lg-2">
       
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
 
     </div>
 
@@ -267,12 +281,20 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">makefile</h1>
+            <h1 id="seo-header">从零到一的makefile</h1>
             
             
               <div class="markdown-body">
                 
-                <p>makefile有点像跟手动编译过程反着来，一步步去找依赖项</p>
+                <p>笔者上手一些大型项目时，常常会看不懂Makefile而造成一些困难，因此参考资料形成了一篇文章，从完全零基础过来的，用时也不多。文末附上一个笔者最近学习的rCore的Makefile，看完全篇文章后一定可以看懂的，本文也可用于一个简单的中文手册查询。</p>
+<span id="more"></span>
+
+<p>一些好的学习资料：</p>
+<p><a href="https://link.zhihu.com/?target=https://makefiletutorial.com/">Makefile Tutorial By Example</a></p>
+<p>【从零开始学Makefile】 <a href="https://link.zhihu.com/?target=https://www.bilibili.com/video/BV1Bv4y1J7QT/?p=35&share_source=copy_web&vd_source=576f3acb9c32919142fdca9c8e59711e">从零开始学Makefile_哔哩哔哩_bilibili</a></p>
+<p><a href="https://link.zhihu.com/?target=https://gitee.com/yanmu_ym/cpp/blob/master/Make/make.md">Make/make.md · 岩木/CPP - Gitee.com</a></p>
+<p><a target="_blank" rel="noopener" href="https://seisman.github.io/how-to-write-makefile/">跟我一起写Makefile — 跟我一起写Makefile 1.0 文档 (seisman.github.io)</a></p>
+<p>makefile有点像跟手动编译过程反着来，一步步去找依赖项</p>
 <h1 id="规则的构成"><a href="#规则的构成" class="headerlink" title="规则的构成"></a><strong>规则</strong>的构成</h1><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs makefile"><span class="hljs-section">targets: prerequisites</span><br>	command<br>	command<br>	command<br></code></pre></td></tr></table></figure>
 
 <ul>
@@ -671,6 +693,13 @@
               <div class="post-metas my-3">
   
   
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Makefile/" class="print-no-link">#Makefile</a>
+      
+    </div>
+  
 </div>
 
 
@@ -679,32 +708,32 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>makefile</div>
+      <div>从零到一的makefile</div>
       <div>http://example.com/2024/05/07/makefile/</div>
     </div>
     <div class="license-meta">
       
         <div class="license-meta-item">
-          <div>作者</div>
+          <div>Author</div>
           <div>Jianhui Yin</div>
         </div>
       
       
         <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2024年5月7日</div>
+          <div>Posted on</div>
+          <div>May 7, 2024</div>
         </div>
       
       
       
         <div class="license-meta-item">
-          <div>许可协议</div>
+          <div>Licensed under</div>
           <div>
             
               
               
                 <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
                     <i class="iconfont icon-by"></i>
                   </span>
                 </a>
@@ -724,13 +753,19 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2024/05/08/xv6-trap/" title="xv6-trap">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">xv6-trap</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
                     
                       <a href="/2024/04/15/xv6-in-openSBI/" title="xv6-in-openSBI">
                         <span class="hidden-mobile">xv6-in-openSBI</span>
-                        <span class="visible-mobile">下一篇</span>
+                        <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
                     
@@ -747,19 +782,6 @@
 
     <div class="side-col d-none d-lg-block col-lg-2">
       
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header">
-    <i class="iconfont icon-list"></i>
-    <span>目录</span>
-  </p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
 
     </div>
   </div>
@@ -807,7 +829,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -815,7 +837,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -994,7 +1016,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
   </noscript>
 </body>
 </html>

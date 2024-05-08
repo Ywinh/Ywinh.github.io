@@ -1,0 +1,951 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jianhui Yin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="CS61B的BST，B树，23树，红黑树，LLRB 原理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BST与平衡树">
+<meta property="og:url" content="http://example.com/2022/01/17/BST%E4%B8%8E%E5%B9%B3%E8%A1%A1%E6%A0%91/index.html">
+<meta property="og:site_name" content="yinsist">
+<meta property="og:description" content="CS61B的BST，B树，23树，红黑树，LLRB 原理">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081111897.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081111870.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112370.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112835.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112347.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112794.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112621.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081122359.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112588.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112124.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112134.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112053.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112211.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112848.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112438.png">
+<meta property="article:published_time" content="2022-01-17T03:21:28.000Z">
+<meta property="article:modified_time" content="2024-05-08T03:24:11.602Z">
+<meta property="article:author" content="Jianhui Yin">
+<meta property="article:tag" content="BST">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081111897.png">
+  
+  
+  
+  <title>BST与平衡树 - yinsist</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Yinsist</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="BST与平衡树"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-01-17 11:21" pubdate>
+          January 17, 2022 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">BST与平衡树</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>CS61B的BST，B树，23树，红黑树，LLRB 原理</p>
+<span id="more"></span>
+
+<h2 id="Chapt10-ADTs-Sets-Maps-BSTs"><a href="#Chapt10-ADTs-Sets-Maps-BSTs" class="headerlink" title="Chapt10 ADTs, Sets, Maps, BSTs"></a>Chapt10 ADTs, Sets, Maps, BSTs</h2><p>加快链表的查找也可以使用跳表来优化  θ(logN)</p>
+<h3 id="BST-Binary-Search-Tree"><a href="#BST-Binary-Search-Tree" class="headerlink" title="BST(Binary Search Tree)"></a>BST(Binary Search Tree)</h3><p>一篇好文<a target="_blank" rel="noopener" href="https://medium.com/@liuamyj/its-triangles-all-the-way-down-part-1-17f932f4c438">It’s Triangles All the Way Down (Part 1) | by Amy Liu | Medium</a></p>
+<p>二分查找树</p>
+<p><strong>提出BST的原因</strong></p>
+<ul>
+<li>对于LinkedList来说，我们search时最坏情况需要遍历整个list，尽管list是有序的，对于ordered array来说，我们可以通过二分查找来加快查找速度</li>
+<li>受array的启发，我们可以在LinkedList的middle node设置一个引用，然后将middle node左边的List的指向翻转，这样我们就可以从middle位置根据大小向两边查找了</li>
+<li>我们可以做得更好，在左右部分，递归地，我们继续添加他们各自middle node的使用，直到每个部分只剩1个，这就会形成BST</li>
+</ul>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081111897.png" srcset="/img/loading.gif" lazyload alt="image-20230128191549116" style="zoom: 50%;" />
+
+<ul>
+<li><strong>Binary Search Trees</strong>:<ul>
+<li>Every key in the left subtree is less than X’s key.</li>
+<li>Every key in the right subtree is greater than X’s <strong>key.</strong></li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BST</span>&lt;Key&gt; &#123;<br>    <span class="hljs-keyword">private</span> Key key;<br>    <span class="hljs-keyword">private</span> BST left;<br>    <span class="hljs-keyword">private</span> BST right;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BST</span><span class="hljs-params">(Key key, BST left, BST Right)</span> &#123;<br>        <span class="hljs-built_in">this</span>.key = key;<br>        <span class="hljs-built_in">this</span>.left = left;<br>        <span class="hljs-built_in">this</span>.right = right;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BST</span><span class="hljs-params">(Key key)</span> &#123;<br>        <span class="hljs-built_in">this</span>.key = key;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="BST-operations"><a href="#BST-operations" class="headerlink" title="BST operations"></a><strong>BST operations</strong></h3><ul>
+<li><p><code>static BST find(BST T, Key key)</code></p>
+<ul>
+<li><p>T是BST的root，return 与key匹配的node</p>
+</li>
+<li><p>```java<br>static BST find(BST T, Key sk){</p>
+<pre><code class="hljs">if(T==null)&#123;
+    return null;
+&#125;
+if(sk.equals(T.key))&#123;
+    return T;
+&#125;else if(sk&lt;T.key)&#123;
+    find(T.left,sk);
+&#125;else if(sk&gt;T.key)&#123;
+    find(T.right,sk);
+&#125;
+</code></pre>
+<p>}</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs coffeescript"><br>* `<span class="language-javascript"><span class="hljs-keyword">static</span> <span class="hljs-variable constant_">BST</span> <span class="hljs-title function_">insert</span>(<span class="hljs-variable constant_">BST</span> T, <span class="hljs-title class_">Key</span> ik)</span>`<br><br>  * 我们总是在叶子结点进行insert！<br><br>  * <span class="hljs-keyword">return</span> the full BST <span class="hljs-keyword">with</span> the <span class="hljs-keyword">new</span> node inserted <span class="hljs-keyword">in</span> the correct position.<br><br>  * BST 不能有重复的<br><br>  * If found, <span class="hljs-keyword">do</span> nothing.<br><br>  * If <span class="hljs-keyword">not</span> found:<br><br>    * Create <span class="hljs-keyword">new</span> node.<br>    * <span class="hljs-built_in">Set</span> appropriate link<br><br>  * ```<span class="language-javascript">java</span><br><span class="language-javascript">    <span class="hljs-keyword">static</span> <span class="hljs-variable constant_">BST</span> <span class="hljs-title function_">insert</span>(<span class="hljs-params">BST T, Key ik</span>)&#123;</span><br><span class="language-javascript">        <span class="hljs-keyword">if</span>(T==<span class="hljs-literal">null</span>)&#123;</span><br><span class="language-javascript">            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title function_">BST</span>(ik);</span><br><span class="language-javascript">        &#125;</span><br><span class="language-javascript">        <span class="hljs-keyword">if</span>(ik&lt;T.<span class="hljs-property">key</span>)&#123;</span><br><span class="language-javascript">            T.<span class="hljs-property">left</span>=<span class="hljs-title function_">insert</span>(T.<span class="hljs-property">left</span>,ik);</span><br><span class="language-javascript">        &#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(ik&gt;T.<span class="hljs-property">key</span>)&#123;</span><br><span class="language-javascript">            T.<span class="hljs-property">right</span>=<span class="hljs-title function_">insert</span>(T.<span class="hljs-property">right</span>,ik);</span><br><span class="language-javascript">        &#125;</span><br><span class="language-javascript">        <span class="hljs-keyword">return</span> T;</span><br><span class="language-javascript">    &#125;</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><code>static BST delete(BST T,key dk)</code></p>
+<ul>
+<li><p><strong>Hibbard deletion</strong></p>
+</li>
+<li><p>has <strong>no children</strong></p>
+<ul>
+<li>删除的肯定是叶子结点，只需要改变该叶子结点的父亲，</li>
+</ul>
+</li>
+<li><p>has <strong>1 child</strong></p>
+<ul>
+<li>把该结点父亲结点的pointer指向该结点的子结点 we can just reassign the parent’s child pointer to the node’s child and the node will eventually be garbage collected</li>
+</ul>
+</li>
+<li><p>has <strong>2 children</strong></p>
+<ul>
+<li><p>目标是找到一个满足左边的都比他小，右边都比他大的node来代替需要删除的node</p>
+</li>
+<li><p>删除有两个子结点的：对该子树，选择该子树中，左边最右(predecessor)，或者右边最左(sucessor)的来代替root</p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081111870.png" srcset="/img/loading.gif" lazyload alt="image-20230128232228097" style="zoom:50%;" /></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>θ(logN)：This was because we could eliminate half of the elements at every step of our search</p>
+<h2 id="Chapt11：Balanced-Trees"><a href="#Chapt11：Balanced-Trees" class="headerlink" title="Chapt11：Balanced Trees"></a>Chapt11：Balanced Trees</h2><ul>
+<li>The <strong>depth</strong> of a node：距离根结点有多远</li>
+<li>The <strong>“height” of a tree</strong> is the depth of its deepest leaf, e.g. height(T) = 4.  <strong>worst case</strong></li>
+<li>The <strong>“average depth”</strong> of a tree is the average depth of a tree’s nodes.  <strong>average case</strong><ul>
+<li>(<strong>0</strong>x1 + <strong>1</strong>x2 + <strong>2</strong>x4 + <strong>3</strong>x6 + <strong>4</strong>x1)/(1+2+4+6+1) = 2.35</li>
+</ul>
+</li>
+</ul>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112370.png" srcset="/img/loading.gif" lazyload alt="image-20230128232650535" style="zoom:67%;" />
+
+<p>BSTs have:</p>
+<ul>
+<li>Worst case Θ(N) height.</li>
+<li>Best case Θ(log N) height.</li>
+</ul>
+<p>对于BST来说，不同的插入顺序会形成不同height的tree，也会造成不同的查找速度</p>
+<p><strong>Randomlized Trees</strong></p>
+<p>现实中插入往往是随机的，已经证明，随机插入的tree</p>
+<ul>
+<li>average depth：~ 2 ln N = Θ(log N)</li>
+<li>height：~ 4.311 ln N= Θ(log N)</li>
+<li>note：~ 和 Θ是一样的，但没有丢掉常数</li>
+</ul>
+<p>因此，随机插入时BST的表现不错，但是现实中我们不能做到处处随机，因此我们引出B-Trees来解决这个问题(在任意插入顺序下都有很好的height)</p>
+<h3 id="B-tree"><a href="#B-tree" class="headerlink" title="B tree"></a><strong>B tree</strong></h3><blockquote>
+<p>BST的问题是：我们一直在叶结点之后插入，这会导致height增加；那么，我们是否可以一直不往叶结点插入，来保证tree balance</p>
+</blockquote>
+<p>可以处理任何输入顺序，让树饱满，平衡</p>
+<h4 id="Avoiding-Imbalance-through-Overstuffing"><a href="#Avoiding-Imbalance-through-Overstuffing" class="headerlink" title="Avoiding Imbalance through Overstuffing"></a><strong>Avoiding Imbalance through Overstuffing</strong></h4><ul>
+<li>Never add new leaves at the bottom.</li>
+<li>just add to a current leaf node. </li>
+</ul>
+<p>这也会造成一个问题，我们的叶子结点承载了太多(Leaf nodes can get too juicy.)，在叶子结点内的search是Θ(N)，退化了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112835.png" srcset="/img/loading.gif" lazyload alt="image-20230129174359497"></p>
+<h4 id="solution"><a href="#solution" class="headerlink" title="solution"></a><strong>solution</strong></h4><ul>
+<li>Set a limit L on the number of items, say L=3.</li>
+<li>If any node has more than L items, give an item to parent.<ul>
+<li>Which one? Let’s say (arbitrarily) the left-middle. 超载时有4个，选取中间靠左那个向上移</li>
+<li>移了之后re-arrange the children accordingly.</li>
+</ul>
+</li>
+</ul>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112347.png" srcset="/img/loading.gif" lazyload alt="image-20230129175307276" style="zoom:50%;" />
+
+<p>这些树被称作B-Tree or 2-3-4 tree or 2-3 tree，2-3-4的意思是每个结点的子结点可能有2,3,4之一</p>
+<p>The process of adding a node to a 2-3-4 tree is:</p>
+<ol>
+<li>We still always inserting into a leaf node, so take the node you want to insert and traverse down the tree with it, going left and right according to whether or not the node to be inserted is greater than or smaller than the items in each node.</li>
+<li>After adding the node to the leaf node, if the new node has 4 nodes, then pop up the middle left node and re-arrange the children accordingly.</li>
+<li>If this results in the parent node having 4 nodes, then pop up the middle left node again, rearranging the children accordingly.</li>
+<li>Repeat this process until the parent node can accommodate or you get to the root.</li>
+</ol>
+<p>Observation: Splitting-trees have <strong>perfect balance</strong>.</p>
+<ul>
+<li>如果分裂root，那么每个结点正好被压低一级，height+1</li>
+<li>如果分裂叶子结点或者内部的结点，height不变</li>
+<li>对于B树来说，不管是怎样的插入顺序，B-Tree都是稠密的，尽管可能在height上有细微的差别</li>
+</ul>
+<h4 id="B-Tree-Invariants"><a href="#B-Tree-Invariants" class="headerlink" title="B-Tree Invariants"></a><strong>B-Tree Invariants</strong></h4><p>由于B-Tree生成的独特方式，有以下不变的性质</p>
+<ul>
+<li>所有的叶结点到root的距离都相等</li>
+<li>所有的非叶结点node有k个，那么它的子结点一定有k+1个</li>
+</ul>
+<p>这些不变量保证了B-Tree的稠密</p>
+<h4 id="B-Tree-runtime"><a href="#B-Tree-runtime" class="headerlink" title="B-Tree runtime"></a>B-Tree runtime</h4><p>L: Max number of items per node.<br>Height: Between ~logL+1(N) and ~log2(N)</p>
+<p>最高是每个叶子结点只包含一个，最低是每个叶子结点包含L个</p>
+<ul>
+<li><code>contains</code> O(logN)</li>
+<li><code>add</code> O(logN)</li>
+</ul>
+<h4 id="2-3-Tree-Deletion"><a href="#2-3-Tree-Deletion" class="headerlink" title="2-3 Tree Deletion"></a>2-3 Tree Deletion</h4><p>In a 2-3 Tree, when we delete α from a node with 2 or more children, we:</p>
+<ul>
+<li><p><strong>Swap</strong> the value of the successor with α.   note:Successor will always be in a <strong>leaf node</strong></p>
+</li>
+<li><p>Then we <strong>delete</strong> the successor value.</p>
+<ul>
+<li><p>**Multi-Key Leaves **</p>
+<ul>
+<li><p>simply remove the item from the leaf</p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112794.png" srcset="/img/loading.gif" lazyload alt="image-20230129194308173" style="zoom:67%;" /></li>
+</ul>
+</li>
+<li><p><strong>Single-Key Leaves</strong></p>
+<ul>
+<li>cannot simply remove the node entirely (Any node with k items must have k + 1 children! Instead, we’ll leave an empty node, which must be filled.)</li>
+<li>so how to <strong>Filling in Empty Nodes (FIEN)</strong>?</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Filling in Empty Nodes (FIEN)</strong></p>
+<ol>
+<li><p>兄弟结点 Mutil-key Sibling</p>
+<ul>
+<li><p>X steals parent’s item. Parent steals sibling’s item.</p>
+</li>
+<li><p>If X was not a leaf node, X steals one of sibling’s subtrees (to keep is a B-Tree).</p>
+</li>
+<li><p>x不是叶子结点<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112621.png" srcset="/img/loading.gif" lazyload alt="image-20230129195026532" style="zoom:50%;" /></p>
+</li>
+<li><p>x是叶子结点<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081122359.png" srcset="/img/loading.gif" lazyload alt="image-20230129195130561" style="zoom:50%;" /></p>
+</li>
+</ul>
+</li>
+<li><p>Multi-key parent  ( siblings on the right all have one key)</p>
+<ul>
+<li>X and right sibling steal parent’s keys. Middle sibling moves into the parent.</li>
+<li>Subtrees are passed along so that every node has the correct children.</li>
+<li><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112588.png" srcset="/img/loading.gif" lazyload alt="image-20230129201754497" style="zoom: 50%;" /></li>
+</ul>
+</li>
+<li><p>single-key parent and Sibling( The parent and all siblings have only one item.)</p>
+<ul>
+<li>Combine 1 sibling and parent into a single node that replaces X. Send the blank X up one level.</li>
+<li>If blank ends up as the new root, just delete the blank and we are done.</li>
+<li><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112124.png" srcset="/img/loading.gif" lazyload alt="image-20230129225609470" style="zoom:50%;" /></li>
+</ul>
+</li>
+</ol>
+<h3 id="BST-Rotating-Tree"><a href="#BST-Rotating-Tree" class="headerlink" title="BST Rotating Tree"></a>BST Rotating Tree</h3><blockquote>
+<p>B-Tree实现起来很困难，尽管他快，让我们找另外一种同样快且实现简单的方法</p>
+<p>由于插入顺序的不同，会形成多种B-Tree，其数目是可以计算的catalan(卡特兰数) <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Catalan_number">Catalan number - Wikipedia</a></p>
+</blockquote>
+<p>rotate可以在O(N)的时间内将树旋转为稠密的 (can move from any configuration to any other in 2n - 6 rotations )</p>
+<p>The formal definition of rotation is:</p>
+<p><code>rotateLeft(G)</code>: Let x be the right child of G. Make G the new left child of x.</p>
+<ul>
+<li>另一种理解方式：将right的x与G合并，然后向下发送合并之后的left(也就是G)，然后调整树的结构使其符合BST</li>
+</ul>
+<p><code>rotateRight(G)</code>: Let x be the left child of G. Make G the new right child of x.</p>
+<ul>
+<li>把G和left的x合并，然后向下发送合并之后的right(也就是G)，然后调整树使其符合BST</li>
+</ul>
+<p>不能rotate空的，无意义</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> Node <span class="hljs-title function_">rotateRight</span><span class="hljs-params">(Node h)</span> &#123;<br>    <span class="hljs-comment">// assert (h != null) &amp;&amp; isRed(h.left);</span><br>    <span class="hljs-type">Node</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> h.left;<br>    h.left = x.right;<br>    x.right = h;<br>    <span class="hljs-keyword">return</span> x;<br>&#125;<br><br><span class="hljs-comment">// make a right-leaning link lean to the left</span><br><span class="hljs-keyword">private</span> Node <span class="hljs-title function_">rotateLeft</span><span class="hljs-params">(Node h)</span> &#123;<br>    <span class="hljs-comment">// assert (h != null) &amp;&amp; isRed(h.right);</span><br>    <span class="hljs-type">Node</span> <span class="hljs-variable">x</span> <span class="hljs-operator">=</span> h.right;<br>    h.right = x.left;<br>    x.left = h;<br>    <span class="hljs-keyword">return</span> x;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>在建造的时候保持稠密</p>
+<h3 id="Red-Black-Tree"><a href="#Red-Black-Tree" class="headerlink" title="Red-Black Tree"></a>Red-Black Tree</h3><blockquote>
+<p>a specific tree data structure that remains balanced through using rotations.</p>
+<p>一般的BST需要O(N)的时间来rotate来达到balance，这是在建造好之后采取的措施，亡羊补牢；下面介绍一种在建造的时候利用rotate来保持balance和bushy的结构</p>
+</blockquote>
+<p>Our goal: Build a BST that is structurally identical to a 2-3 tree.Since 2-3 trees are balanced, so will our special BSTs.</p>
+<p>一个很好的exercise <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1jgOgvx8tyu_LQ5Y21k4wYLffwp84putW8iD7_EerQmI/edit#slide=id.g463de7561_042">LLRB Insertion Demo - Google 幻灯片</a></p>
+<h4 id="Representing-a-2-3-Tree-as-a-BST"><a href="#Representing-a-2-3-Tree-as-a-BST" class="headerlink" title="Representing a 2-3 Tree as a BST"></a><strong>Representing a 2-3 Tree as a BST</strong></h4><p>A 2-3 tree的2-nodes(可以有两个子结点的结点)和BST的完全一致</p>
+<p>对于3-nodes来说：两种可能的方法</p>
+<ol>
+<li><p>“glue” node that doesn’t hold any information and only serves to show that its 2 children are actually a part of one node.</p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112134.png" srcset="/img/loading.gif" lazyload alt="image-20230130172316301" style="zoom:50%;" />
+
+<ul>
+<li>缺点是不优雅，code will be ugly，而且d的right实际上浪费了</li>
+</ul>
+</li>
+<li><p>Create “glue” links with the smaller item <strong>off to the left</strong>  (这种更好)</p>
+<ul>
+<li><p>make the left element a child of the right one.</p>
+</li>
+<li><p>We show that a link is a glue link by making it <strong>red</strong>.</p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112053.png" srcset="/img/loading.gif" lazyload alt="image-20230130172707741" style="zoom:50%;" /></li>
+</ul>
+</li>
+</ol>
+<h4 id="LLRB"><a href="#LLRB" class="headerlink" title="LLRB"></a><strong>LLRB</strong></h4><p>A BST with left glue links that represents a 2-3 tree is often called a “Left Leaning Red Black Binary Search Tree” or LLRB.</p>
+<ul>
+<li>LLRBs are normal BSTs! </li>
+<li>There is a <strong>1-1 correspondence</strong> between an LLRB and an equivalent 2-3 tree.</li>
+<li>The red is just a convenient fiction. Red links don’t “do” anything special.</li>
+</ul>
+<p><strong>LLRB’s的特征</strong></p>
+<p>Here are the properties of LLRB’s:</p>
+<ul>
+<li>与 2-3 trees 1-1对应.</li>
+<li>No node has 2 red links.</li>
+<li>There are no red right-links.</li>
+<li>Every path from root to leaf has same number of black links (because 2-3 trees have same number of links to every leaf).</li>
+<li>Height is no more than ~2x height of corresponding 2-3 tree.</li>
+</ul>
+<p>What is the maximum height of the corresponding LLRB? (看黑线和红线之和)</p>
+<ul>
+<li>Total height is H (black) + H + 1 (red) = 2H + 1.</li>
+</ul>
+<p><strong>LLRB Construction</strong></p>
+<ul>
+<li>Insert as usual into a BST.</li>
+<li>Use zero or more rotations to maintain the 1-1 mapping.</li>
+</ul>
+<h4 id="Inserting-into-LLRB"><a href="#Inserting-into-LLRB" class="headerlink" title="Inserting into LLRB"></a>Inserting into LLRB</h4><p>为了保持LLRB与2-3树的1-1对应，我们需要在LLRB中处理2-3树插入的各种情况</p>
+<ol>
+<li><p><strong>Task 1: insertion color</strong>: 在2-3 tree中，我们总是向叶子结点add，因此link的颜色总是应该为红色</p>
+</li>
+<li><p><strong>Task 2: insertion on the right</strong>: 回想一下，我们使用的是left-leaning的红色黑色树，这意味着我们永远不可能有一个right的红色链接。如果我们插入在右边，我们将需要使用旋转，以保持 LLRB 不变量。</p>
+<p>但是，如果我们将要在右边加入一个红色链接，而且其左边也是一个红色链接，我们暂时允许这种情况存在，后面解决这种illegal的情况</p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112211.png" srcset="/img/loading.gif" lazyload alt="image-20230130174510212" style="zoom:50%;" /></li>
+<li><p>**Task 3: double insertion on the left:**（two consecutive left links）</p>
+<p>If there are 2 left red links, then we have a 4-node which is illegal. First, we will rotate to create the same tree seen in task 2 above. </p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112848.png" srcset="/img/loading.gif" lazyload alt="image-20230130174943033" style="zoom:50%;" /></li>
+<li><p><strong>Splitting Temporary 4-Nodes</strong>：Then, in both situations, we will flip the colors of all edges touching S. This is equivalent to pushing up the middle node in a 2-3 tree.</p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081112438.png" srcset="/img/loading.gif" lazyload alt="image-20230130175007766" style="zoom:50%;" /></li>
+</ol>
+<p>Here is a <strong>summary</strong> of all the operations:</p>
+<ul>
+<li>When inserting: Use a red link.</li>
+<li>If there is aright leaning “3-node”, we have a Left Leaning Violation<ul>
+<li><u>Rotate left</u> the appropriate node to fix.</li>
+</ul>
+</li>
+<li>If there are two consecutive left links, we have an incorrect 4 Node Violation!<ul>
+<li><u>Rotate right</u> the appropriate node to fix.</li>
+</ul>
+</li>
+<li>If there are any nodes with two red children, we have a temporary 4 Node.<ul>
+<li><u>Color flip</u> the node to emulate the split operation.</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>注意这些情况可能会串联出现</li>
+</ul>
+<p><strong>Runtime</strong> :都是log(N)</p>
+<p>Amazingly, turning a BST into an LLRB requires only 3 clever lines of code.Does not include helper methods (which do not require cleverness).</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">private</span> Node <span class="hljs-title function_">put</span><span class="hljs-params">(Node h, Key key, Value val)</span> &#123;<br>    <span class="hljs-keyword">if</span> (h == <span class="hljs-literal">null</span>) &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Node</span>(key, val, RED); &#125;<br><br>    <span class="hljs-type">int</span> <span class="hljs-variable">cmp</span> <span class="hljs-operator">=</span> key.compareTo(h.key);<br>    <span class="hljs-keyword">if</span> (cmp &lt; <span class="hljs-number">0</span>)      &#123; h.left  = put(h.left,  key, val); &#125;<br>    <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cmp &gt; <span class="hljs-number">0</span>) &#123; h.right = put(h.right, key, val); &#125;<br>    <span class="hljs-keyword">else</span>              &#123; h.val   = val;                    &#125;<br><span class="hljs-comment">//只有下面这三行是额外添加的</span><br>    <span class="hljs-keyword">if</span> (isRed(h.right) &amp;&amp; !isRed(h.left))      &#123; h = rotateLeft(h);  &#125;<br>    <span class="hljs-keyword">if</span> (isRed(h.left)  &amp;&amp;  isRed(h.left.left)) &#123; h = rotateRight(h); &#125;<br>    <span class="hljs-keyword">if</span> (isRed(h.left)  &amp;&amp;  isRed(h.right))     &#123; flipColors(h);      &#125; <br><br>    <span class="hljs-keyword">return</span> h;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h3><ul>
+<li>Binary search trees are simple, but they are subject to imbalance which leads to crappy runtime.</li>
+<li>2-3 Trees (B Trees) are balanced, but painful to implement and relatively slow.</li>
+<li>LLRBs insertion is simple to implement (but deletion is hard).<ul>
+<li>Works by maintaining mathematical bijection with a 2-3 trees.</li>
+</ul>
+</li>
+<li>Java’s <a target="_blank" rel="noopener" href="https://github.com/AdoptOpenJDK/openjdk-jdk11/blob/999dbd4192d0f819cb5224f26e9e7fa75ca6f289/src/java.base/share/classes/java/util/TreeMap.java">TreeMap</a> is a red-black tree (but not left leaning).</li>
+<li>LLRBs maintain correspondence with 2-3 tree, Standard Red-Black trees maintain correspondence with 2-3-4 trees.</li>
+<li>Allows glue links on either side (see <a target="_blank" rel="noopener" href="http://en.wikipedia.org/wiki/Red%E2%80%93black_tree">Red-Black Tree</a>).</li>
+<li>More complex implementation, but significantly faster.</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/BST/" class="print-no-link">#BST</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>BST与平衡树</div>
+      <div>http://example.com/2022/01/17/BST与平衡树/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jianhui Yin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 17, 2022</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/01/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/" title="排序算法专题">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">排序算法专题</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/01/08/%E5%B9%B6%E6%9F%A5%E9%9B%86/" title="并查集">
+                        <span class="hidden-mobile">并查集</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>rain</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

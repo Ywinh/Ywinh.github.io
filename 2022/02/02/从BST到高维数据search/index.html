@@ -16,21 +16,25 @@
   <meta name="author" content="Jianhui Yin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="树状数组和线段树的实现">
+    <meta name="description" content="quadTree，kdTree">
 <meta property="og:type" content="article">
-<meta property="og:title" content="树状数组">
-<meta property="og:url" content="http://example.com/2023/03/23/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/index.html">
+<meta property="og:title" content="从BST到高维数据search">
+<meta property="og:url" content="http://example.com/2022/02/02/%E4%BB%8EBST%E5%88%B0%E9%AB%98%E7%BB%B4%E6%95%B0%E6%8D%AEsearch/index.html">
 <meta property="og:site_name" content="yinsist">
-<meta property="og:description" content="树状数组和线段树的实现">
+<meta property="og:description" content="quadTree，kdTree">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-03-23T12:23:23.000Z">
-<meta property="article:modified_time" content="2024-05-08T02:58:45.403Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081113875.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081109939.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081114279.png">
+<meta property="article:published_time" content="2022-02-02T03:41:39.000Z">
+<meta property="article:modified_time" content="2024-05-08T03:44:33.516Z">
 <meta property="article:author" content="Jianhui Yin">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081113875.png">
   
   
   
-  <title>树状数组 - yinsist</title>
+  <title>从BST到高维数据search - yinsist</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -196,7 +200,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="树状数组"></span>
+            <span id="subtitle" data-typed-text="从BST到高维数据search"></span>
           
         </div>
 
@@ -207,8 +211,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-03-23 20:23" pubdate>
-          March 23, 2023 pm
+        <time datetime="2022-02-02 11:41" pubdate>
+          February 2, 2022 am
         </time>
       </span>
     
@@ -219,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          612 words
+          567 words
         
       </span>
     
@@ -230,7 +234,7 @@
         
         
         
-          6 mins
+          5 mins
         
       </span>
     
@@ -280,64 +284,69 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">树状数组</h1>
+            <h1 id="seo-header">从BST到高维数据search</h1>
             
             
               <div class="markdown-body">
                 
-                <p>树状数组和线段树的实现</p>
+                <p>quadTree，kdTree</p>
 <span id="more"></span>
 
-<p>如何推导？查看本人的知乎这篇文章：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/585460026">前缀和改进之树状数组 - 知乎 (zhihu.com)</a></p>
-<h3 id="树状数组"><a href="#树状数组" class="headerlink" title="树状数组"></a>树状数组</h3><h4 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h4><ul>
-<li><p>单点修改，区间求和  O(logN)</p>
-</li>
-<li><p>可以在，O(logN)的时间内，动态求前缀和 ( 对比前缀和，修改的话需要O(N) )</p>
-</li>
-</ul>
-<p>注意：树状数组下标一定要<strong>从1开始</strong></p>
-<h4 id="树状数组初始化"><a href="#树状数组初始化" class="headerlink" title="树状数组初始化"></a>树状数组初始化</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span> ; i&lt;=n ; i++) <span class="hljs-built_in">add</span>(i,a[i]);<br></code></pre></td></tr></table></figure>
-
-<p>小小地解释一下原理：</p>
+<h1 id="Lecture-19-Multi-Dimensional-Data"><a href="#Lecture-19-Multi-Dimensional-Data" class="headerlink" title="Lecture 19: Multi-Dimensional Data"></a>Lecture 19: Multi-Dimensional Data</h1><h2 id="Range-Finding-and-Nearest-1D-Data"><a href="#Range-Finding-and-Nearest-1D-Data" class="headerlink" title="Range-Finding and Nearest (1D Data)"></a>Range-Finding and Nearest (1D Data)</h2><p>BST中可添加的operation：</p>
 <ul>
-<li><p>树状数组中奇数下标和原数组相等</p>
-</li>
-<li><p><code>c[x] = 原数组中下标从(x-lowbit(x)，x]的和</code> 左开右闭</p>
+<li>select(int i): Returns the ith smallest item in the set.</li>
+<li>rank(T x): Returns the “rank” of x in the set (opposite of select).</li>
+<li>subSet(T from, T to): Returns all items between from and to.</li>
+<li>nearest(T x): Returns the value closest to x.<ul>
+<li>实现：Just search for N and record closest item seen</li>
+</ul>
 </li>
 </ul>
-<h4 id="三个基本操作："><a href="#三个基本操作：" class="headerlink" title="三个基本操作："></a>三个基本操作：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> a[N],c[N];<span class="hljs-comment">//a[N]为原数组，c[N]为树状数组</span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">lowbit</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>&#123;<br>    <span class="hljs-keyword">return</span> x &amp; -x;<br>&#125;<br><br><span class="hljs-comment">//一般情况下只支持add，如果要实现修改某一个数，可以add他们的差值</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> x , <span class="hljs-type">int</span> v )</span></span>&#123;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=x;i&lt;=n;i+=<span class="hljs-built_in">lowbit</span>(i)) c[i] += v;    <br>&#125;<br><br><span class="hljs-comment">//查询</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>&#123;<br>    <span class="hljs-type">int</span> res = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = x ; i&gt;=<span class="hljs-number">1</span> ; i-=<span class="hljs-built_in">lowbit</span>(i) )  res += c[i];<span class="hljs-comment">//for循环截止条件写成 i!=0 即 i也可以</span><br>    <span class="hljs-keyword">return</span> res;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-
-
-<h3 id="线段树"><a href="#线段树" class="headerlink" title="线段树"></a>线段树</h3><p>每个结点都是一个结构体</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Node</span>&#123;<br>    <span class="hljs-type">int</span> L,R;<br>    <span class="hljs-type">int</span> sum;<br>&#125;tr[N*<span class="hljs-number">4</span>];<br></code></pre></td></tr></table></figure>
-
-<p>线段树存储</p>
-<p>注意结点个数要开 <code>4n</code> 其中n是有多少个数</p>
-<p>类似于堆的存储方式，存在一维数组，对于一个序号为x的节点</p>
+<p>直到现在，我们总是在一维数据中比较，但是不是所有的item都能只在一个维度中完成比较的</p>
+<h2 id="Multi-dimensional-Data"><a href="#Multi-dimensional-Data" class="headerlink" title="Multi-dimensional Data"></a><strong>Multi-dimensional Data</strong></h2><p>我们想在二维空间中实现</p>
 <ul>
-<li>父节点为 x/2 (下取整) <code>x&gt;&gt;1</code></li>
-<li>左子节点为 x*2  <code>x&lt;&lt;1</code></li>
-<li>右子节点为 x*2+1  <code>x&lt;&lt; 1 | 1</code></li>
+<li>2D Range Searching: How many objects are in the highlighted rectangle(矩形)?  注意这个操作其实就是上面一维数据中的subset的推广</li>
+<li>Nearest</li>
 </ul>
-<h4 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h4><ul>
-<li><p>单点修改 O(logN)</p>
-</li>
-<li><p>区间查询 O(logN)</p>
-</li>
+<p>Ideally, we’d like to store our data in a format (like a BST) that allows more efficient approaches than just iterating over all objects.</p>
+<p><strong>BST of 2D</strong></p>
+<p>我们需要做出选择，是以x坐标比较(X-Based Tree)，还是以y坐标(Y-Based Tree)比较来建立我们的BST，无论哪一种，我们都会丢失掉一些信息，这会让我们的search变慢</p>
+<h3 id="QuadTrees"><a href="#QuadTrees" class="headerlink" title="QuadTrees"></a><strong>QuadTrees</strong></h3><p>类似x，y坐标系，我们将2D空间分出四部分，NW(西北)，NE(东北)，SW(西南)，SE(东南)</p>
+<p>Every Node has four children:</p>
+<ul>
+<li>Top left, a.k.a. northwest.</li>
+<li>Top right, a.k.a. northeast.</li>
+<li>Bottom left, a.k.a. southwest.</li>
+<li>Bottom right, a.k.a. southeast. </li>
 </ul>
-<p>四个函数</p>
-<p>pushup 用子节点信息更新当前节点信息</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">pushup</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span></span>&#123;<br>    tr[u].sum = tr[u&lt;&lt;<span class="hljs-number">1</span>].sum + tr[u&lt;&lt;<span class="hljs-number">1</span> | <span class="hljs-number">1</span>].sum;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>注意，在插入生成QuadTrees时，我们也需要沿着root出发，再依次顺着树枝往下走，直到找到合适的地方插入</p>
+<p><a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1vqAJkvUxSh-Eq4iIJZevjpY29nagNTjx-4N3HpDi0UQ/pub?start=false&loop=false&delayms=3000">QuadTrees Insertion Demo</a></p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081113875.png" srcset="/img/loading.gif" lazyload alt="image-20230218204014098" style="zoom:67%;" />
 
-<p>build  在一段区间上初始化线段树</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">build</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span></span>&#123;<br>    <span class="hljs-keyword">if</span>(l == r) tr[u] = &#123;l,r,w[r]&#125;;<br>    <span class="hljs-keyword">else</span>&#123;<br>        tr[u] = &#123;l,r&#125;;<br>        <span class="hljs-type">int</span> mid = tr[u].l + tr[u].r &gt;&gt; <span class="hljs-number">1</span>;<br>        <span class="hljs-built_in">build</span>(u&lt;&lt;<span class="hljs-number">1</span>,l,mid), <span class="hljs-built_in">build</span>(u&lt;&lt;<span class="hljs-number">1</span> | <span class="hljs-number">1</span> , mid+<span class="hljs-number">1</span> ,r);<br>        <span class="hljs-built_in">pushup</span>(u);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1ZVvh_Q15Lh2D1_NnzZ4PR_aDsLBwvAU9JYQAwlSuXSM/edit?usp=sharing">Range Search Demo</a></p>
+<p>以上是2D情况，对于3D，我们可以用8叉树来表示空间并进行高效地search，以此类推，来表示更高维度(大于3 dimensions的数据真的存在吗，有什么用？You may want to organize data on a large number of dimensions.Example: Want to find songs with the following features:Length between 3 minutes and 6 minutes.Between 1000 and 20,000 listens.Between 120 to 150 BPM.Were recorded after 2004.)</p>
+<p>我们可以简单地增加子结点的个数，但这会显得臃肿，因此我们引出一种简洁但是对任何维度都适用的——k-d Tree</p>
+<h3 id="k-d-Tree"><a href="#k-d-Tree" class="headerlink" title="k-d Tree"></a>k-d Tree</h3><p>有点类似于我们最早提出BST的X-Based Tree and Y-Based Tree，但是有所改进，对于2D，我们对于每一层比较的标准是按照顺序x-y-x-y…，3D(x-y-z-x-y-z…)</p>
+<p>k-d tree example for 2-d:</p>
+<ul>
+<li>Basic idea, root node partitions entire space into left and right (by x).</li>
+<li>All depth 1 nodes partition subspace into up and down (by y).</li>
+<li>All depth 2 nodes partition subspace into left and right (by x).</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1WW56RnFa3g6UJEquuIBymMcu9k2nqLrOE1ZlnTYFebg/edit?usp=sharing">K-d tree insertion demo</a>.</p>
+<p>k-d Tree对待比较中的平局，可以看做大于 or 小于，选定了就不能再改变了。</p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081109939.png" srcset="/img/loading.gif" lazyload alt="image-20230218205046614" style="zoom:67%;" />
 
-<p>modify  修改某个点的值</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">modify</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> v)</span></span>&#123;<br>    <span class="hljs-keyword">if</span>(tr[u].l == tr[u].r ) tr[u].sum += v;<br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-type">int</span> mid = tr[u].l + tr[u].r &gt;&gt; <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">if</span>(x &lt;= mid) <span class="hljs-built_in">modify</span>(u&lt;&lt;<span class="hljs-number">1</span>, x , v);<br>        <span class="hljs-keyword">else</span> <span class="hljs-built_in">modify</span>(u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span> , x , v);<br>        <span class="hljs-built_in">pushup</span>(u);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>k-d nearest (始终是沿着建立好的k-d Tree来搜索)</p>
+<ul>
+<li>You always explore the good side [the old version performed an unnecessary check!</li>
+<li>You only explore the bad side if there’s a chance that it could contain something better.</li>
+</ul>
+<p>k-d nearest，先看好的一方，在判断坏的一方是否值得一看</p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs mipsasm">nearest(Node n, Point goal, Node <span class="hljs-keyword">best):</span><br><span class="hljs-keyword"></span>	If n is null, return <span class="hljs-keyword">best</span><br><span class="hljs-keyword"></span>	If n.<span class="hljs-keyword">distance(goal) </span>&lt; <span class="hljs-keyword">best.distance(goal), </span><span class="hljs-keyword">best </span>= n<br>	If goal &lt; n (according to n’s comparator):<br>		goodSide = n.”left”Child<br>		<span class="hljs-keyword">badSide </span>= n.”right”Child<br><span class="hljs-symbol">	else:</span><br>		goodSide = n.”right”Child<br>		<span class="hljs-keyword">badSide </span>= n.”left”Child<br>	<span class="hljs-keyword">best </span>= nearest(goodSide, goal, <span class="hljs-keyword">best)</span><br><span class="hljs-keyword"></span>	If <span class="hljs-keyword">bad </span>side could still have something useful<br>		<span class="hljs-keyword">best </span>= nearest(<span class="hljs-keyword">badSide, </span>goal, <span class="hljs-keyword">best)</span><br><span class="hljs-keyword"></span>	return <span class="hljs-keyword">best</span><br></code></pre></td></tr></table></figure>
 
-<p>query   查询</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span></span>&#123;<br>    <span class="hljs-keyword">if</span>(tr[u].l&gt;=l &amp;&amp; tr[u].r&lt;=r) <span class="hljs-keyword">return</span> tr[u].sum;<br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-type">int</span> mid = tr[u].l + tr[u].r &gt;&gt; <span class="hljs-number">1</span>;<br>        <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">if</span>(l &lt;= mid) sum += <span class="hljs-built_in">query</span>(u&lt;&lt;<span class="hljs-number">1</span> , l ,mid);<br>        <span class="hljs-keyword">if</span>(r &gt; mid)  sum += <span class="hljs-built_in">query</span>(u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,l,r);<br>        <span class="hljs-keyword">return</span> sum<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="Uniform-partitioning"><a href="#Uniform-partitioning" class="headerlink" title="Uniform partitioning"></a>Uniform partitioning</h3><p>把空间均分为几部分(类似hashtable中的bucket)，然后将数据存储在bucket中</p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081114279.png" srcset="/img/loading.gif" lazyload alt="image-20230218210734514" style="zoom:67%;" />
 
 
                 
@@ -356,8 +365,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>树状数组</div>
-      <div>http://example.com/2023/03/23/树状数组/</div>
+      <div>从BST到高维数据search</div>
+      <div>http://example.com/2022/02/02/从BST到高维数据search/</div>
     </div>
     <div class="license-meta">
       
@@ -369,7 +378,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>March 23, 2023</div>
+          <div>February 2, 2022</div>
         </div>
       
       
@@ -401,9 +410,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/04/03/%E6%95%B0%E8%AE%BA/" title="数论">
+                      <a href="/2023/03/17/dp/" title="dp">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">数论</span>
+                        <span class="hidden-mobile">dp</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -411,8 +420,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/03/17/dp/" title="dp">
-                        <span class="hidden-mobile">dp</span>
+                      <a href="/2022/01/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/" title="排序算法专题">
+                        <span class="hidden-mobile">排序算法专题</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

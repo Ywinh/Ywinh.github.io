@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
+<html lang="en" data-default-color-scheme=auto>
 
 
 
@@ -22,7 +22,7 @@
 <meta property="og:url" content="http://example.com/index.html">
 <meta property="og:site_name" content="yinsist">
 <meta property="og:description" content="blog of yinsist">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:locale" content="en_US">
 <meta property="article:author" content="Jianhui Yin">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -60,7 +60,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -106,7 +106,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
+                <span>Home</span>
               </a>
             </li>
           
@@ -118,7 +118,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
+                <span>Archives</span>
               </a>
             </li>
           
@@ -130,7 +130,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
+                <span>Categories</span>
               </a>
             </li>
           
@@ -142,7 +142,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
+                <span>Tags</span>
               </a>
             </li>
           
@@ -154,7 +154,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
+                <span>About</span>
               </a>
             </li>
           
@@ -226,15 +226,48 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2024/05/08/xv6-trap/" target="_self">
+          xv6-trap
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/08/xv6-trap/" target="_self">
+        <div>
+          详细看看 xv6 trap：相关寄存器，trap流程，用户trap，内核trap
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-05-08 11:57" pubdate>
+              2024-05-08
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2024/05/07/makefile/" target="_self">
-          makefile
+          从零到一的makefile
         </a>
       </h2>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/2024/05/07/makefile/" target="_self">
         <div>
-          makefile有点像跟手动编译过程反着来，一步步去找依赖项 规则的构成1234targets: prerequisites	command	command	command   targets（目标）：是文件名，通常一个规则只有一个targets  command（命令/方法）：创建目标的一系列步骤，需要用tab开头，  prerequisites（依赖）：也是文件名，可以有多个，用空格分隔，在运
+          笔者上手一些大型项目时，常常会看不懂Makefile而造成一些困难，因此参考资料形成了一篇文章，从完全零基础过来的，用时也不多。文末附上一个笔者最近学习的rCore的Makefile，看完全篇文章后一定可以看懂的，本文也可用于一个简单的中文手册查询。
         </div>
       </a>
 
@@ -248,6 +281,13 @@
           </div>
         
         
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Makefile/">#Makefile</a>
+            
+          </div>
         
       </div>
     </article>
@@ -267,7 +307,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2024/04/15/xv6-in-openSBI/" target="_self">
         <div>
-          最近完成操作系统大赛，需要为 xv6 实现一个 SBI 来完成指定的引导 TODO：理一下 xv6 原本的引导过程 引导过程OpenSBIOpenSBI的主要功能就是在M态初始化硬件，然后以S态跳转到内核的位置，完成整个启动过程。此外，OpenSBI作为S态内核的执行环境（EEI），可以以 ecall 的方式为S态内核提供一些只有M态才能实现的功能 每个cpu启动时，都在M态。在将控制权交给操作系
+          最近完成操作系统大赛，需要为 xv6 实现一个 SBI 来完成指定的引导 TODO：理一下 xv6 原本的引导过程
         </div>
       </a>
 
@@ -307,7 +347,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/04/03/%E6%95%B0%E8%AE%BA/" target="_self">
         <div>
-          欧几里得(辗转相除法)求a，b的最大公因数 gcd(a,b) = gcd(b,a%b) = ….. 直到(a,b)中b为0，那么结果就为a 123int gcd(int a, int b)&#123;    return b?gcd(a,b):a ;&#125;    筛法求素数埃氏筛从2开始的 x ，划掉每个x的倍数，优化一下可以从x^2^开始划 12345678int primes[N],cn
+          欧几里得算法 筛法求素数（埃氏筛、欧拉筛） 裴蜀定理板子
         </div>
       </a>
 
@@ -347,7 +387,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/03/23/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/" target="_self">
         <div>
-          树状数组功能 单点修改，区间求和  O(logN)  可以在，O(logN)的时间内，动态求前缀和 ( 对比前缀和，修改的话需要O(N) )   注意：树状数组下标一定要从1开始 树状数组初始化1for(int i=1 ; i&lt;=n ; i++) add(i,a[i]);  小小地解释一下原理：  树状数组中奇数下标和原数组相等  c[x] = 原数组中下标从(x-lowbit(x)，x]的
+          树状数组和线段树的实现
         </div>
       </a>
 
@@ -380,7 +420,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/03/17/dp/" target="_self">
         <div>
-          DP(动态规划)-背包01背包 题目 有 N 件物品和一个容量是 V 的背包。每件物品只能使用一次。第 i 件物品的体积是 vi，价值是 wi。 求解将哪些物品装入背包，可使这些物品的总体积不超过背包容量，且总价值最大。输出最大价值。  为什么称作01背包，因为对于每个物品，只对应选或者不选两种状态，因此称为01背包   主要思想：  状态表示: 我们用f[i][j]来表示，前i个物品，最大容量是
+          介绍简单dp： 01 背包一维二维实现
         </div>
       </a>
 
@@ -399,6 +439,159 @@
             <i class="iconfont icon-tags"></i>
             
               <a href="/tags/c/">#c++</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/02/02/%E4%BB%8EBST%E5%88%B0%E9%AB%98%E7%BB%B4%E6%95%B0%E6%8D%AEsearch/" target="_self">
+          从BST到高维数据search
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/02/02/%E4%BB%8EBST%E5%88%B0%E9%AB%98%E7%BB%B4%E6%95%B0%E6%8D%AEsearch/" target="_self">
+        <div>
+          quadTree，kdTree
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-02-02 11:41" pubdate>
+              2022-02-02
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/01/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/" target="_self">
+          排序算法专题
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/01/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/" target="_self">
+        <div>
+          CS61B排序：选择排序，堆排序，归并排序，插入排序，希尔排序，快排
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-01-22 11:28" pubdate>
+              2022-01-22
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/sort/">#sort</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/01/17/BST%E4%B8%8E%E5%B9%B3%E8%A1%A1%E6%A0%91/" target="_self">
+          BST与平衡树
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/01/17/BST%E4%B8%8E%E5%B9%B3%E8%A1%A1%E6%A0%91/" target="_self">
+        <div>
+          CS61B的BST，B树，23树，红黑树，LLRB 原理
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-01-17 11:21" pubdate>
+              2022-01-17
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/BST/">#BST</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2022/01/08/%E5%B9%B6%E6%9F%A5%E9%9B%86/" target="_self">
+          并查集
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2022/01/08/%E5%B9%B6%E6%9F%A5%E9%9B%86/" target="_self">
+        <div>
+          CS61B 的并查集，从原理到实现，WQU，路径压缩
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2022-01-08 11:16" pubdate>
+              2022-01-08
+            </time>
+          </div>
+        
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/Union-find/">#Union find</a>
             
           </div>
         
@@ -429,7 +622,7 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
         <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -437,7 +630,7 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
@@ -523,7 +716,7 @@
   
 
   <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
   </noscript>
 </body>
 </html>

@@ -16,21 +16,28 @@
   <meta name="author" content="Jianhui Yin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="树状数组和线段树的实现">
+    <meta name="description" content="CS61B排序：选择排序，堆排序，归并排序，插入排序，希尔排序，快排">
 <meta property="og:type" content="article">
-<meta property="og:title" content="树状数组">
-<meta property="og:url" content="http://example.com/2023/03/23/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/index.html">
+<meta property="og:title" content="排序算法专题">
+<meta property="og:url" content="http://example.com/2022/01/22/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95%E4%B8%93%E9%A2%98/index.html">
 <meta property="og:site_name" content="yinsist">
-<meta property="og:description" content="树状数组和线段树的实现">
+<meta property="og:description" content="CS61B排序：选择排序，堆排序，归并排序，插入排序，希尔排序，快排">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-03-23T12:23:23.000Z">
-<meta property="article:modified_time" content="2024-05-08T02:58:45.403Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081114681.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081128345.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081128289.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081128194.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081114666.png">
+<meta property="article:published_time" content="2022-01-22T03:28:09.000Z">
+<meta property="article:modified_time" content="2024-05-08T03:30:54.589Z">
 <meta property="article:author" content="Jianhui Yin">
+<meta property="article:tag" content="sort">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081114681.png">
   
   
   
-  <title>树状数组 - yinsist</title>
+  <title>排序算法专题 - yinsist</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -196,7 +203,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="树状数组"></span>
+            <span id="subtitle" data-typed-text="排序算法专题"></span>
           
         </div>
 
@@ -207,8 +214,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-03-23 20:23" pubdate>
-          March 23, 2023 pm
+        <time datetime="2022-01-22 11:28" pubdate>
+          January 22, 2022 am
         </time>
       </span>
     
@@ -219,7 +226,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          612 words
+          870 words
         
       </span>
     
@@ -230,7 +237,7 @@
         
         
         
-          6 mins
+          8 mins
         
       </span>
     
@@ -280,65 +287,228 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">树状数组</h1>
+            <h1 id="seo-header">排序算法专题</h1>
             
             
               <div class="markdown-body">
                 
-                <p>树状数组和线段树的实现</p>
+                <p>CS61B排序：选择排序，堆排序，归并排序，插入排序，希尔排序，快排</p>
 <span id="more"></span>
 
-<p>如何推导？查看本人的知乎这篇文章：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/585460026">前缀和改进之树状数组 - 知乎 (zhihu.com)</a></p>
-<h3 id="树状数组"><a href="#树状数组" class="headerlink" title="树状数组"></a>树状数组</h3><h4 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h4><ul>
-<li><p>单点修改，区间求和  O(logN)</p>
-</li>
-<li><p>可以在，O(logN)的时间内，动态求前缀和 ( 对比前缀和，修改的话需要O(N) )</p>
-</li>
-</ul>
-<p>注意：树状数组下标一定要<strong>从1开始</strong></p>
-<h4 id="树状数组初始化"><a href="#树状数组初始化" class="headerlink" title="树状数组初始化"></a>树状数组初始化</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span> ; i&lt;=n ; i++) <span class="hljs-built_in">add</span>(i,a[i]);<br></code></pre></td></tr></table></figure>
-
-<p>小小地解释一下原理：</p>
+<h1 id="Sort"><a href="#Sort" class="headerlink" title="Sort"></a>Sort</h1><p><strong>inversion</strong>(逆序对)</p>
 <ul>
-<li><p>树状数组中奇数下标和原数组相等</p>
-</li>
-<li><p><code>c[x] = 原数组中下标从(x-lowbit(x)，x]的和</code> 左开右闭</p>
-</li>
+<li>An <strong>inversion</strong> is a pair of elements that are out of order with respect to &lt;. </li>
 </ul>
-<h4 id="三个基本操作："><a href="#三个基本操作：" class="headerlink" title="三个基本操作："></a>三个基本操作：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> a[N],c[N];<span class="hljs-comment">//a[N]为原数组，c[N]为树状数组</span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">lowbit</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>&#123;<br>    <span class="hljs-keyword">return</span> x &amp; -x;<br>&#125;<br><br><span class="hljs-comment">//一般情况下只支持add，如果要实现修改某一个数，可以add他们的差值</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> x , <span class="hljs-type">int</span> v )</span></span>&#123;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=x;i&lt;=n;i+=<span class="hljs-built_in">lowbit</span>(i)) c[i] += v;    <br>&#125;<br><br><span class="hljs-comment">//查询</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>&#123;<br>    <span class="hljs-type">int</span> res = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = x ; i&gt;=<span class="hljs-number">1</span> ; i-=<span class="hljs-built_in">lowbit</span>(i) )  res += c[i];<span class="hljs-comment">//for循环截止条件写成 i!=0 即 i也可以</span><br>    <span class="hljs-keyword">return</span> res;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-
-
-<h3 id="线段树"><a href="#线段树" class="headerlink" title="线段树"></a>线段树</h3><p>每个结点都是一个结构体</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Node</span>&#123;<br>    <span class="hljs-type">int</span> L,R;<br>    <span class="hljs-type">int</span> sum;<br>&#125;tr[N*<span class="hljs-number">4</span>];<br></code></pre></td></tr></table></figure>
-
-<p>线段树存储</p>
-<p>注意结点个数要开 <code>4n</code> 其中n是有多少个数</p>
-<p>类似于堆的存储方式，存在一维数组，对于一个序号为x的节点</p>
+<p>一种看待sort的方法：</p>
 <ul>
-<li>父节点为 x/2 (下取整) <code>x&gt;&gt;1</code></li>
-<li>左子节点为 x*2  <code>x&lt;&lt;1</code></li>
-<li>右子节点为 x*2+1  <code>x&lt;&lt; 1 | 1</code></li>
+<li>Given a sequence of elements with Z inversions.</li>
+<li>Perform a sequence of operations that reduces inversions to 0.</li>
 </ul>
-<h4 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h4><ul>
-<li><p>单点修改 O(logN)</p>
-</li>
-<li><p>区间查询 O(logN)</p>
+<p>Sort中，我们关注两种复杂度</p>
+<ul>
+<li>time complexity</li>
+<li>space complexity (<strong>extra</strong> memory usage)</li>
+</ul>
+<h2 id="Selection-Sort"><a href="#Selection-Sort" class="headerlink" title="Selection Sort"></a>Selection Sort</h2><p>θ(N^2^)</p>
+<ul>
+<li>Find smallest item.</li>
+<li>Swap this item to the front and ‘fix’ it.</li>
+<li>Repeat for unfixed items until all items are fixed.</li>
+</ul>
+<h2 id="Heap-Sort"><a href="#Heap-Sort" class="headerlink" title="Heap Sort"></a>Heap Sort</h2><blockquote>
+<p>基于Selection Sort，但是加速了找smallest item这个过程</p>
+</blockquote>
+<p>必须用max-heap，why？</p>
+<ul>
+<li>min-heap也可以work，但是我们如果想直接在该数组中建立堆(without extra output array)来节省space complexity，min-heap不能做到这点</li>
+</ul>
+<p><strong>naive(朴素版)heap sort</strong></p>
+<ul>
+<li>Insert all items into a max heap, and discard input array. Create output array.</li>
+<li>Repeat N times:<ul>
+<li>Delete largest item from the max heap.</li>
+<li>Put largest item at the end of the unused part of the output array.</li>
+</ul>
 </li>
 </ul>
-<p>四个函数</p>
-<p>pushup 用子节点信息更新当前节点信息</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">pushup</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span></span>&#123;<br>    tr[u].sum = tr[u&lt;&lt;<span class="hljs-number">1</span>].sum + tr[u&lt;&lt;<span class="hljs-number">1</span> | <span class="hljs-number">1</span>].sum;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>runtime</p>
+<ul>
+<li>time complexity：θ(NlogN)</li>
+<li>space complexity：θ(N) 因为开辟了额外的输出数组，长度为N<ul>
+<li>这比选择排序worse，但是我们下面的策略可以改进</li>
+</ul>
+</li>
+</ul>
+<p><strong>In-place Heapsort</strong></p>
+<blockquote>
+<p>no extra array，直接在原数组中建立堆(heapify)，之后和朴素版的heapsort就一致了</p>
+<p>为什么可以这样？因为按照层序从后往前的过程中，我们sink之后就保证以该位置为root的一个子堆满足heap的性质，因此我们从小到大地建立了完整有效地堆</p>
+</blockquote>
+<ul>
+<li>Bottom-up heapify input array.<ul>
+<li>To bottom-up heapify, just <strong>sink nodes in reverse level order.</strong></li>
+<li>After sink(k), guaranteed that tree rooted at position k is a heap.</li>
+</ul>
+</li>
+<li>Repeat N times:<ul>
+<li>Delete largest item from the max heap, swapping root with last item in the heap.</li>
+</ul>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1SzcQC48OB9agStD0dFRgccU-tyjD6m3esrSC-GLxmNc/edit?usp=sharing">in-place heap sort Demo</a></p>
+<p>runtime</p>
+<ul>
+<li>time complexity：θ(NlogN)</li>
+<li>space complexity：θ(1)</li>
+</ul>
+<h2 id="Merge-Sort"><a href="#Merge-Sort" class="headerlink" title="Merge Sort"></a>Merge Sort</h2><blockquote>
+<p>chapt 8里面讲过，依次挨个地合并两个有序的数组</p>
+</blockquote>
+<p>看这个Demo就理解了 <a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1h-gS13kKWSKd_5gt2FPXLYigFY4jf5rBkNFl3qZzRRw/edit?usp=sharing">Merge Sort Demo</a></p>
+<ul>
+<li>Split items into 2 roughly even pieces.</li>
+<li>Mergesort each half (steps not shown, this is a recursive algorithm!)</li>
+<li>Merge the two sorted halves to form the final result.<ul>
+<li><strong>Compare input[i] &lt; input[j] (if necessary).</strong></li>
+<li>Copy smaller item and increment p and i or j.</li>
+</ul>
+</li>
+</ul>
+<h2 id="insertion-sort"><a href="#insertion-sort" class="headerlink" title="insertion sort"></a>insertion sort</h2><p><strong>naive</strong></p>
+<ul>
+<li>Starting with an empty output sequence.</li>
+<li>Add each item from input, inserting into output at right point.</li>
+</ul>
+<p><strong>in-place</strong></p>
+<ul>
+<li>在该数组内用swap，而不是再开一个数组</li>
+<li>Repeat for i = 0 to N - 1:<ul>
+<li>Designate item i as the traveling item.</li>
+<li>Swap item backwards until traveller is in the right place among all previously examined items.</li>
+</ul>
+</li>
+</ul>
+<p><strong>note：</strong></p>
+<p>对于差不多有序的序列来说很快</p>
+<p>runtime与inversion(逆序对)的个数成正比</p>
+<p>一些经验表示，对于&lt;15个元素的序列，insertion sort是所有排序中最快(粗略的解释：Divide and conquer algorithms like heapsort / mergesort spend too much time dividing, but insertion sort goes straight to the conquest.)</p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081114681.png" srcset="/img/loading.gif" lazyload alt="image-20230219213456835" style="zoom:67%;" />
 
-<p>build  在一段区间上初始化线段树</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">build</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span></span>&#123;<br>    <span class="hljs-keyword">if</span>(l == r) tr[u] = &#123;l,r,w[r]&#125;;<br>    <span class="hljs-keyword">else</span>&#123;<br>        tr[u] = &#123;l,r&#125;;<br>        <span class="hljs-type">int</span> mid = tr[u].l + tr[u].r &gt;&gt; <span class="hljs-number">1</span>;<br>        <span class="hljs-built_in">build</span>(u&lt;&lt;<span class="hljs-number">1</span>,l,mid), <span class="hljs-built_in">build</span>(u&lt;&lt;<span class="hljs-number">1</span> | <span class="hljs-number">1</span> , mid+<span class="hljs-number">1</span> ,r);<br>        <span class="hljs-built_in">pushup</span>(u);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>modify  修改某个点的值</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">modify</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> v)</span></span>&#123;<br>    <span class="hljs-keyword">if</span>(tr[u].l == tr[u].r ) tr[u].sum += v;<br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-type">int</span> mid = tr[u].l + tr[u].r &gt;&gt; <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">if</span>(x &lt;= mid) <span class="hljs-built_in">modify</span>(u&lt;&lt;<span class="hljs-number">1</span>, x , v);<br>        <span class="hljs-keyword">else</span> <span class="hljs-built_in">modify</span>(u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span> , x , v);<br>        <span class="hljs-built_in">pushup</span>(u);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>query   查询</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span></span>&#123;<br>    <span class="hljs-keyword">if</span>(tr[u].l&gt;=l &amp;&amp; tr[u].r&lt;=r) <span class="hljs-keyword">return</span> tr[u].sum;<br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-type">int</span> mid = tr[u].l + tr[u].r &gt;&gt; <span class="hljs-number">1</span>;<br>        <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">if</span>(l &lt;= mid) sum += <span class="hljs-built_in">query</span>(u&lt;&lt;<span class="hljs-number">1</span> , l ,mid);<br>        <span class="hljs-keyword">if</span>(r &gt; mid)  sum += <span class="hljs-built_in">query</span>(u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,l,r);<br>        <span class="hljs-keyword">return</span> sum<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="Shell-Sort"><a href="#Shell-Sort" class="headerlink" title="Shell Sort"></a>Shell Sort</h2><blockquote>
+<p>利用insertion对元素少的序列很快这一特点</p>
+</blockquote>
+<ul>
+<li>将序列中，每间隔d的index分为一组，对该组进行insertion sort</li>
+<li>不断<code>d--</code>，直到d=1，整个序列恰恰都在一组，完成排序</li>
+</ul>
+<h2 id="Quick-Sort"><a href="#Quick-Sort" class="headerlink" title="Quick Sort"></a>Quick Sort</h2><blockquote>
+<p>一个好的quick sort：需要有</p>
+<ul>
+<li>pick good pivot</li>
+<li>good partition strategy</li>
+</ul>
+</blockquote>
+<p>Quicksorting N items: (<a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1QjAs-zx1i0_XWlLqsKtexb-iueao9jNLkN-gW9QxAD0/edit?usp=sharing">Demo</a>)</p>
+<h3 id="The-Core-Idea-of-Tony’s-Sort-Partitioning"><a href="#The-Core-Idea-of-Tony’s-Sort-Partitioning" class="headerlink" title="The Core Idea of Tony’s Sort: Partitioning"></a><strong>The Core Idea of Tony’s Sort: Partitioning</strong></h3><p>To partition an array a[] on element x=a[i] is to rearrange a[] so that: (partition作用的那个i，就叫做pivot)</p>
+<ul>
+<li>x moves to position j (may be the same as i)</li>
+<li>All entries to the left of x are &lt;= x.</li>
+<li>All entries to the right of x are &gt;= x.</li>
+</ul>
+<p>实现：</p>
+<ul>
+<li>可以用BST，把pivot当做root，比他小的都在left，比他大的都在right</li>
+<li>simple but not fastest: 3 scan<ul>
+<li>Create another array. Scan and copy all the red items to the first R spaces. Then scan for and copy the white item. Then scan and copy the blue items to the last B spaces.</li>
+</ul>
+</li>
+</ul>
+<p>observations:</p>
+<ul>
+<li>当我们partition(k=a[i])之后，k就在它的最终位置上不动了了(左边的都比他小，右边的都比他大)</li>
+<li>Can sort two halves separately, e.g. through recursive use of partitioning.左右两边完全独立了</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>Pick the pivot to be partitioned:  e.g.Partition on leftmost item. </li>
+<li>Quicksort left half.</li>
+<li>Quicksort right half.</li>
+</ul>
+<h3 id="runtime"><a href="#runtime" class="headerlink" title="runtime"></a>runtime</h3><ul>
+<li>值得一提的是，quick sort的速度与选取的pivot最终落在的位置有很大关系</li>
+</ul>
+<p><strong>Best Case: Pivot Always Lands in the Middle</strong> </p>
+<p>递归深度logN</p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081128345.png" srcset="/img/loading.gif" lazyload alt="image-20230220200918361" style="zoom: 50%;" />
 
+<p><strong>Worst Case: Pivot Always Lands at Beginning of Array</strong></p>
+<p>递归深度N</p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081128289.png" srcset="/img/loading.gif" lazyload alt="image-20230220201459150" style="zoom: 50%;" />
+
+<p>一个有趣的观察：</p>
+<ul>
+<li>Quick Sort的过程其实就是BST建立的过程，我们可以看到每次选取的pivot都是子树的一个根，向下建立BST，so crazy！</li>
+<li>回想Random insertion into a BST takes O(N log N) time.</li>
+</ul>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081128194.png" srcset="/img/loading.gif" lazyload alt="image-20230220202301322" style="zoom: 50%;" />
+
+<p>问题来了，N^2^与NlogN的差别可谓巨大，所以我们该怎么避免worst case的出现？</p>
+<h3 id="Avoiding-the-Quicksort-Worst-Case"><a href="#Avoiding-the-Quicksort-Worst-Case" class="headerlink" title="Avoiding the Quicksort Worst Case"></a><strong>Avoiding the Quicksort Worst Case</strong></h3><p>小心两种特殊的序列，他们可能会使你的策略陷入N^2^</p>
+<ul>
+<li>Bad ordering: Array already in sorted order.</li>
+<li>Bad elements: Array with all duplicates.</li>
+</ul>
+<p>we mainly focus on</p>
+<ul>
+<li>How you select your pivot.</li>
+<li>How you partition around that pivot.</li>
+</ul>
+<p><strong>Philosophy 1: Randomness</strong> </p>
+<blockquote>
+<p>随机性是一个好的Quick Sort所<strong>必需</strong>的，对于一些确定的or伪随机的，总会存在潜在的危险. See McIlroy’s “<a target="_blank" rel="noopener" href="http://www.cs.dartmouth.edu/~doug/mdmspe.pdf">A Killer Adversary for Quicksort</a>”</p>
+</blockquote>
+<ul>
+<li>Strategy #1: Pick pivots randomly.</li>
+<li>Strategy #2: Shuffle(搅乱) before you sort.</li>
+</ul>
+<p><strong>Philosophy 2b: Smarter Pivot Selection</strong> </p>
+<blockquote>
+<p>Use the median (or an approximation) as our pivot.也就是选取的pivot正好落在中间</p>
+</blockquote>
+<p>利用partition来寻找中值pivot</p>
+<ul>
+<li>一直partition，让partition(k)之后k的位置往中间靠，直到k落在length/2的位置</li>
+</ul>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081114666.png" srcset="/img/loading.gif" lazyload alt="image-20230220210311996" style="zoom: 50%;" />
+
+<p>worst case：θ(N^2^)    i.e.[1 2 3 4 5 6 7 8 9 10 … N]</p>
+<p>average case：θ(N)</p>
+<p><strong>Hoare Partitioning</strong>(双指针法)</p>
+<p><a target="_blank" rel="noopener" href="https://docs.google.com/presentation/d/1DOnWS59PJOa-LaBfttPRseIpwLGefZkn450TMSSUiQY/pub?start=false&loop=false&delayms=3000">Demo</a></p>
+<p>Create L and G pointers at left and right ends.</p>
+<ul>
+<li><p>L pointer is a friend to small items,and hates large or equal items.(注意对于equal的我们不管，不然对于全重复元素的序列我们会陷入worst case)</p>
+</li>
+<li><p>G pointer is a friend to large items,and hates small or equal items.</p>
+</li>
+<li><p>Walk pointers towards each other,stopping on a hated item.</p>
+<ul>
+<li><p>When both pointers have stopped,swap and move pointers by one.</p>
+</li>
+<li><p>When pointers cross,you are done walking.</p>
+</li>
+</ul>
+</li>
+<li><p>Swap pivot  with G.</p>
+</li>
+</ul>
+<p><strong>Sorting Properties</strong></p>
+<p>stability</p>
+<ul>
+<li>Equivalent items don’t ‘cross over’ when being stably sorted.</li>
+</ul>
 
                 
               </div>
@@ -348,6 +518,13 @@
               <div class="post-metas my-3">
   
   
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/sort/" class="print-no-link">#sort</a>
+      
+    </div>
+  
 </div>
 
 
@@ -356,8 +533,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>树状数组</div>
-      <div>http://example.com/2023/03/23/树状数组/</div>
+      <div>排序算法专题</div>
+      <div>http://example.com/2022/01/22/排序算法专题/</div>
     </div>
     <div class="license-meta">
       
@@ -369,7 +546,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>March 23, 2023</div>
+          <div>January 22, 2022</div>
         </div>
       
       
@@ -401,9 +578,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/04/03/%E6%95%B0%E8%AE%BA/" title="数论">
+                      <a href="/2022/02/02/%E4%BB%8EBST%E5%88%B0%E9%AB%98%E7%BB%B4%E6%95%B0%E6%8D%AEsearch/" title="从BST到高维数据search">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">数论</span>
+                        <span class="hidden-mobile">从BST到高维数据search</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
@@ -411,8 +588,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/03/17/dp/" title="dp">
-                        <span class="hidden-mobile">dp</span>
+                      <a href="/2022/01/17/BST%E4%B8%8E%E5%B9%B3%E8%A1%A1%E6%A0%91/" title="BST与平衡树">
+                        <span class="hidden-mobile">BST与平衡树</span>
                         <span class="visible-mobile">Next</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

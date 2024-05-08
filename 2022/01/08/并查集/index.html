@@ -16,21 +16,26 @@
   <meta name="author" content="Jianhui Yin">
   <meta name="keywords" content="">
   
-    <meta name="description" content="树状数组和线段树的实现">
+    <meta name="description" content="CS61B 的并查集，从原理到实现，WQU，路径压缩">
 <meta property="og:type" content="article">
-<meta property="og:title" content="树状数组">
-<meta property="og:url" content="http://example.com/2023/03/23/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/index.html">
+<meta property="og:title" content="并查集">
+<meta property="og:url" content="http://example.com/2022/01/08/%E5%B9%B6%E6%9F%A5%E9%9B%86/index.html">
 <meta property="og:site_name" content="yinsist">
-<meta property="og:description" content="树状数组和线段树的实现">
+<meta property="og:description" content="CS61B 的并查集，从原理到实现，WQU，路径压缩">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-03-23T12:23:23.000Z">
-<meta property="article:modified_time" content="2024-05-08T02:58:45.403Z">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081111746.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081111147.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081111558.png">
+<meta property="article:published_time" content="2022-01-08T03:16:01.000Z">
+<meta property="article:modified_time" content="2024-05-08T03:19:38.486Z">
 <meta property="article:author" content="Jianhui Yin">
+<meta property="article:tag" content="Union find">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081111746.png">
   
   
   
-  <title>树状数组 - yinsist</title>
+  <title>并查集 - yinsist</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -196,7 +201,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="树状数组"></span>
+            <span id="subtitle" data-typed-text="并查集"></span>
           
         </div>
 
@@ -207,8 +212,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-03-23 20:23" pubdate>
-          March 23, 2023 pm
+        <time datetime="2022-01-08 11:16" pubdate>
+          January 8, 2022 am
         </time>
       </span>
     
@@ -219,7 +224,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          612 words
+          447 words
         
       </span>
     
@@ -230,7 +235,7 @@
         
         
         
-          6 mins
+          4 mins
         
       </span>
     
@@ -280,65 +285,152 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">树状数组</h1>
+            <h1 id="seo-header">并查集</h1>
             
             
               <div class="markdown-body">
                 
-                <p>树状数组和线段树的实现</p>
+                <p>CS61B 的并查集，从原理到实现，WQU，路径压缩</p>
 <span id="more"></span>
 
-<p>如何推导？查看本人的知乎这篇文章：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/585460026">前缀和改进之树状数组 - 知乎 (zhihu.com)</a></p>
-<h3 id="树状数组"><a href="#树状数组" class="headerlink" title="树状数组"></a>树状数组</h3><h4 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h4><ul>
-<li><p>单点修改，区间求和  O(logN)</p>
-</li>
-<li><p>可以在，O(logN)的时间内，动态求前缀和 ( 对比前缀和，修改的话需要O(N) )</p>
-</li>
-</ul>
-<p>注意：树状数组下标一定要<strong>从1开始</strong></p>
-<h4 id="树状数组初始化"><a href="#树状数组初始化" class="headerlink" title="树状数组初始化"></a>树状数组初始化</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=<span class="hljs-number">1</span> ; i&lt;=n ; i++) <span class="hljs-built_in">add</span>(i,a[i]);<br></code></pre></td></tr></table></figure>
+<h1 id="chapt9-Disjoint-Sets-并查集"><a href="#chapt9-Disjoint-Sets-并查集" class="headerlink" title="chapt9 Disjoint Sets(并查集)"></a>chapt9 Disjoint Sets(并查集)</h1><p>不同并查集的元素也不能相同，而且为正数</p>
+<p>支持两个操作的数据结构</p>
+<ol>
+<li><code>connect(x, y)</code>: connect <code>x</code> and <code>y</code>. Also known as <code>union</code></li>
+<li><code>isConnected(x, y)</code>: returns true if <code>x</code> and <code>y</code> are connected (i.e. part of the same set).</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">DisjointSets</span> &#123;<br>    <span class="hljs-comment">/** connects two items P and Q */</span><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">connect</span><span class="hljs-params">(<span class="hljs-type">int</span> p, <span class="hljs-type">int</span> q)</span>;<br><br>    <span class="hljs-comment">/** checks to see if two items are connected */</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">isConnected</span><span class="hljs-params">(<span class="hljs-type">int</span> p, <span class="hljs-type">int</span> q)</span>; <br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>小小地解释一下原理：</p>
+
+
+<h2 id="ListOfSets"><a href="#ListOfSets" class="headerlink" title="ListOfSets"></a>ListOfSets</h2><p>最朴素的做法，List存set，<code>List&lt;Set&lt;Integer&gt;&gt;</code></p>
+<p>缺点：每次connect的时候需要遍历，O(N)，并且也不好写出</p>
+<table>
+<thead>
+<tr>
+<th>Implementation</th>
+<th>Constructor</th>
+<th><code>connect</code></th>
+<th><code>isConnected</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ListOfSets</td>
+<td>Θ(N)<a target="_blank" rel="noopener" href="https://joshhug.gitbooks.io/hug61b/content/chap9/chap92.html#fn_1">1</a></td>
+<td>O(N)</td>
+<td>O(N)</td>
+</tr>
+</tbody></table>
+<h2 id="Quick-Find"><a href="#Quick-Find" class="headerlink" title="Quick Find"></a>Quick Find</h2><ul>
+<li>数组的索引表示集合的元素</li>
+<li>The <strong>value at an index</strong> is the set number it belongs to.</li>
+<li>只需要确保在一个集合中的元素有相同的id值就可以，这个值是什么并不重要</li>
+</ul>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081111746.png" srcset="/img/loading.gif" lazyload alt="image-20230125194838220" style="zoom: 80%;" />
+
 <ul>
-<li><p>树状数组中奇数下标和原数组相等</p>
-</li>
-<li><p><code>c[x] = 原数组中下标从(x-lowbit(x)，x]的和</code> 左开右闭</p>
-</li>
+<li><code>connect</code>：让两个集合的所有元素id改为相同 </li>
+<li><code>isConnected(x, y)</code>：we simply check if <code>id[x] == id[y]</code>. </li>
 </ul>
-<h4 id="三个基本操作："><a href="#三个基本操作：" class="headerlink" title="三个基本操作："></a>三个基本操作：</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> a[N],c[N];<span class="hljs-comment">//a[N]为原数组，c[N]为树状数组</span><br><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">lowbit</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>&#123;<br>    <span class="hljs-keyword">return</span> x &amp; -x;<br>&#125;<br><br><span class="hljs-comment">//一般情况下只支持add，如果要实现修改某一个数，可以add他们的差值</span><br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> x , <span class="hljs-type">int</span> v )</span></span>&#123;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i=x;i&lt;=n;i+=<span class="hljs-built_in">lowbit</span>(i)) c[i] += v;    <br>&#125;<br><br><span class="hljs-comment">//查询</span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span></span>&#123;<br>    <span class="hljs-type">int</span> res = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = x ; i&gt;=<span class="hljs-number">1</span> ; i-=<span class="hljs-built_in">lowbit</span>(i) )  res += c[i];<span class="hljs-comment">//for循环截止条件写成 i!=0 即 i也可以</span><br>    <span class="hljs-keyword">return</span> res;<br>&#125;<br></code></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>Implementation</th>
+<th>Constructor</th>
+<th><code>connect</code></th>
+<th><code>isConnected</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>QuickFind</td>
+<td>Θ(N)</td>
+<td>Θ(N)</td>
+<td>Θ(1)</td>
+</tr>
+</tbody></table>
+<h2 id="Quick-Union"><a href="#Quick-Union" class="headerlink" title="Quick Union"></a>Quick Union</h2><p>不用id，我们在每个元素的索引存上他parent，如果没有parent，那么该元素为根，我们存上一个负数。这会让我们的集合看起来像个树形结构</p>
+<p>we represent <code>&#123;0, 1, 2, 4&#125;, &#123;3, 5&#125;, &#123;6&#125;</code> as:</p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081111147.png" srcset="/img/loading.gif" lazyload alt="image-20230125201839631" style="zoom:67%;" />
+
+<p>引入一个helper function： <code>find(int item)</code> which returns the root of the tree <code>item</code> is in. For example, for the sets above, <code>find(4) == 0</code>, <code>find(1) == 0</code>, <code>find(5) == 3</code>, etc. Each element has a unique root.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">find</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span>&#123;<br>    <span class="hljs-keyword">while</span>(parent[x]&gt;<span class="hljs-number">0</span>)&#123;<br>        x=parent[x];<br>    &#125;<br>    <span class="hljs-keyword">return</span> x;<br>&#125;<br></code></pre></td></tr></table></figure>
 
 
 
-<h3 id="线段树"><a href="#线段树" class="headerlink" title="线段树"></a>线段树</h3><p>每个结点都是一个结构体</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Node</span>&#123;<br>    <span class="hljs-type">int</span> L,R;<br>    <span class="hljs-type">int</span> sum;<br>&#125;tr[N*<span class="hljs-number">4</span>];<br></code></pre></td></tr></table></figure>
-
-<p>线段树存储</p>
-<p>注意结点个数要开 <code>4n</code> 其中n是有多少个数</p>
-<p>类似于堆的存储方式，存在一维数组，对于一个序号为x的节点</p>
 <ul>
-<li>父节点为 x/2 (下取整) <code>x&gt;&gt;1</code></li>
-<li>左子节点为 x*2  <code>x&lt;&lt;1</code></li>
-<li>右子节点为 x*2+1  <code>x&lt;&lt; 1 | 1</code></li>
+<li><code>connect(x,y)</code>：将x的parent改为y or 将y的parent改为x</li>
+<li><code>isConnected(x,y)</code> ： check if <code>find(x) == find(y)</code>.</li>
 </ul>
-<h4 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h4><ul>
-<li><p>单点修改 O(logN)</p>
-</li>
-<li><p>区间查询 O(logN)</p>
-</li>
-</ul>
-<p>四个函数</p>
-<p>pushup 用子节点信息更新当前节点信息</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">pushup</span><span class="hljs-params">(<span class="hljs-type">int</span> u)</span></span>&#123;<br>    tr[u].sum = tr[u&lt;&lt;<span class="hljs-number">1</span>].sum + tr[u&lt;&lt;<span class="hljs-number">1</span> | <span class="hljs-number">1</span>].sum;<br>&#125;<br></code></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>Implementation</th>
+<th>Constructor</th>
+<th><code>connect</code>（主要find操作耗时）</th>
+<th><code>isConnected</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>QuickUnion</td>
+<td>Θ(N)</td>
+<td>O(N)</td>
+<td>O(N)</td>
+</tr>
+</tbody></table>
+<h2 id="Weighted-Quick-Union-WQU"><a href="#Weighted-Quick-Union-WQU" class="headerlink" title="Weighted Quick Union (WQU)"></a>Weighted Quick Union (WQU)</h2><p><strong>New rule:</strong> whenever we call <code>connect</code>, we always link the root of the <strong>smaller</strong> tree <strong>to the larger</strong> tree.</p>
+<p>遵循这个规则，我们的tree高度不会超过logN，N是并查集元素的数量，因此<strong>the runtimes of <code>connect</code> and <code>isConnected</code> are bounded by O(log N).</strong></p>
+<blockquote>
+<p>既可以用数量，也可以用高度来衡量大小，两者的效率不会差太多，但是高度写起来很麻烦，因此我们常用集合数量来衡量</p>
+</blockquote>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405081111558.png" srcset="/img/loading.gif" lazyload alt="image-20230126164358686" style="zoom: 67%;" />
 
-<p>build  在一段区间上初始化线段树</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">build</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span></span>&#123;<br>    <span class="hljs-keyword">if</span>(l == r) tr[u] = &#123;l,r,w[r]&#125;;<br>    <span class="hljs-keyword">else</span>&#123;<br>        tr[u] = &#123;l,r&#125;;<br>        <span class="hljs-type">int</span> mid = tr[u].l + tr[u].r &gt;&gt; <span class="hljs-number">1</span>;<br>        <span class="hljs-built_in">build</span>(u&lt;&lt;<span class="hljs-number">1</span>,l,mid), <span class="hljs-built_in">build</span>(u&lt;&lt;<span class="hljs-number">1</span> | <span class="hljs-number">1</span> , mid+<span class="hljs-number">1</span> ,r);<br>        <span class="hljs-built_in">pushup</span>(u);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>modify  修改某个点的值</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">modify</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> x, <span class="hljs-type">int</span> v)</span></span>&#123;<br>    <span class="hljs-keyword">if</span>(tr[u].l == tr[u].r ) tr[u].sum += v;<br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-type">int</span> mid = tr[u].l + tr[u].r &gt;&gt; <span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">if</span>(x &lt;= mid) <span class="hljs-built_in">modify</span>(u&lt;&lt;<span class="hljs-number">1</span>, x , v);<br>        <span class="hljs-keyword">else</span> <span class="hljs-built_in">modify</span>(u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span> , x , v);<br>        <span class="hljs-built_in">pushup</span>(u);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p>query   查询</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">query</span><span class="hljs-params">(<span class="hljs-type">int</span> u, <span class="hljs-type">int</span> l, <span class="hljs-type">int</span> r)</span></span>&#123;<br>    <span class="hljs-keyword">if</span>(tr[u].l&gt;=l &amp;&amp; tr[u].r&lt;=r) <span class="hljs-keyword">return</span> tr[u].sum;<br>    <span class="hljs-keyword">else</span>&#123;<br>        <span class="hljs-type">int</span> mid = tr[u].l + tr[u].r &gt;&gt; <span class="hljs-number">1</span>;<br>        <span class="hljs-type">int</span> sum = <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">if</span>(l &lt;= mid) sum += <span class="hljs-built_in">query</span>(u&lt;&lt;<span class="hljs-number">1</span> , l ,mid);<br>        <span class="hljs-keyword">if</span>(r &gt; mid)  sum += <span class="hljs-built_in">query</span>(u&lt;&lt;<span class="hljs-number">1</span>|<span class="hljs-number">1</span>,l,r);<br>        <span class="hljs-keyword">return</span> sum<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
+<table>
+<thead>
+<tr>
+<th>Implementation</th>
+<th>Constructor</th>
+<th><code>connect</code></th>
+<th><code>isConnected</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Weighted Quick Union</td>
+<td>Θ(N)</td>
+<td>O(log N)</td>
+<td>O(log N)</td>
+</tr>
+</tbody></table>
+<h2 id="WQU-with-path-compression-路径压缩"><a href="#WQU-with-path-compression-路径压缩" class="headerlink" title="WQU with path compression(路径压缩)"></a>WQU with path compression(路径压缩)</h2><p>The clever insight is realizing that whenever we call <code>find(x)</code> we have to traverse the path from <code>x</code> to root. So, along the way we can connect all the items we visit to their root at no extra asymptotic cost.</p>
+<p>Connecting all the items along the way to the root will help make our tree shorter with each call to <code>find</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Implementation</th>
+<th><code>isConnected</code></th>
+<th><code>connect</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Quick Find</td>
+<td>Θ(N)</td>
+<td>Θ(1)</td>
+</tr>
+<tr>
+<td>Quick Union</td>
+<td>O(N)</td>
+<td>O(N)</td>
+</tr>
+<tr>
+<td>Weighted Quick Union (WQU)</td>
+<td>O(log N)</td>
+<td>O(log N)</td>
+</tr>
+<tr>
+<td>WQU with Path Compression</td>
+<td>O(α(N))*</td>
+<td>O(α(N))*</td>
+</tr>
+</tbody></table>
 
                 
               </div>
@@ -348,6 +440,13 @@
               <div class="post-metas my-3">
   
   
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Union-find/" class="print-no-link">#Union find</a>
+      
+    </div>
+  
 </div>
 
 
@@ -356,8 +455,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>树状数组</div>
-      <div>http://example.com/2023/03/23/树状数组/</div>
+      <div>并查集</div>
+      <div>http://example.com/2022/01/08/并查集/</div>
     </div>
     <div class="license-meta">
       
@@ -369,7 +468,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>Posted on</div>
-          <div>March 23, 2023</div>
+          <div>January 8, 2022</div>
         </div>
       
       
@@ -401,21 +500,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/04/03/%E6%95%B0%E8%AE%BA/" title="数论">
+                      <a href="/2022/01/17/BST%E4%B8%8E%E5%B9%B3%E8%A1%A1%E6%A0%91/" title="BST与平衡树">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">数论</span>
+                        <span class="hidden-mobile">BST与平衡树</span>
                         <span class="visible-mobile">Previous</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
-                    
-                      <a href="/2023/03/17/dp/" title="dp">
-                        <span class="hidden-mobile">dp</span>
-                        <span class="visible-mobile">Next</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
                     
                   </article>
                 </div>
