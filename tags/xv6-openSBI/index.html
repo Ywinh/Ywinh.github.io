@@ -18,8 +18,8 @@
   
     <meta name="description" content="blog of yinsist">
 <meta property="og:type" content="website">
-<meta property="og:title" content="yinsist">
-<meta property="og:url" content="https://github.com/Ywinh/Ywinh.github.io/index.html">
+<meta property="og:title" content="标签 - xv6 openSBI">
+<meta property="og:url" content="https://github.com/Ywinh/Ywinh.github.io/tags/xv6-openSBI/index.html">
 <meta property="og:site_name" content="yinsist">
 <meta property="og:description" content="blog of yinsist">
 <meta property="og:locale" content="zh_CN">
@@ -28,7 +28,7 @@
   
   
   
-  <title>yinsist</title>
+  <title>标签 - xv6 openSBI - yinsist</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -82,7 +82,7 @@
   <header>
     
 
-<div class="header-inner" style="height: 100vh;">
+<div class="header-inner" style="height: 80vh;">
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/Ywinh/Ywinh.github.io/">
@@ -188,7 +188,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Welcome to yinsist&#39;s blog"></span>
+            <span id="subtitle" data-typed-text="标签 - xv6 openSBI"></span>
           
         </div>
 
@@ -212,199 +212,28 @@
     
       <div class="container nopadding-x-md">
         <div id="board"
-          style="margin-top: 0">
+          >
           
           <div class="container">
             <div class="row">
               <div class="col-12 col-md-10 m-auto">
                 
 
-
-  <div class="row mx-auto index-card">
+<div class="list-group">
+  <p class="h4">共计 1 篇文章</p>
+  <hr>
+  
+  
     
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/Ywinh/Ywinh.github.io/2024/05/07/makefile/" target="_self">
-          makefile
-        </a>
-      </h2>
-
       
-      <a class="index-excerpt index-excerpt__noimg" href="/Ywinh/Ywinh.github.io/2024/05/07/makefile/" target="_self">
-        <div>
-          makefile有点像跟手动编译过程反着来，一步步去找依赖项 规则的构成1234targets: prerequisites	command	command	command   targets（目标）：是文件名，通常一个规则只有一个targets  command（命令/方法）：创建目标的一系列步骤，需要用tab开头，  prerequisites（依赖）：也是文件名，可以有多个，用空格分隔，在运
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-05-07 23:02" pubdate>
-              2024-05-07
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
+      <p class="h5">2024</p>
     
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/Ywinh/Ywinh.github.io/2024/04/15/xv6-in-openSBI/" target="_self">
-          xv6-in-openSBI
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/Ywinh/Ywinh.github.io/2024/04/15/xv6-in-openSBI/" target="_self">
-        <div>
-          最近完成操作系统大赛，需要为 xv6 实现一个 SBI 来完成指定的引导 TODO：理一下 xv6 原本的引导过程 引导过程OpenSBIOpenSBI的主要功能就是在M态初始化硬件，然后以S态跳转到内核的位置，完成整个启动过程。此外，OpenSBI作为S态内核的执行环境（EEI），可以以 ecall 的方式为S态内核提供一些只有M态才能实现的功能 每个cpu启动时，都在M态。在将控制权交给操作系
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-15 10:23" pubdate>
-              2024-04-15
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/Ywinh/Ywinh.github.io/tags/xv6-openSBI/">#xv6 openSBI</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/Ywinh/Ywinh.github.io/2023/04/03/%E6%95%B0%E8%AE%BA/" target="_self">
-          数论
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/Ywinh/Ywinh.github.io/2023/04/03/%E6%95%B0%E8%AE%BA/" target="_self">
-        <div>
-          欧几里得(辗转相除法)求a，b的最大公因数 gcd(a,b) = gcd(b,a%b) = ….. 直到(a,b)中b为0，那么结果就为a 123int gcd(int a, int b)&#123;    return b?gcd(a,b):a ;&#125;    筛法求素数埃氏筛从2开始的 x ，划掉每个x的倍数，优化一下可以从x^2^开始划 12345678int primes[N],cn
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-04-03 18:59" pubdate>
-              2023-04-03
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/Ywinh/Ywinh.github.io/tags/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E7%AE%97%E6%B3%95/">#欧几里得算法</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/Ywinh/Ywinh.github.io/2023/03/23/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/" target="_self">
-          树状数组
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/Ywinh/Ywinh.github.io/2023/03/23/%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84/" target="_self">
-        <div>
-          树状数组功能 单点修改，区间求和  O(logN)  可以在，O(logN)的时间内，动态求前缀和 ( 对比前缀和，修改的话需要O(N) )   注意：树状数组下标一定要从1开始 树状数组初始化1for(int i=1 ; i&lt;=n ; i++) add(i,a[i]);  小小地解释一下原理：  树状数组中奇数下标和原数组相等  c[x] = 原数组中下标从(x-lowbit(x)，x]的
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-03-23 20:23" pubdate>
-              2023-03-23
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/Ywinh/Ywinh.github.io/2023/03/17/dp/" target="_self">
-          dp
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/Ywinh/Ywinh.github.io/2023/03/17/dp/" target="_self">
-        <div>
-          DP(动态规划)-背包01背包 题目 有 N 件物品和一个容量是 V 的背包。每件物品只能使用一次。第 i 件物品的体积是 vi，价值是 wi。 求解将哪些物品装入背包，可使这些物品的总体积不超过背包容量，且总价值最大。输出最大价值。  为什么称作01背包，因为对于每个物品，只对应选或者不选两种状态，因此称为01背包   主要思想：  状态表示: 我们用f[i][j]来表示，前i个物品，最大容量是
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2023-03-17 17:39" pubdate>
-              2023-03-17
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/Ywinh/Ywinh.github.io/tags/c/">#c++</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
+    <a href="/Ywinh/Ywinh.github.io/2024/04/15/xv6-in-openSBI/" class="list-group-item list-group-item-action">
+      <time>04-15</time>
+      <div class="list-group-item-title">xv6-in-openSBI</div>
+    </a>
+  
+</div>
 
 
 

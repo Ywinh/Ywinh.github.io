@@ -1,0 +1,735 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/Ywinh/Ywinh.github.io/img/fluid.png">
+  <link rel="icon" href="/Ywinh/Ywinh.github.io/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jianhui Yin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="最近完成操作系统大赛，需要为 xv6 实现一个 SBI 来完成指定的引导 TODO：理一下 xv6 原本的引导过程 引导过程OpenSBIOpenSBI的主要功能就是在M态初始化硬件，然后以S态跳转到内核的位置，完成整个启动过程。此外，OpenSBI作为S态内核的执行环境（EEI），可以以 ecall 的方式为S态内核提供一些只有M态才能实现的功能 每个cpu启动时，都在M态。在将控制权交给操作系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xv6-in-openSBI">
+<meta property="og:url" content="https://github.com/Ywinh/Ywinh.github.io/2024/04/15/xv6-in-openSBI/index.html">
+<meta property="og:site_name" content="yinsist">
+<meta property="og:description" content="最近完成操作系统大赛，需要为 xv6 实现一个 SBI 来完成指定的引导 TODO：理一下 xv6 原本的引导过程 引导过程OpenSBIOpenSBI的主要功能就是在M态初始化硬件，然后以S态跳转到内核的位置，完成整个启动过程。此外，OpenSBI作为S态内核的执行环境（EEI），可以以 ecall 的方式为S态内核提供一些只有M态才能实现的功能 每个cpu启动时，都在M态。在将控制权交给操作系">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-04-15T02:23:15.000Z">
+<meta property="article:modified_time" content="2024-05-08T02:30:36.604Z">
+<meta property="article:author" content="Jianhui Yin">
+<meta property="article:tag" content="xv6 openSBI">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>xv6-in-openSBI - yinsist</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/Ywinh/Ywinh.github.io/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/Ywinh/Ywinh.github.io/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/Ywinh/Ywinh.github.io/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"github.com","root":"/Ywinh/Ywinh.github.io/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/Ywinh/Ywinh.github.io/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/Ywinh/Ywinh.github.io/js/utils.js" ></script>
+  <script  src="/Ywinh/Ywinh.github.io/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/Ywinh/Ywinh.github.io/">
+      <strong>Yinsist</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/Ywinh/Ywinh.github.io/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/Ywinh/Ywinh.github.io/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/Ywinh/Ywinh.github.io/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/Ywinh/Ywinh.github.io/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/Ywinh/Ywinh.github.io/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/Ywinh/Ywinh.github.io/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="xv6-in-openSBI"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-04-15 10:23" pubdate>
+          2024年4月15日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">xv6-in-openSBI</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>最近完成操作系统大赛，需要为 xv6 实现一个 SBI 来完成指定的引导</p>
+<p>TODO：理一下 xv6 原本的引导过程</p>
+<h1 id="引导过程"><a href="#引导过程" class="headerlink" title="引导过程"></a>引导过程</h1><h2 id="OpenSBI"><a href="#OpenSBI" class="headerlink" title="OpenSBI"></a>OpenSBI</h2><p>OpenSBI的主要功能就是在M态初始化硬件，然后以S态跳转到内核的位置，完成整个启动过程。此外，OpenSBI作为S态内核的执行环境（EEI），可以以 <code>ecall</code> 的方式为S态内核提供一些只有M态才能实现的功能</p>
+<p>每个cpu启动时，都在M态。在将控制权交给操作系统时，转换为 S 态</p>
+<p>qemu 自带一个 opensbi</p>
+<blockquote>
+<p>指定 -bios default 这个选项</p>
+</blockquote>
+<p>由于 opensbi 占据了 0x80000000 到 0x80200000 这段区域，因此我们需要把 xv6 原本这段区域（Kernel）迁移到 0x80200000</p>
+<p>加入opensbi后的内存布局</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs c">PHYSICAL_MEMORY_TOP-&gt; +----------------------------+----<br>                      |                            |     <br>                      |    Free Physical memory    |    <br>                      |                            |                         <br>   kernelEnd   -----&gt; +----------------------------+----<br>                      |                            |                         <br>                      |          Kernel            |    <br>                      |                            |                           <br> <span class="hljs-number">0x8020</span> <span class="hljs-number">0000</span>   -----&gt; +----------------------------+----<br>                      |                            |                           <br>                      |         Open SBI           |    <br>                      |                            |                 <br> <span class="hljs-number">0x8000</span> <span class="hljs-number">0000</span>  -----&gt;  +----------------------------+----<br>                      |                            |                           <br>                      |                            |                           <br>                      |                            |                           <br>                      +----------------------------+---<br>                      |                            |                           <br>                      |           MMIO             |                <br>                      |                            |                           <br>                      +----------------------------+----<br>                      |                            |                           <br>                      |                            |                           <br>                      |                            |                           <br>                      +----------------------------+                           <br></code></pre></td></tr></table></figure>
+
+
+
+<p>为了加入 SBI，需要更改的地方</p>
+<ol>
+<li><code>kernel.ld</code>  里面的内核起始地址</li>
+<li><code>entry.s</code> 里面，<ul>
+<li>由于 sbi 把 hart id 放在了 a0 寄存器，xv6 是从 tp 寄存器读出 hart id 的，因此这里需要一个 mv 指令</li>
+<li>然后在这里要设置好对应核的 stack，每个核开了 4096 byte，需要设置好 sp 寄存器</li>
+</ul>
+</li>
+<li>然后更改 xv6 的时钟中断实现<ul>
+<li>因为 xv6 的时钟中断是在 m 态实现的，要实现 sbi 我们一直都会在 S 态，所以利用sbi提供的接口在 s 态实现了时钟中断</li>
+<li>更改 <code>trap.c</code> 中 <code>scause</code> 为时钟中断时的动作</li>
+</ul>
+</li>
+</ol>
+<h2 id="多核启动流程"><a href="#多核启动流程" class="headerlink" title="多核启动流程"></a>多核启动流程</h2><p>由于 qemu 启动时的启动核不一定是 0，可能是随机的，目前采用的方式是</p>
+<blockquote>
+<p>注意这种启动方式可能启动核不是 0，而是其他，后期可能需要更改</p>
+</blockquote>
+<ul>
+<li><p>设置了一个共享变量 <code>volatile static int boot_hart = -1;</code></p>
+</li>
+<li><p>启动核进入 if 判断，初始化自己，然后更改这个共享变量，利用 sbi 来唤醒其他核</p>
+<p>初始化流程：</p>
+<ul>
+<li><p>更改 boot hart</p>
+</li>
+<li><p>初始化 printf (采用uart)</p>
+</li>
+<li><p>打印启动信息</p>
+</li>
+<li><p>初始化物理内存分配</p>
+</li>
+<li><p>初始化 kernel page table</p>
+</li>
+<li><p>开启分页</p>
+</li>
+<li><p>初始化进程</p>
+</li>
+<li><p>初始化根文件系统 (在proc.c里面)</p>
+</li>
+<li><p>初始化 trap 并设置好 kernelvec</p>
+</li>
+<li><p>初始化中断代理 PLIC</p>
+</li>
+<li><p>初始化 buffer cache</p>
+</li>
+<li><p>初始化 File table</p>
+</li>
+<li><p>初始化 virtio 驱动</p>
+</li>
+<li><p>开启 init 进程</p>
+</li>
+<li><p>使用 <code>SBI_HART_START</code> 启动其他核</p>
+<p>初始化根文件系统</p>
+<p><strong>开启 <code>init</code> 进程</strong></p>
+</li>
+</ul>
+</li>
+<li><p>其他核进入else，初始化自己，调用那些 <code>*inithart</code>的 函数</p>
+<p>初始化流程</p>
+<ul>
+<li>开启分页</li>
+<li>设置 kernelvec</li>
+<li>PLIC 中断代理开启</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-keyword">volatile</span> <span class="hljs-type">static</span> <span class="hljs-type">int</span> boot_hart = <span class="hljs-number">-1</span>;<br><span class="hljs-keyword">extern</span> <span class="hljs-type">void</span> _entry();<br><span class="hljs-type">void</span> <span class="hljs-title function_">start_harts</span><span class="hljs-params">()</span>;<br><br><span class="hljs-comment">// start() jumps here in supervisor mode on all CPUs.</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>  <span class="hljs-keyword">if</span>(boot_hart == <span class="hljs-number">-1</span>)&#123;<br>    boot_hart = cpuid();<br>    consoleinit();<br>    printfinit();<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;xv6 kernel is booting\n&quot;</span>);<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\n&quot;</span>);<br>    kinit();         <span class="hljs-comment">// physical page allocator</span><br>    kvminit();       <span class="hljs-comment">// create kernel page table</span><br>    kvminithart();   <span class="hljs-comment">// turn on paging</span><br>    procinit();      <span class="hljs-comment">// process table</span><br>    trapinit();      <span class="hljs-comment">// trap vectors</span><br>    trapinithart();  <span class="hljs-comment">// install kernel trap vector</span><br>    plicinit();      <span class="hljs-comment">// set up interrupt controller</span><br>    plicinithart();  <span class="hljs-comment">// ask PLIC for device interrupts</span><br>    binit();         <span class="hljs-comment">// buffer cache</span><br>    <span class="hljs-comment">// iinit();         // inode table</span><br>    fileinit();      <span class="hljs-comment">// file table</span><br>    virtio_disk_init(); <span class="hljs-comment">// emulated hard disk</span><br>    userinit();      <span class="hljs-comment">// first user process</span><br>    <span class="hljs-comment">//started = 1;</span><br>    __sync_synchronize();<br>    <span class="hljs-comment">//启动其他核</span><br>    start_harts();<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-comment">// while(started == 0)</span><br>    <span class="hljs-comment">//   ;</span><br>    __sync_synchronize();<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;hart %d starting\n&quot;</span>, cpuid());<br>    kvminithart();    <span class="hljs-comment">// turn on paging</span><br>    trapinithart();   <span class="hljs-comment">// install kernel trap vector</span><br>    plicinithart();   <span class="hljs-comment">// ask PLIC for device interrupts</span><br>  &#125;<br><br>  set_next_trigger();<br>  scheduler();        <br>&#125;<br><br><span class="hljs-type">void</span> <br><span class="hljs-title function_">start_harts</span><span class="hljs-params">()</span>&#123;<br>  <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; NCPU; i++ )&#123;<br>    <span class="hljs-keyword">if</span>(sbi_hart_get_status(i) == SBI_HSM_STATE_STOPPED)&#123;<br>      sbi_hart_start(i,(uint64)_entry,<span class="hljs-number">0</span>);<br>    &#125;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<p>摘自FarmOs:</p>
+<p>虽然说一个核就能完成大部分初始化工作，但因为架构要求，多核还是有一些需要各自初始化的代码。多核环境下需要注意这些事项：</p>
+<ul>
+<li>每个核需要设置独立的页表。允许各个核在运行阶段使用不同的页表</li>
+<li>每个核有独立的核内时钟，为每个核单独计时</li>
+<li>每个核有独立的中断处理向量，我们一般将其设为同一个位置</li>
+<li>每个核有独立的外部中断控制器</li>
+<li>当一个核与其他核访问同一个变量或同一块内存时，为了缓存能够及时同步，需要加 <code>fence</code> 指令，保证之前的所有读写指令在fence之后都已同步到内存。对应gcc的语法为 <code>__sync_synchronize()</code></li>
+</ul>
+<h2 id="SBI和BIOS和BOOTLOADER的关系"><a href="#SBI和BIOS和BOOTLOADER的关系" class="headerlink" title="SBI和BIOS和BOOTLOADER的关系"></a>SBI和BIOS和BOOTLOADER的关系</h2><blockquote>
+<p>摘自 rCore</p>
+</blockquote>
+<p>SBI 是 RISC-V Supervisor Binary Interface 规范的缩写，OpenSBI 是RISC-V官方用C语言开发的SBI参考实现；RustSBI 是用Rust语言实现的SBI。</p>
+<p>BIOS 是 Basic Input/Output System，作用是引导计算机系统的启动以及硬件测试，并向OS提供硬件抽象层。</p>
+<p>机器上电之后，会从ROM中读取引导代码，引导整个计算机软硬件系统的启动。而整个启动过程是分为多个阶段的，现行通用的多阶段引导模型为：</p>
+<p>ROM -&gt; LOADER -&gt; RUNTIME -&gt; BOOTLOADER -&gt; OS</p>
+<ul>
+<li>Loader 要干的事情，就是内存初始化，以及加载 Runtime 和 BootLoader 程序。而Loader自己也是一段程序，常见的Loader就包括 BIOS 和 UEFI，后者是前者的继任者。</li>
+<li>Runtime 固件程序是为了提供运行时服务（runtime services），它是对硬件最基础的抽象，对OS提供服务，当我们要在同一套硬件系统中运行不同的操作系统，或者做硬件级别的虚拟化时，就离不开Runtime服务的支持。SBI就是RISC-V架构的Runtime规范。</li>
+<li>BootLoader 要干的事情包括文件系统引导、网卡引导、操作系统启动配置项设置、操作系统加载等等。常见的 BootLoader 包括GRUB，U-Boot，LinuxBoot等。</li>
+</ul>
+<p>而 BIOS/UEFI 的大多数实现，都是 Loader、Runtime、BootLoader 三合一的，所以不能粗暴的认为 SBI 跟 BIOS/UEFI 有直接的可比性。</p>
+<p>如果把BIOS当做一个泛化的术语使用，而不是指某个具体实现的话，那么可以认为 SBI 是 BIOS 的组成部分之一。</p>
+<p>也可参考这份文稿《<a target="_blank" rel="noopener" href="https://riscv.org/wp-content/uploads/2019/12/Summit_bootflow.pdf">An Introduction to RISC-V Boot Flow</a>》的P5, P7, P9-11。</p>
+<p>题外话：<br>计算机最重要的思想之一就是分层抽象，在任意两层之间，还可以按照设计者的意愿再次添加抽象层。而软件架构的设计和实现，是为了解决现实世界的具体问题，会面临资源、财力、物力、人力、时间等多种因素的掣肘，就会诞生一些“不那么规矩”、“不那么单纯”的架构或组件/软件，它们往往会跨层次，跨模块，大模块拆小，小模块合并，甚至打破一些“金科玉律”等等。</p>
+<p>所以，相比于弄懂一个名词，更多的精力应该放在理解事物的本质上，只要把解决问题的流程和方法弄明白了，解决问题的过程中所用到的子流程、工具、方法，你爱怎么叫怎么叫，甚至自己发明名词也可以（只是与外人沟通可能会不太顺畅）。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/Ywinh/Ywinh.github.io/tags/xv6-openSBI/" class="print-no-link">#xv6 openSBI</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>xv6-in-openSBI</div>
+      <div>https://github.com/Ywinh/Ywinh.github.io/2024/04/15/xv6-in-openSBI/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Jianhui Yin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年4月15日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/Ywinh/Ywinh.github.io/2024/05/07/makefile/" title="makefile">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">makefile</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/Ywinh/Ywinh.github.io/2023/04/03/%E6%95%B0%E8%AE%BA/" title="数论">
+                        <span class="hidden-mobile">数论</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>rain</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/Ywinh/Ywinh.github.io/js/events.js" ></script>
+<script  src="/Ywinh/Ywinh.github.io/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/Ywinh/Ywinh.github.io/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/Ywinh/Ywinh.github.io/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/Ywinh/Ywinh.github.io/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
