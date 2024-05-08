@@ -1,0 +1,912 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jianhui Yin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="2023 秋 rCore 训练营个人存档：二三阶段优秀">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rCore-Blog">
+<meta property="og:url" content="http://example.com/2023/12/02/rCore-Blog/index.html">
+<meta property="og:site_name" content="yinsist">
+<meta property="og:description" content="2023 秋 rCore 训练营个人存档：二三阶段优秀">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202312031458613.png">
+<meta property="og:image" content="https://rcore-os.cn/rCore-Tutorial-Book-v3/_images/user-stack-cmdargs.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311142342402.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311151404589.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311151608600.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311151710134.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311191437705.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311191438324.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311211756068.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311211725497.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311211725553.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311211739021.png">
+<meta property="article:published_time" content="2023-12-02T04:08:01.000Z">
+<meta property="article:modified_time" content="2024-05-08T04:15:03.933Z">
+<meta property="article:author" content="Jianhui Yin">
+<meta property="article:tag" content="rust os">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202312031458613.png">
+  
+  
+  
+  <title>rCore-Blog - yinsist</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Yinsist</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="rCore-Blog"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-12-02 12:08" pubdate>
+          December 2, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.2k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          52 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">rCore-Blog</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>2023 秋 rCore 训练营个人存档：二三阶段优秀</p>
+<span id="more"></span>
+
+<h1 id="二阶段实验总结"><a href="#二阶段实验总结" class="headerlink" title="二阶段实验总结"></a>二阶段实验总结</h1><h2 id="lab1"><a href="#lab1" class="headerlink" title="lab1"></a>lab1</h2><p>目的就是实现三个信息的统计</p>
+<h3 id="status-TaskStatus"><a href="#status-TaskStatus" class="headerlink" title="status: TaskStatus"></a>status: TaskStatus</h3><ul>
+<li>按照提示直接设置为running</li>
+</ul>
+<h3 id="syscall-times-u32-MAX-SYSCALL-NUM"><a href="#syscall-times-u32-MAX-SYSCALL-NUM" class="headerlink" title="[syscall_times: [u32; MAX_SYSCALL_NUM]"></a>[syscall_times: [u32; MAX_SYSCALL_NUM]</h3><ul>
+<li>第一次尝试直接在sys_task_info来加载，发现好像不行，因为不知道传入的ti: *mut TaskInfo，这个参数到底在哪里被初始化的，而且每个任务都需要有一个syscall_times数组</li>
+<li>由此我在<code>TaskControBlock</code>中维护一个<code>pub task_syscall_times: [u32; MAX_SYSCALL_NUM]</code>数组，这样通过全局遍历TASK_MANAGER可以很好的在每次系统调用时更新</li>
+<li>更新位置在<code>trap_handler</code>进入<code>syscall之前</code>，读取x17寄存器为syscall id</li>
+</ul>
+<h3 id="time-usize"><a href="#time-usize" class="headerlink" title="time: usize"></a>time: usize</h3><ul>
+<li><p>需要得到的是从第一次运行到现在的时间，现在的时间可以通过<code>get_time_ms</code>直接获得</p>
+</li>
+<li><p>第一次运行开始的时间，需要在应用第一次变成Running态的时候记载，因此我们为每个</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">TaskControBlock</span><br></code></pre></td></tr></table></figure>
+
+<p>中维护</p>
+<ul>
+<li><code>pub task_start: usize,</code> 记录任务第一次开始的时间</li>
+<li><code>pub task_flag: bool,</code> 标志是否为第一次，如果是就是false，然后我们更新<code>task_start</code>，并且将该变量置为false，保证只记录一次start time</li>
+</ul>
+</li>
+</ul>
+<h2 id="lab2"><a href="#lab2" class="headerlink" title="lab2"></a>lab2</h2><p>直接&lt;&lt;12直接这样会报错overflow，但是那个函数确实就是干了这个事情，只是我帮他弄了一把，很奇怪，还是最后用函数了</p>
+<p>taskInfo报错，按照群里大佬这样修改，但不知道为什么这样修改</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">//原</span><br><span class="hljs-keyword">pub</span> <span class="hljs-keyword">fn</span> <span class="hljs-title function_">get_time_us</span>() <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">usize</span> &#123;<br>    time::<span class="hljs-title function_ invoke__">read</span>() / (CLOCK_FREQ / MICRO_PER_SEC)<br>&#125;<br><span class="hljs-comment">//修改为</span><br><span class="hljs-keyword">pub</span> <span class="hljs-keyword">fn</span> <span class="hljs-title function_">get_time_us</span>() <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">usize</span> &#123;<br>    time::<span class="hljs-title function_ invoke__">read</span>() * MICRO_PER_SEC / CLOCK_FREQ<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="疑问"><a href="#疑问" class="headerlink" title="疑问"></a>疑问</h3><ol>
+<li><code>vpn_end</code>计算有问题，len需要/8吗：不需要，因为VA就是取最低39位，不会左移右移啥的</li>
+<li>上取整，如果已经对齐的情况下还会上取整吗：回答，不会的</li>
+</ol>
+<h3 id="bug与问题"><a href="#bug与问题" class="headerlink" title="bug与问题"></a>bug与问题</h3><ol>
+<li>对于判断是否mapped过，只考虑了<code>find_pte</code>不能为<code>None</code>，没有考虑<code>find_pte</code>存在，但是<code>pte.is_valid()</code>不合法这件事，卡了很久，也不好调试</li>
+<li>MapPermission不好进行零初始化，那么就用match，但是match要解决穷尽匹配，我们先把不合法的删去，然后最后一个_只代表<code>6</code>的情况</li>
+<li>对题意理解有问题，在mmap中，我以为如果start和end之间有已经被映射的页，我们还是需要分配len这么长，也就是不error，映射一段不连续的虚拟内存，写了比较复杂，后面才知道直接error</li>
+<li>这章很难debug，看样子甚至是多线程跑测试，所以花费很多时间</li>
+</ol>
+<h2 id="lab3"><a href="#lab3" class="headerlink" title="lab3"></a>lab3</h2><h3 id="继承上一章修改"><a href="#继承上一章修改" class="headerlink" title="继承上一章修改"></a>继承上一章修改</h3><p>今天上下午一直在移植代码，尝试了<code>git cherry-pick</code>试了很久，重置过去重置过来，问了gpt，看了b站，csdn都无果，就是没有合并，只显示reports文件夹有冲突，主要的os没有，遂还是采用<code>git diff</code>打patch的笨方法，冲突太多了，合并了小一个小时。</p>
+<h3 id="修理waitpid"><a href="#修理waitpid" class="headerlink" title="修理waitpid"></a>修理waitpid</h3><p>移植好之后，<code>make run</code>确实能跑了，但是随便输一个就报错，说<code>waitpid</code>清除僵尸进程的引用计数有错，本来应该是1，结果是2，多了一个，debug找不出来，println也没看出来在哪里。仔细想想，找了跟<code>Arc</code>有关的所有代码，可以肯定一件事，模板代码一定没问题，那问题就出在我自己移植过来的代码，最后一个个注释排除法，找到了原来是我自己用了一个Arc没有drop，我以为drop了inner的RefMut就可以了，没想到这个也要drop。为啥这个不会自动drop呢？</p>
+<p>目前还有usertest卡住的问题，再看看。</p>
+<h3 id="spawn"><a href="#spawn" class="headerlink" title="spawn"></a>spawn</h3><p>通过注释发现卡住的原因是spawn的实现有问题，重点在维护父子关系，注意<code>drop</code>的位置</p>
+<ul>
+<li>spawn就是新建一个进程而已，不要想着用fork+exec，之前直接调用fork()和exec()会出问题，也不好调试，于是自己仿照fork内容与exec自己实现</li>
+</ul>
+<h3 id="stride"><a href="#stride" class="headerlink" title="stride"></a>stride</h3><p>stride感觉倒是很简单，根据提示BIG_STRIDE需要大一点，于是把BIG_STRIDE设置为了0x100000，然后每次调度的时候，都要fetch_task，于是在这里找出最小的stride返回，pass的维护在set_piro里面实现，因为prio只会在这里修改</p>
+<h2 id="lab4"><a href="#lab4" class="headerlink" title="lab4"></a>lab4</h2><p>这章我真的心累了，调试了两天，目前还是有一个神奇的bug，我觉得不是我代码的问题</p>
+<p>在<code>ch6_file2</code>里面：我做了如下修改，//后的就是新加入的</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs rust">   <span class="hljs-keyword">let</span> <span class="hljs-variable">test_str</span> = <span class="hljs-string">&quot;Hello, world!&quot;</span>;<br>   <span class="hljs-keyword">let</span> <span class="hljs-variable">fname</span> = <span class="hljs-string">&quot;fname2\0&quot;</span>;<br>   <span class="hljs-keyword">let</span> (lname0, lname1, lname2) = (<span class="hljs-string">&quot;linkname0\0&quot;</span>, <span class="hljs-string">&quot;linkname1\0&quot;</span>, <span class="hljs-string">&quot;linkname2\0&quot;</span>);<br>   <span class="hljs-keyword">let</span> <span class="hljs-variable">fd</span> = <span class="hljs-title function_ invoke__">open</span>(fname, OpenFlags::CREATE | OpenFlags::WRONLY) <span class="hljs-keyword">as</span> <span class="hljs-type">usize</span>;<br><span class="hljs-comment">//</span><br>   <span class="hljs-keyword">let</span> <span class="hljs-variable">fd1</span> = <span class="hljs-title function_ invoke__">open</span>(lname0, OpenFlags::CREATE | OpenFlags::WRONLY) <span class="hljs-keyword">as</span> <span class="hljs-type">usize</span>;<br><span class="hljs-comment">//</span><br>   <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;ok1&quot;</span>);<br>   <span class="hljs-comment">//此处传入的lname0是0x0，为什么</span><br>   <span class="hljs-title function_ invoke__">link</span>(fname, lname0);<br><span class="hljs-comment">//</span><br>   <span class="hljs-built_in">println!</span>(<span class="hljs-string">&quot;ok2&quot;</span>);<br>...<br></code></pre></td></tr></table></figure>
+
+<p>发现在 link(fname, lname0);   //此处传入的lname0是<strong>0x0</strong>，为什么，看运行结果(在open系统调用和link加入了println!打印传入str的地址)，部分结果如下</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">open</span>:<span class="hljs-type">path</span>  <span class="hljs-keyword">is</span> <span class="hljs-number">0x42cd</span><br><span class="hljs-keyword">open</span>:<span class="hljs-type">path</span>  <span class="hljs-keyword">is</span> <span class="hljs-number">0x42d4</span><br>ok1<br>link:<span class="hljs-built_in">old</span> <span class="hljs-type">name</span> addr <span class="hljs-keyword">is</span> <span class="hljs-number">0x42cd</span><br>link:<span class="hljs-built_in">new</span> <span class="hljs-type">name</span> addr is0x0<br>old_name is6 ,new_name is45 <br>[kernel] Panicked at /root/<span class="hljs-number">2023</span>a-rcore-Ywinh/easy-fs/src/layout.rs:<span class="hljs-number">419</span> range <span class="hljs-keyword">end</span> <span class="hljs-keyword">index</span> <span class="hljs-number">45</span> <span class="hljs-keyword">out</span> <span class="hljs-keyword">of</span> range <span class="hljs-keyword">for</span> <span class="hljs-keyword">slice</span> <span class="hljs-keyword">of</span> length <span class="hljs-number">28</span><br></code></pre></td></tr></table></figure>
+
+<p>可以看到<code>lname</code>对应的<code>new name</code>在open里面的地址是<code>0x42d4</code>,但是在link里面是<code>0x0</code>，就是这个bug让我以为我的<code>link</code>出错了，改了一整天，后面copy别人的代码也不行，真的心累了。。请教了群里的一位大佬，还没回我，希望能解决…</p>
+<p>解决！syscall 陷入时参数写错了，这个是 git cherry pick的时候自动覆盖掉了，很坑爹</p>
+<p><strong>自己对于rust的理解还是不够，还是要在实践中多用，但很感谢能通过这个机会锻炼自己~~</strong></p>
+<h1 id="三阶段总结"><a href="#三阶段总结" class="headerlink" title="三阶段总结"></a>三阶段总结</h1><p><strong>调试技巧：使用用户态 qemu 进行对拍</strong></p>
+<p>测例库里编译的测例都是完全符合规范的 <code>RISC-V</code> 可执行程序，所以它当然可以在其他内核上运行。</p>
+<p>如果你还记得，在 <code>rCore-Tutorial</code>的 <code>ch0</code>配环境的时候，安装了 <code>qemu-riscv64</code> 和 <code>qemu-system-riscv64</code>。后者用于运行实验，而前者实际上是一个用户态模拟器。换而言之，它可以直接运行用户态的 <code>RISC-V</code> 程序，我们可以直接把测例文件扔给它。</p>
+<p>例如在 <code>testcases/</code> 目录下执行 <code>qemu-riscv64 ./build/hello</code>，就可以获取正确输出（可以打开 <code>testcases/src/hello.c</code> 看看正确输出长什么样）。</p>
+<p>同样地，也可以执行 <code>qemu-riscv64 ./build/42</code>。这个用户程序在退出时返回了一个 <code>42</code>，不过没有打印输出。但我们可以在上面的命令之后立即执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">echo</span> $?<br></code></pre></td></tr></table></figure>
+
+<p>就可以看到返回值 <code>42</code></p>
+<blockquote>
+<p><code>$?</code> 是一个shell的变量，表示上一条命令的返回值。</p>
+<p>在这个例子中，具体来说是 <code>qemu</code> 的返回值。它执行了我们要求的用户程序，然后把用户程序的返回值作为自己的返回值，推给宿主机。</p>
+</blockquote>
+<p>如此一来，后续我们每次遇到一个新的应用程序，就可以用 <code>qemu-riscv64</code> 进行检查，看看正常的“内核”运行它应该是什么样的，然后来推测我们的内核运行同一个测例时出了什么错。</p>
+<p>我们把这种调试方式叫做“对拍”。</p>
+<h2 id="lab1-1"><a href="#lab1-1" class="headerlink" title="lab1"></a>lab1</h2><h3 id="修改hello测例"><a href="#修改hello测例" class="headerlink" title="修改hello测例"></a>修改hello测例</h3><p>首先运行hello后，发现输出<code>Incorrect argc</code>，点进hello.c里面查看，发现是<code>argc</code>传入不对，结合实验书测例库里面，对于c语言和rCore的用户栈排布不一样，推测应该是这个原因，造成c语言里面传入的argc不是想要的参数</p>
+<p>于是阅读ch7的命令行参数这一章节，了解了sys_exec是如何把命令行参数压入用户栈，以及用户库如何从用户栈上还原命令行参数</p>
+<p>那么接下来就是找出C语言规定栈和rCore栈的区别了，为了方便把指导书上栈展示的顺序从低到高改为从高到低</p>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs prolog">position            content                     size (bytes)<br>  ------------------------------------------------------------------------<br>  stack pointer -&gt;  [ argc = number of args ]     <span class="hljs-number">8</span><br>                    [ argv[<span class="hljs-number">0</span>] (pointer) ]         <span class="hljs-number">8</span> (program name)<br>                    [ argv[<span class="hljs-number">1</span>] (pointer) ]         <span class="hljs-number">8</span><br>                    [ argv[..] (pointer) ]        <span class="hljs-number">8</span> * x<br>                    [ argv[n - <span class="hljs-number">1</span>] (pointer) ]     <span class="hljs-number">8</span><br>                    [ argv[n] (pointer) ]         <span class="hljs-number">8</span>   (= <span class="hljs-symbol">NULL</span>)<br><br>                    [ argv[<span class="hljs-number">0</span>] ]                   &gt;=<span class="hljs-number">0</span> (program name)<br>                    [ <span class="hljs-string">&#x27;\0&#x27;</span> ]                      <span class="hljs-number">1</span><br>                    [ argv[..] ]                  &gt;=<span class="hljs-number">0</span><br>                    [ <span class="hljs-string">&#x27;\0&#x27;</span> ]                      <span class="hljs-number">1</span><br>                    [ argv[n - <span class="hljs-number">1</span>] ]               &gt;=<span class="hljs-number">0</span><br>                    [ <span class="hljs-string">&#x27;\0&#x27;</span> ]                      <span class="hljs-number">1</span><br><br>  ------------------------------------------------------------------------<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202312031458613.png" srcset="/img/loading.gif" lazyload alt="image-20231203145758498"></p>
+<img src="https://rcore-os.cn/rCore-Tutorial-Book-v3/_images/user-stack-cmdargs.png" srcset="/img/loading.gif" lazyload alt="../_images/user-stack-cmdargs.png" style="zoom: 67%;" />
+
+<p>可以发现<strong>黄色部分和蓝色部分顺序是反的</strong>，因此我们思路就有了，找到方法交换这两部分</p>
+<p>修改后代码</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">//首先预留好所有的位置,从后往前预留,其实顺序无关紧要，减去的总数都是一样的</span><br>      <span class="hljs-keyword">for</span> <span class="hljs-variable">i</span> <span class="hljs-keyword">in</span> (<span class="hljs-number">0</span>..args.<span class="hljs-title function_ invoke__">len</span>()).<span class="hljs-title function_ invoke__">rev</span>() &#123;<br>          user_sp -= args[i].<span class="hljs-title function_ invoke__">len</span>() + <span class="hljs-number">1</span>;<br>      &#125;<br>      <span class="hljs-keyword">let</span> <span class="hljs-variable">argv_end</span> = user_sp;<br>      user_sp -= (args.<span class="hljs-title function_ invoke__">len</span>() + <span class="hljs-number">1</span>) * core::mem::size_of::&lt;<span class="hljs-type">usize</span>&gt;();<br>      <span class="hljs-comment">//准备写入，user_sp目前指向argv数组的起始地址</span><br>      <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">argv</span>: <span class="hljs-type">Vec</span>&lt;_&gt; = (<span class="hljs-number">0</span>..=args.<span class="hljs-title function_ invoke__">len</span>())<br>          .<span class="hljs-title function_ invoke__">map</span>(|arg| &#123;<br>              <span class="hljs-title function_ invoke__">translated_refmut</span>(<br>                  new_token,<br>                  (user_sp + arg * core::mem::size_of::&lt;<span class="hljs-type">usize</span>&gt;()) <span class="hljs-keyword">as</span> *<span class="hljs-keyword">mut</span> <span class="hljs-type">usize</span>,<br>              )<br>          &#125;)<br>          .<span class="hljs-title function_ invoke__">collect</span>();<br>      *argv[args.<span class="hljs-title function_ invoke__">len</span>()] = <span class="hljs-number">0</span>;<br><br>      <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">temp_ptr</span> = argv_end;<br>      <span class="hljs-keyword">for</span> <span class="hljs-variable">i</span> <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..args.<span class="hljs-title function_ invoke__">len</span>() &#123;<br>          *argv[i] = temp_ptr;<br>          <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">p</span> = temp_ptr;<br>          <span class="hljs-keyword">for</span> <span class="hljs-variable">c</span> <span class="hljs-keyword">in</span> args[i].<span class="hljs-title function_ invoke__">as_bytes</span>() &#123;<br>              *<span class="hljs-title function_ invoke__">translated_refmut</span>(new_token, p <span class="hljs-keyword">as</span> *<span class="hljs-keyword">mut</span> <span class="hljs-type">u8</span>) = *c;<br>              p += <span class="hljs-number">1</span>;<br>          &#125;<br>          *<span class="hljs-title function_ invoke__">translated_refmut</span>(new_token, p <span class="hljs-keyword">as</span> *<span class="hljs-keyword">mut</span> <span class="hljs-type">u8</span>) = <span class="hljs-number">0</span>;<br>          temp_ptr += args[i].<span class="hljs-title function_ invoke__">len</span>() + <span class="hljs-number">1</span>;<br>      &#125;<br><br>      <span class="hljs-comment">//写入argc</span><br>      user_sp -= core::mem::size_of::&lt;<span class="hljs-type">usize</span>&gt;();<br>      *<span class="hljs-title function_ invoke__">translated_refmut</span>(new_token, user_sp <span class="hljs-keyword">as</span> *<span class="hljs-keyword">mut</span> <span class="hljs-type">isize</span>) = args.<span class="hljs-title function_ invoke__">len</span>() <span class="hljs-keyword">as</span> <span class="hljs-type">isize</span>;<br>...<br>...<br><span class="hljs-comment">// trap_cx.x[11] = argv_base;</span><br>      trap_cx.x[<span class="hljs-number">11</span>] = user_sp + core::mem::size_of::&lt;<span class="hljs-type">usize</span>&gt;();<br></code></pre></td></tr></table></figure>
+
+<p>有一个很重要的点是，不要对齐user_sp，如果对齐了user_sp，那么在传入a1的时候，就不能这样赋值<code>user_sp + core::mem::size_of::&lt;usize&gt;()</code>，对齐后user_sp已经不是最初的版本了，会出现错误，一个解决方式是事先保存，不过rCore上面说不对齐对qemu没有影响，我就先不管了。</p>
+<p><strong>实验结果</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311142342402.png" srcset="/img/loading.gif" lazyload alt="image-20231114234248317"></p>
+<h3 id="问答题：elf与bin的区别"><a href="#问答题：elf与bin的区别" class="headerlink" title="问答题：elf与bin的区别"></a>问答题：elf与bin的区别</h3><figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs smali">ch6_file0.elf: ELF 64-bit LSB executable, UCB RISC-V, RVC,<span class="hljs-built_in"> double-float </span>ABI, version 1 (SYSV),<span class="hljs-keyword"> static</span>ally linked, stripped<br>ch6_file0.bin: data<br></code></pre></td></tr></table></figure>
+
+<p> ELF 格式执行文件经过 <code>objcopy</code> 工具丢掉所有 ELF header 和符号变为二进制镜像文件bin</p>
+<p>elf里面含有不少其他信息，程序头之类的，但是bin里面只有纯数据</p>
+<p>如何使用反汇编：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml">riscv64-linux-musl-objdump <span class="hljs-tag">&lt;<span class="hljs-name">path</span>&gt;</span> -ld &gt; <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>.S<br></code></pre></td></tr></table></figure>
+
+<h2 id="lab2-1"><a href="#lab2-1" class="headerlink" title="lab2"></a>lab2</h2><h3 id="编程作业1：跟着教程做"><a href="#编程作业1：跟着教程做" class="headerlink" title="编程作业1：跟着教程做"></a>编程作业1：跟着教程做</h3><p>主要是要用引入的mod里的用户栈初始函数来替换lab1写的，具体如下，调用几个引入的mod里的api</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">elf</span> = ElfLoader::<span class="hljs-title function_ invoke__">new</span>(elf_data).<span class="hljs-title function_ invoke__">unwrap</span>();<br>user_sp = elf.<span class="hljs-title function_ invoke__">init_stack</span>(new_token, user_sp, args.<span class="hljs-title function_ invoke__">clone</span>());<br></code></pre></td></tr></table></figure>
+
+<h3 id="编程作业2：添加syscall"><a href="#编程作业2：添加syscall" class="headerlink" title="编程作业2：添加syscall"></a>编程作业2：添加syscall</h3><p>根据教程，每步出现<code>Unsupported syscall_id: 29</code>这种报错，我们采用以下步骤初步处理</p>
+<ol>
+<li>在<code>syscall/mod.rs</code>里添加对应的<code>syscall_id</code>常量</li>
+<li>查询对应id的syscall，通过<a target="_blank" rel="noopener" href="https://jborza.com/post/2021-05-11-riscv-linux-syscalls/">此网页</a></li>
+<li>重点关注<code>DESCRIPTION</code>,<code>RETURN VALUE</code>,<code>ERROR</code>，适当取舍实现</li>
+</ol>
+<p>通过报错我们依次处理了三个syscall</p>
+<h4 id="29-sys-ioctl"><a href="#29-sys-ioctl" class="headerlink" title="29 sys_ioctl"></a>29 sys_ioctl</h4><p>尝试直接0返回，但是没有输出<code>hellostd</code>，尝试直接搬过来sys_write，但是失败（不知道怎么实现）</p>
+<p>进汇编看一下调用ioctl的时候，传了哪些参数，因为翻看手册对里面写的<code>request</code>参数感觉很模糊，不知道要干嘛</p>
+<p>在ecall前，传入的参数为</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311151404589.png" srcset="/img/loading.gif" lazyload alt="image-20231115140405483"></p>
+<p>后来发现这个地方<strong>直接0返回就行</strong>，因为我把<code>writev</code>看成了<code>readv</code>，因此输出<code>hellostd</code>这个活应该是在<code>writev</code>这里干的</p>
+<h4 id="66-sys-writev"><a href="#66-sys-writev" class="headerlink" title="66 sys_writev"></a>66 sys_writev</h4><blockquote>
+<p>这里一开始看错了，把66看成了readv，导致全部syscall改完之后，以为唯一需要更改的是ioctl这个，但是无从下手，事实上readv,writev这两个对应的手册就是一样的…</p>
+</blockquote>
+<h5 id="思考过程"><a href="#思考过程" class="headerlink" title="思考过程"></a>思考过程</h5><p>发现直接调用<code>sys_write</code>好像不行，报错</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">xrzr</span>|r~r[kernel] Panicked at src/fs/stdio.rs:<span class="hljs-number">55</span> called `Result::unwrap()` <span class="hljs-literal">on</span> an `Err` value: Utf8Error &#123; valid_up_to: <span class="hljs-number">0</span>, error_len: Some(<span class="hljs-number">1</span>) &#125;<br></code></pre></td></tr></table></figure>
+
+<p>转回去看手册，<code>writev</code>就是从几个地址写入<code>fd</code>，写入<code>iovcnt</code>次，因此思路就是调用<code>iovcnt</code>次<code>sys_write</code>，但是为了保险起见，我还是没有使用嵌套的系统调用，复制粘贴修改了一下<code>sys_write</code>写到<code>sys_writev</code>中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">ssize_t</span> <span class="hljs-title function_">writev</span><span class="hljs-params">(<span class="hljs-type">int</span> fd, <span class="hljs-type">const</span> <span class="hljs-keyword">struct</span> iovec *iov, <span class="hljs-type">int</span> iovcnt)</span>;<br></code></pre></td></tr></table></figure>
+
+<p>去查阅了一下<code>musl</code>源码，全局搜索<code>iovec</code>，得到<code>iovec</code>结构体的定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">STRUCT iovec &#123; <span class="hljs-type">void</span> *iov_base; <span class="hljs-type">size_t</span> iov_len; &#125;;<br></code></pre></td></tr></table></figure>
+
+<p>改写到rust中</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs rust">/os/src/syscall/<span class="hljs-keyword">mod</span>.rs<br><br><span class="hljs-comment">/// Iovec</span><br><span class="hljs-keyword">pub</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">Iovec</span> &#123;<br>    <span class="hljs-comment">/// base addr</span><br>    <span class="hljs-keyword">pub</span> iov_base: *<span class="hljs-keyword">const</span> <span class="hljs-type">u8</span>,<br>    <span class="hljs-comment">/// len</span><br>    <span class="hljs-keyword">pub</span> iov_len: <span class="hljs-type">usize</span>,<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-comment">/// writev syscall</span><br><span class="hljs-keyword">pub</span> <span class="hljs-keyword">fn</span> <span class="hljs-title function_">sys_writev</span>(fd: <span class="hljs-type">usize</span>, buf: *<span class="hljs-keyword">const</span> Iovec, iovcnt: <span class="hljs-type">usize</span>) <span class="hljs-punctuation">-&gt;</span> <span class="hljs-type">isize</span> &#123;<br>    <span class="hljs-comment">// println!(&quot;fd is &#123;&#125;&quot;, fd);</span><br>    <span class="hljs-comment">// println!(&quot;buf is &#123;:?&#125;&quot;, buf);</span><br>    <span class="hljs-comment">// println!(&quot;iovcnt is &#123;&#125;&quot;, iovcnt);</span><br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">token</span> = <span class="hljs-title function_ invoke__">current_user_token</span>();<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">process</span> = <span class="hljs-title function_ invoke__">current_process</span>();<br>    <span class="hljs-keyword">let</span> <span class="hljs-variable">inner</span> = process.<span class="hljs-title function_ invoke__">inner_exclusive_access</span>();<br>    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut </span><span class="hljs-variable">write_num</span> = <span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">if</span> fd &gt;= inner.fd_table.<span class="hljs-title function_ invoke__">len</span>() &#123;<br>        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;<br>    &#125;<br>    <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-variable">Some</span>(file) = &amp;inner.fd_table[fd] &#123;<br>        <span class="hljs-keyword">if</span> !file.<span class="hljs-title function_ invoke__">writable</span>() &#123;<br>            <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;<br>        &#125;<br>        <span class="hljs-keyword">let</span> <span class="hljs-variable">file</span> = file.<span class="hljs-title function_ invoke__">clone</span>();<br>        <span class="hljs-comment">// release current task TCB manually to avoid multi-borrow</span><br>        <span class="hljs-title function_ invoke__">drop</span>(inner);<br>        <span class="hljs-keyword">for</span> <span class="hljs-variable">i</span> <span class="hljs-keyword">in</span> <span class="hljs-number">0</span>..iovcnt &#123;<br>            <span class="hljs-keyword">let</span> <span class="hljs-variable">iov_ptr</span> = <span class="hljs-title function_ invoke__">translated_ref</span>(token, buf.<span class="hljs-title function_ invoke__">wrapping_add</span>(i));<br>            write_num += file.<span class="hljs-title function_ invoke__">write</span>(UserBuffer::<span class="hljs-title function_ invoke__">new</span>(<span class="hljs-title function_ invoke__">translated_byte_buffer</span>(<br>                token,<br>                (*iov_ptr).iov_base,<br>                (*iov_ptr).iov_len,<br>            ))) <span class="hljs-keyword">as</span> <span class="hljs-type">isize</span>;<br>        &#125;<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">return</span> -<span class="hljs-number">1</span>;<br>    &#125;<br>    write_num<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>自己第一次没思考清晰的地方</p>
+<ul>
+<li>在这个函数里面传入了<code>Iovec</code>结构体的指针，这是个虚拟地址，需要先得到它的物理地址才能访问这个结构体里面存的东西，对应<code>translated_ref</code></li>
+<li>结构体内存的是一个虚拟地址和一个usize，因此这个虚拟地址还需要再次翻译才能正确写入，对应<code>translated_byte_buffer</code></li>
+</ul>
+<p><strong>最终结果</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311151608600.png" srcset="/img/loading.gif" lazyload alt="image-20231115160854543"></p>
+<h4 id="94-sys-exitgroup"><a href="#94-sys-exitgroup" class="headerlink" title="94 sys_exitgroup"></a>94 sys_exitgroup</h4><blockquote>
+<p>退出一个进程的所有线程</p>
+</blockquote>
+<p>尝试直接0返回，成功</p>
+<h4 id="问答作业"><a href="#问答作业" class="headerlink" title="问答作业"></a>问答作业</h4><p>options，调用可直接按位或</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311151710134.png" srcset="/img/loading.gif" lazyload alt="image-20231115171046087"></p>
+<h2 id="lab3-1"><a href="#lab3-1" class="headerlink" title="lab3"></a>lab3</h2><h3 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h3><p><strong>思考题1.1</strong></p>
+<p>cargo缓存比如log库的代码在：</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/root/</span>.cargo<span class="hljs-regexp">/registry/</span>src<span class="hljs-regexp">/mirrors.ustc.edu.cn-61ef6e0cd06fb9b8/</span>log-<span class="hljs-number">0.4</span>.<span class="hljs-number">20</span>/src<br></code></pre></td></tr></table></figure>
+
+<p><strong>思考题1.2</strong>：如果忘记 <code>make clean</code> 会发生什么？</p>
+<p>不会panic，而是make run成功</p>
+<p><strong>思考题2</strong>：在<a target="_blank" rel="noopener" href="https://scpointer.github.io/rcore2oscomp/docs/lab3/before.html">部分往届内核及运行指引</a> 一节提到的内核中挑选一个，描述它在默认情况下启动后会执行哪些测例（抑或是直接启动终端）。</p>
+<p>选择的<a target="_blank" rel="noopener" href="https://github.com/greenhandzpx/Titanix">Titanix</a></p>
+<p>首先看了下readme，得知<code>make run</code>之后会进入busybox的shell，因此第一个应该就是busybox</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311191437705.png" srcset="/img/loading.gif" lazyload alt="image-20231119143736590"></p>
+<p>测试用例</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311191438324.png" srcset="/img/loading.gif" lazyload alt="image-20231119143810275"></p>
+<p><strong>思考题3.1</strong>：为什么要在开头结尾各输出一句，会不会太过重复？（提示：考虑执行出错的情况，或者 <code>sys_exit</code> ）</p>
+<p>开头的是必须的，可以看到<code>exitgroup</code>每次都是直接退出，没有输出返回值，对比一下图中的两个框</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311211756068.png" srcset="/img/loading.gif" lazyload alt="image-20231121175645028"></p>
+<p><strong>思考题3.2</strong>：为什么要结尾还要输出一遍 <code>syscall</code> 的完整参数，只输出返回值行不行？（提示：考虑像 <code>sys_yield</code> 这样的 <code>syscall</code>）</p>
+<p>yield用于切换进程，让出当前进程的执行权，如果切换到其他进程，参数是会改变的，因此结尾要再输出一遍完整参数</p>
+<h3 id="strace"><a href="#strace" class="headerlink" title="strace"></a>strace</h3><p>使用方法：直接把<code>strace</code>加在要运行的命令之前，就能看到执行命令过程中执行的所有<code>syscall</code></p>
+<p>注意执行strace的路径应该要有执行命令的elf或文件</p>
+<p><code>strace</code> 也可以加一些参数，常用的有</p>
+<ul>
+<li><code>-c</code> 按种类统计 <code>syscall</code> 的执行时间、次数和报错次数。注意，“报错”只是代表返回小于 0 的错误码，不代表用户程序出错。例如检查文件是否不存在时也可以用 <code>sys_openat</code> ，得到 <code>ENOENT</code>（没有此文件）的结果属于“报错”，但这就是我们预期的结果。</li>
+<li><code>-p &lt;PID&gt;</code> 表示指定追踪的进程ID。如果想调试一个大的应用程序，可能会有许多进程共同协作，我们可以指定关心某一个</li>
+<li><code>-t</code> 输出时间信息；<code>-T</code> 显示每次调用的时间</li>
+<li><code>-f</code> 追踪 <code>fork</code>；<code>-F</code> 追踪 <code>fork</code> 和 <code>vfork</code></li>
+<li><code>-e [!]value[,value2]</code>指定要追踪的<code>syscall</code><ul>
+<li>如<code>-e clone,read</code>就是只看<code>sys_clone</code>和<code>sys_read</code></li>
+<li><code>-e \!read</code>表示不看<code>sys_read</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="实验3-1-修复busybox-mv"><a href="#实验3-1-修复busybox-mv" class="headerlink" title="实验3.1 修复busybox mv"></a>实验3.1 修复busybox mv</h3><p>首先捋一下教程里面修复<code>ls</code>的过程</p>
+<ul>
+<li>修改启动侧例，单独分析有问题的<code>ls</code>的输出</li>
+<li>在<code>syscall</code>函数里面，写上<code>error!</code>输出信息（包括：<code>syscall id</code>，<code>args</code>），方便调试</li>
+<li>make run获取错误答案</li>
+<li>调试往届内核错误，应该找Linux的syscall对拍，使用<code>strace</code>，采用在本机调试（涉及具体文件操作？）</li>
+<li>strace获取“标准答案”</li>
+<li>对照找不同，可以依据linux文档找syscall定义</li>
+</ul>
+<p><strong>实验</strong></p>
+<p>首先获取标准答案：</p>
+<p><code>strace busybox mv abc bin/</code></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus">...                            <br><span class="hljs-function"><span class="hljs-title">newfstatat</span><span class="hljs-params">(AT_FDCWD, <span class="hljs-string">&quot;bin/&quot;</span>, &#123;st_mode=S_IFDIR|<span class="hljs-number">0755</span>, st_size=<span class="hljs-number">4096</span>, ...&#125;, <span class="hljs-number">0</span>)</span></span> = <span class="hljs-number">0</span><br><span class="hljs-function"><span class="hljs-title">newfstatat</span><span class="hljs-params">(AT_FDCWD, <span class="hljs-string">&quot;bin/abc&quot;</span>, <span class="hljs-number">0</span>x7ffd45e76cc8, <span class="hljs-number">0</span>)</span></span> = -<span class="hljs-number">1</span> ENOENT (No such file or directory)<br><span class="hljs-function"><span class="hljs-title">rename</span><span class="hljs-params">(<span class="hljs-string">&quot;abc&quot;</span>, <span class="hljs-string">&quot;bin/abc&quot;</span>)</span></span>                = <span class="hljs-number">0</span><br>...<br></code></pre></td></tr></table></figure>
+
+<p><code>make run</code>，题目说是<code>mv</code>的问题，因此只截取了<code>mv</code>片段：</p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs inform7">...<br><span class="hljs-comment">[syscall]</span> id = FSTATAT, args = <span class="hljs-comment">[18446744073709551516, 1073741382, 1073740160, 0, 1073741382, 18446744073709551516]</span>, entry<br><span class="hljs-keyword">Is</span> a directory<br><span class="hljs-comment">[syscall]</span> id = 79, args = <span class="hljs-comment">[18446744073709551516, 1073741382, 1073740160, 0, 1073741382, 18446744073709551516]</span>, return 0<br><span class="hljs-comment">[syscall]</span> id = BRK, args = <span class="hljs-comment">[0, 64, 1458528, 0, 1457024, 4096]</span>, entry<br><span class="hljs-comment">[syscall]</span> id = 214, args = <span class="hljs-comment">[0, 64, 1458528, 0, 1457024, 4096]</span>, return 1067450368<br><span class="hljs-comment">[syscall]</span> id = MMAP, args = <span class="hljs-comment">[0, 4096, 3, 34, 18446744073709551615, 0]</span>, entry<br><span class="hljs-comment">[syscall]</span> id = 222, args = <span class="hljs-comment">[0, 4096, 3, 34, 18446744073709551615, 0]</span>, return 4096<br><br><span class="hljs-comment">[syscall]</span> id = FSTATAT, args = <span class="hljs-comment">[18446744073709551516, 4128, 1073740160, 0, 4128, 18446744073709551516]</span>, entry<br><span class="hljs-comment">[syscall]</span> id = 79, args = <span class="hljs-comment">[18446744073709551516, 4128, 1073740160, 0, 4128, 18446744073709551516]</span>, return -64<br><br><span class="hljs-comment">[syscall]</span> id = WRITE, args = <span class="hljs-comment">[2, 1073740112, 47, 0, 0, 0]</span>, entry<br>mv: can&#x27;t stat &#x27;bin/abc&#x27;: No error information<br><span class="hljs-comment">[syscall]</span> id = 64, args = <span class="hljs-comment">[2, 1073740112, 47, 0, 0, 0]</span>, return 47<br>...<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>可以看到中间有个<code>FSTATAT</code>返回了<code>-64</code>，阅读<code>deal_result</code>知道返回值的处理是添加一个<code>-</code>号，因此实际是返回一个64</li>
+</ul>
+<p>make run LOG=debug得到一个error：<code>get stat error: ENONET</code></p>
+<p>应该就是<code>fstatat</code>有问题吧</p>
+<p>根据fstat的debug信息查看一下调用了哪些函数 </p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs gradle">[syscall] id = FSTATAT, args = [<span class="hljs-number">18446744073709551516</span>, <span class="hljs-number">4128</span>, <span class="hljs-number">1073740160</span>, <span class="hljs-number">0</span>, <span class="hljs-number">4128</span>, <span class="hljs-number">18446744073709551516</span>], entry<br>path : <span class="hljs-regexp">/bin/</span>abc<br><span class="hljs-keyword">Into</span> function new_fd, path: <span class="hljs-regexp">/bin/</span>abc<br>open <span class="hljs-keyword">file</span>: <span class="hljs-regexp">/bin/</span>abc <span class="hljs-keyword">READ</span><br>lookup at root: <span class="hljs-regexp">/bin/</span>abc<br>lookup at fatfs: bin/abc<br>get stat error: ENONET<br>[syscall] id = <span class="hljs-number">79</span>, args = [<span class="hljs-number">18446744073709551516</span>, <span class="hljs-number">4128</span>, <span class="hljs-number">1073740160</span>, <span class="hljs-number">0</span>, <span class="hljs-number">4128</span>, <span class="hljs-number">18446744073709551516</span>], <span class="hljs-keyword">return</span> -<span class="hljs-number">64</span><br></code></pre></td></tr></table></figure>
+
+<p><code>get_stat_in_fs</code>一定返回一个err，全局搜索<code>ENONET</code>定位了错误位置，在此修改即可，注意根据调试信息可以知道<code>get stat error</code>出现的位置，防止混淆（因为有多个<code>get stat error</code>）</p>
+<p>依据strace得到正确的返回值应该是<code>-1</code>，但是<code>ENOENT</code>在<code>LinuxError</code>对应的是<code>2</code>呀，根据语义修改为<code>ENOENT</code></p>
+<p>修改后返回值可以对上了，但是<code>mv</code>报错：</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ada">mv: can<span class="hljs-symbol">&#x27;t</span> rename <span class="hljs-symbol">&#x27;abc</span>&#x27;: Operation <span class="hljs-keyword">not</span> permitted<br></code></pre></td></tr></table></figure>
+
+
+
+<p>翻译一下<code>renameat(2)</code>的内容</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">int</span> <span class="hljs-title function_">renameat2</span><span class="hljs-params">(<span class="hljs-type">int</span> olddirfd, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *oldpath,</span><br><span class="hljs-params">                    <span class="hljs-type">int</span> newdirfd, <span class="hljs-type">const</span> <span class="hljs-type">char</span> *newpath, <span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> flags)</span>;<br></code></pre></td></tr></table></figure>
+
+<p><strong>描述</strong></p>
+<ul>
+<li>用于重命名文件，如果需要，可以将文件移动到其他目录。对文件创建的硬链接（使用<code>link(2)</code>创建）不受影响。对于<code>oldpath</code>的打开文件描述符也不受影响。</li>
+<li>如果<code>newpath</code>已经存在，它将被原子性地替换，因此在访问<code>newpath</code>时不会找不到文件的情况。但是，可能存在一个时间窗口，其中<code>oldpath</code>和<code>newpath</code>都引用正在被重命名的文件。</li>
+<li>如果<code>oldpath</code>和<code>newpath</code>是引用同一文件的现有硬链接，则<code>rename()</code>不执行任何操作，并返回成功状态。</li>
+<li>如果<code>newpath</code>存在但由于某种原因操作失败，<code>rename()</code>保证保留<code>newpath</code>的一个实例。</li>
+<li><code>oldpath</code>可以指定一个目录。在这种情况下，<code>newpath</code>要么不存在，要么必须指定为空目录。这个有疑问</li>
+<li>如果<code>oldpath</code>是符号链接，则重命名该链接；如果<code>newpath</code>是符号链接，则将覆盖该链接。</li>
+<li>如果<code>oldpath</code>中给定的路径是相对路径，则它相对于由文件描述符<code>olddirfd</code>引用的目录进行解释（而不是相对于调用进程的当前工作目录，如<code>rename()</code>对于相对路径所做的那样）。如果<code>oldpath</code>是相对路径且<code>olddirfd</code>是特殊值<code>AT_FDCWD</code>，则<code>oldpath</code>相对于调用进程的当前工作目录进行解释</li>
+</ul>
+<p><strong>flags</strong></p>
+<ul>
+<li><p><code>RENAME_EXCHANGE</code>：原子地交换<code>oldpath</code>和<code>newpath</code>。这两个路径必须存在，但可以是不同类型的（例如，一个可能是非空目录，另一个可能是符号链接）。</p>
+</li>
+<li><p><code>RENAME_NOREPLACE</code>：不要覆盖<code>rename</code>的<code>newpath</code>。如果<code>newpath</code>已经存在，则返回错误。<code>RENAME_NOREPLACE</code>不能与<code>RENAME_EXCHANGE</code>一起使用。</p>
+</li>
+<li><p><code>RENAME_WHITEOUT</code>（自Linux 3.18起）：此操作仅对overlay/union文件系统实现有意义。指定<code>RENAME_WHITEOUT</code>会在重命名的源文件同时创建一个”whiteout”对象。整个操作是原子的，因此如果重命名成功，则”whiteout”也将已创建。”Whiteout”是在union/overlay文件系统结构中具有特殊含义的对象。在这些结构中，存在多个层，只有顶层会被修改。在上层的”whiteout”将有效地隐藏下层的匹配文件，使其看起来好像文件不存在。当重命名存在于下层的文件时，首先将文件复制到上层（如果尚未在上层），然后在上层以读写方式重命名。同时，源文件需要被”whiteout”（以使下层的源文件版本变得不可见）。整个操作需要原子执行。在非union/overlay中，”whiteout”显示为带有{0,0}设备号的字符设备。<code>RENAME_WHITEOUT</code>需要与创建设备节点相同的特权（即<code>CAP_MKNOD</code>能力）。<code>RENAME_WHITEOUT</code>不能与<code>RENAME_EXCHANGE</code>一起使用。<code>RENAME_WHITEOUT</code>需要底层文件系统的支持。支持它的文件系统包括tmpfs（自Linux 3.18起）、ext4（自Linux 3.18起）、XFS（自Linux 4.1起）、f2fs（自Linux 4.2起）、btrfs（自Linux 4.7起）和ubifs（自Linux 4.9起）。</p>
+</li>
+</ul>
+<p>把oldpath复制到newpath这里，如果newpath是一个目录，那么就移动到目录下面，如果newpath不是目录，就重命名（可以执行统一的语义：移到 ./newpath ），最后删除oldpath</p>
+<p>看了下<code>rename</code>，如果new存在的话会remove他，代码如下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">let</span> <span class="hljs-variable">rename_flags</span> = RenameFlags::<span class="hljs-title function_ invoke__">from_bits</span>(flags <span class="hljs-keyword">as</span> <span class="hljs-type">u32</span>).<span class="hljs-title function_ invoke__">unwrap</span>();<br> error!(<br>     <span class="hljs-string">&quot;old_path is &#123;&#125;,new_path is &#123;&#125;&quot;</span>,<br>     old_path.<span class="hljs-title function_ invoke__">path</span>(),<br>     new_path.<span class="hljs-title function_ invoke__">path</span>()<br> );<br><br> <span class="hljs-comment">//如果路径不存在，old-&gt;error,new-&gt;分情况讨论</span><br> <span class="hljs-keyword">if</span> !<span class="hljs-title function_ invoke__">path_exists</span>(old_path.<span class="hljs-title function_ invoke__">path</span>()) &#123;<br>     <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Err</span>(SyscallError::EPERM);<br> &#125;<br><br> <span class="hljs-comment">//如果`oldpath`和`newpath`是引用同一文件的现有硬链接，则`rename()`不执行任何操作，并返回成功状态。</span><br> <span class="hljs-keyword">if</span> old_path.<span class="hljs-title function_ invoke__">path</span>() == new_path.<span class="hljs-title function_ invoke__">path</span>() &#123;<br>     <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Ok</span>(<span class="hljs-number">0</span>);<br> &#125;<br><br> <span class="hljs-comment">//如果`newpath`存在但由于某种原因操作失败，`rename()`保证保留`newpath`的一个实例。</span><br><br> <span class="hljs-comment">//一共四种情况 [file,dir] [file file] [dir file] [dir dir]</span><br> <span class="hljs-comment">//old_path必须存在，new_path有些情况可以不存在，因此old_data不存在直接err</span><br> <span class="hljs-keyword">let</span> <span class="hljs-variable">old_data</span> = <span class="hljs-title function_ invoke__">metadata</span>(old_path.<span class="hljs-title function_ invoke__">path</span>())?;<br> <span class="hljs-keyword">if</span> old_data.<span class="hljs-title function_ invoke__">is_dir</span>() &#123;<br>     <span class="hljs-comment">//`oldpath`可以指定一个目录。在这种情况下，`newpath`要么不存在，要么必须指定为(空)目录。</span><br>     <span class="hljs-keyword">if</span> !<span class="hljs-title function_ invoke__">path_exists</span>(new_path.<span class="hljs-title function_ invoke__">path</span>()) &#123;<br>         <span class="hljs-keyword">let</span> <span class="hljs-variable">_</span> = <span class="hljs-title function_ invoke__">rename</span>(old_path.<span class="hljs-title function_ invoke__">path</span>(), new_path.<span class="hljs-title function_ invoke__">path</span>());<br>     &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-variable">Ok</span>(new_data) = <span class="hljs-title function_ invoke__">metadata</span>(new_path.<span class="hljs-title function_ invoke__">path</span>()) &#123;<br>         <span class="hljs-comment">//todo,空目录如何表达？,考虑flag</span><br>         <span class="hljs-keyword">if</span> new_data.<span class="hljs-title function_ invoke__">is_dir</span>() &#123;<br>             <span class="hljs-keyword">let</span> <span class="hljs-variable">_</span> = <span class="hljs-title function_ invoke__">rename</span>(old_path.<span class="hljs-title function_ invoke__">path</span>(), new_path.<span class="hljs-title function_ invoke__">path</span>());<br>         &#125; <span class="hljs-keyword">else</span> &#123;<br>             <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Err</span>(SyscallError::EPERM);<br>         &#125;<br>     &#125; <span class="hljs-keyword">else</span> &#123;<br>         <span class="hljs-keyword">return</span> <span class="hljs-title function_ invoke__">Err</span>(SyscallError::EPERM);<br>     &#125;<br> &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> old_data.<span class="hljs-title function_ invoke__">is_file</span>() &#123;<br>     <span class="hljs-keyword">let</span> <span class="hljs-variable">_</span> = <span class="hljs-title function_ invoke__">rename</span>(old_path.<span class="hljs-title function_ invoke__">path</span>(), new_path.<span class="hljs-title function_ invoke__">path</span>());<br> &#125;<br><br> <span class="hljs-title function_ invoke__">Ok</span>(<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+
+<p>flag还没有实现，有时间再补上</p>
+<p>得到正确答案：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311211725497.png" srcset="/img/loading.gif" lazyload alt="image-20231121172459332"></p>
+<h3 id="实验3-2"><a href="#实验3-2" class="headerlink" title="实验3.2"></a>实验3.2</h3><p>还是老样子首先和本机标准答案对照：</p>
+<p><code>strace busybox mv bin def</code></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus">...<br><span class="hljs-function"><span class="hljs-title">newfstatat</span><span class="hljs-params">(AT_FDCWD, <span class="hljs-string">&quot;bin&quot;</span>, &#123;st_mode=S_IFDIR|<span class="hljs-number">0755</span>, st_size=<span class="hljs-number">4096</span>, ...&#125;, <span class="hljs-number">0</span>)</span></span> = <span class="hljs-number">0</span><br><span class="hljs-function"><span class="hljs-title">newfstatat</span><span class="hljs-params">(AT_FDCWD, <span class="hljs-string">&quot;bin/def&quot;</span>, <span class="hljs-number">0</span>x7ffe00dec808, <span class="hljs-number">0</span>)</span></span> = -<span class="hljs-number">1</span> ENOENT (No such file or directory)<br><span class="hljs-function"><span class="hljs-title">rename</span><span class="hljs-params">(<span class="hljs-string">&quot;def&quot;</span>, <span class="hljs-string">&quot;bin/def&quot;</span>)</span></span><br>...<br></code></pre></td></tr></table></figure>
+
+<p>Starry内核：</p>
+<p>为了方便调试在<code>renameat2</code>里面加了一句:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs rust">error!(<br>    <span class="hljs-string">&quot;old_path is &#123;&#125;,new_path is &#123;&#125;&quot;</span>,<br>    old_path.<span class="hljs-title function_ invoke__">path</span>(),<br>    new_path.<span class="hljs-title function_ invoke__">path</span>()<br>);<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs inform7"><span class="hljs-comment">[syscall]</span> id = FSTATAT, args = <span class="hljs-comment">[18446744073709551516, 1073741383, 1073740160, 0, 1073741383, 18446744073709551516]</span>, entry<br><span class="hljs-keyword">Is</span> a directory<br><span class="hljs-comment">[syscall]</span> id = 79, args = <span class="hljs-comment">[18446744073709551516, 1073741383, 1073740160, 0, 1073741383,18446744073709551516]</span>, return 0<br><span class="hljs-comment">[syscall]</span> id = FACCESSAT, args = <span class="hljs-comment">[18446744073709551516, 1073741383, 2, 0, 16384, 1073741383]</span>, entry<br><span class="hljs-keyword">Is</span> a directory<br><span class="hljs-comment">[syscall]</span> id = 48, args = <span class="hljs-comment">[18446744073709551516, 1073741383, 2, 0, 16384, 1073741383]</span>, return 0<br><span class="hljs-comment">[syscall]</span> id = RENAMEAT2, args = <span class="hljs-comment">[18446744073709551516, 1073741387, 18446744073709551516, 1073741383, 0, 1073741387]</span>, entry<br>old_path <span class="hljs-keyword">is</span> /def,new_path <span class="hljs-keyword">is</span> /bin<br><span class="hljs-keyword">Is</span> a directory<br>dst file already exist, now remove it<br><span class="hljs-keyword">Is</span> a directory<br><span class="hljs-comment">[AxError::IsADirectory]</span><br><span class="hljs-comment">[syscall]</span> id = 276, args = <span class="hljs-comment">[18446744073709551516, 1073741387, 18446744073709551516, 1073741383, 0, 1073741387]</span>, return 0<br></code></pre></td></tr></table></figure>
+
+<p>可以看到出问题了，应该是错把dir当成file的错误</p>
+<p>与实验<code>3.1</code>的答案对照一下看看</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs vim">[syscall] id = FSTATAT, <span class="hljs-keyword">args</span> = [<span class="hljs-number">18446744073709551516</span>, <span class="hljs-number">4128</span>, <span class="hljs-number">1073740160</span>, <span class="hljs-number">0</span>, <span class="hljs-number">4128</span>, <span class="hljs-number">18446744073709551516</span>], entry<br>[syscall] id = <span class="hljs-number">79</span>, <span class="hljs-keyword">args</span> = [<span class="hljs-number">18446744073709551516</span>, <span class="hljs-number">4128</span>, <span class="hljs-number">1073740160</span>, <span class="hljs-number">0</span>, <span class="hljs-number">4128</span>, <span class="hljs-number">18446744073709551516</span>], <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>[syscall] id = FACCESSAT, <span class="hljs-keyword">args</span> = [<span class="hljs-number">18446744073709551516</span>, <span class="hljs-number">4128</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">16384</span>, <span class="hljs-number">4128</span>], entry<br>[syscall] id = <span class="hljs-number">48</span>, <span class="hljs-keyword">args</span> = [<span class="hljs-number">18446744073709551516</span>, <span class="hljs-number">4128</span>, <span class="hljs-number">2</span>, <span class="hljs-number">0</span>, <span class="hljs-number">16384</span>, <span class="hljs-number">4128</span>], <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br>[syscall] id = RENAMEAT2, <span class="hljs-keyword">args</span> = [<span class="hljs-number">18446744073709551516</span>, <span class="hljs-number">1073741387</span>, <span class="hljs-number">18446744073709551516</span>, <span class="hljs-number">4128</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1073741387</span>], entry<br>old_path <span class="hljs-keyword">is</span> /<span class="hljs-keyword">abc</span>,new_path <span class="hljs-keyword">is</span> /bin/<span class="hljs-keyword">abc</span><br>dst <span class="hljs-keyword">file</span> already exist, now <span class="hljs-built_in">remove</span> it<br>[syscall] id = <span class="hljs-number">276</span>, <span class="hljs-keyword">args</span> = [<span class="hljs-number">18446744073709551516</span>, <span class="hljs-number">1073741387</span>, <span class="hljs-number">18446744073709551516</span>, <span class="hljs-number">4128</span>, <span class="hljs-number">0</span>, <span class="hljs-number">1073741387</span>], <span class="hljs-keyword">return</span> <span class="hljs-number">0</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p>对比发现<code>deal_with_path</code>会预先处理好<code>new_path</code>，对于上一小节实验给出<code>old_path is /abc,new_path is /bin/abc</code>，而对于这节实验给出<code>old_path is /def,new_path is /bin</code></p>
+<p>由于我error!的位置在处理的最前面，因此，就只有<code>deal_with_path</code>会出现这个问题，进入函数，开始修正</p>
+<ul>
+<li><p>首先做了一个小test，发现不可能存在同名的file和dir</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311211725553.png" srcset="/img/loading.gif" lazyload alt="image-20231121172532515"></p>
+</li>
+<li><p>那么是怎么分辨一个没有以<code>/</code>是dir还是file呢，我的想法是首先获取<code>metadata</code>，利用里面的<code>is_dir</code>和<code>is_file</code>来判断，如果满足是目录而且没有以<code>/</code>结尾，手动给他添上</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs rust"><span class="hljs-keyword">if</span> <span class="hljs-keyword">let</span> <span class="hljs-variable">Ok</span>(new_data) = <span class="hljs-title function_ invoke__">metadata</span>(path.<span class="hljs-title function_ invoke__">as_str</span>()) &#123;<br>    <span class="hljs-keyword">if</span> new_data.<span class="hljs-title function_ invoke__">is_dir</span>() &amp;&amp; !path.<span class="hljs-title function_ invoke__">ends_with</span>(<span class="hljs-string">&#x27;/&#x27;</span>) &#123;<br>        path = <span class="hljs-built_in">format!</span>(<span class="hljs-string">&quot;&#123;&#125;/&quot;</span>, path);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><p>可以正确输出</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202311211739021.png" srcset="/img/loading.gif" lazyload alt="image-20231121173905954"></p>
+</li>
+</ul>
+<h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>项目二是ArceOs宏内核，当时选项目二的原因是</p>
+<ol>
+<li>想参加大赛</li>
+<li>从第二阶段的rCore tutorial学习之后，还有一些疑问，想借这个项目巩固一下，同时跨越从教程到自己写内核的鸿沟</li>
+</ol>
+<p>个人觉得收获很大的是调试技巧方面：</p>
+<p>gdb：</p>
+<p>gdb 不支持跨地址空间的查找。它只知道当前能不能访问某个地址（虚拟地址），不会管现在的页表在哪，所以内核调试时经常会遇到因为地址当前无法访问而打不上断点的情况。这时可分为以下情况处理：</p>
+<ol>
+<li><p>把断点打在内核入口，也即 <code>0x80200000</code> 处，然后使用 <code>c</code> 命令跳过去。之后就可以打大部分内核符号的断点了。</p>
+</li>
+<li><p>把断点打在 <code>mm::init()</code> （页表初始化函数）然后使用 <code>c</code> 命令跳过去，再用 <code>n</code> 指令跳过这段流程，就可以打页表中有映射的地址的断点了，例如跳板页 <code>TRAMPOLINE</code>。</p>
+</li>
+<li><p>一般来说，如果想打用户程序的断点，先使用 <code>c</code> 命令，等待程序运行到 <code>user_shell</code> 等待输出的时候，再 <code>ctrl+C</code>，就可以打用户地址空间的断点了。但缺点是此时无法打内核的断点</p>
+</li>
+</ol>
+<p>总的说来，训练营收获很大，从一开始的只是了解了OS的皮毛，或者说书本上的OS知识，再经过第一阶段，从零开始学习了rust的基础，第二阶段亲自上手体验五个实验，细致地体会OS各种核心的概念，中断、虚拟内存、进程切换、多线程、信号等等，然后第三阶段通过AecOS宏内核的学习，了解到OS大赛所需要的部分知识，我的认知确实有短暂地螺旋上升，很谢谢有这样一个平台能学习OS，感谢。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/rust-os/" class="print-no-link">#rust os</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>rCore-Blog</div>
+      <div>http://example.com/2023/12/02/rCore-Blog/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jianhui Yin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>December 2, 2023</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/03/07/makefile/" title="从零到一的makefile">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">从零到一的makefile</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2023/04/03/%E6%95%B0%E8%AE%BA/" title="数论">
+                        <span class="hidden-mobile">数论</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>rain</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
