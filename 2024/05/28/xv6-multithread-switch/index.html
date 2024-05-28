@@ -1,0 +1,833 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jianhui Yin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="xv6任务切换详细分析，可以说是我认为xv6中最难的几个点之一，涉及到很多跳转，锁的运用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="xv6-multithread-switch">
+<meta property="og:url" content="http://example.com/2024/05/28/xv6-multithread-switch/index.html">
+<meta property="og:site_name" content="yinsist">
+<meta property="og:description" content="xv6任务切换详细分析，可以说是我认为xv6中最难的几个点之一，涉及到很多跳转，锁的运用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405281501825.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405281503145.png">
+<meta property="article:published_time" content="2024-05-28T07:00:01.000Z">
+<meta property="article:modified_time" content="2024-05-28T07:03:47.281Z">
+<meta property="article:author" content="Jianhui Yin">
+<meta property="article:tag" content="任务切换">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405281501825.png">
+  
+  
+  
+  <title>xv6-multithread-switch - yinsist</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Yinsist</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="xv6-multithread-switch"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-28 15:00" pubdate>
+          May 28, 2024 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.5k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          38 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">xv6-multithread-switch</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>xv6任务切换详细分析，可以说是我认为xv6中最难的几个点之一，涉及到很多跳转，锁的运用</p>
+<span id="more"></span>
+
+<h1 id="chapter7-多线程"><a href="#chapter7-多线程" class="headerlink" title="chapter7 多线程"></a>chapter7 多线程</h1><blockquote>
+<p>进程和线程在这里好像没有特别做区分？是吗</p>
+<p>一个进程对应一个线程</p>
+<p>Linux，允许在一个用户进程中包含多个线程，进程中的多个线程共享进程的地址空间</p>
+<p>学生提问：我们这里一直在说线程，但是从我看来XV6的实现中，一个进程就只有一个线程，有没有可能一个进程有多个线程？</p>
+<p>Robert教授：我们这里的用词的确有点让人混淆。在XV6中，一个进程要么在用户空间执行指令，要么是在内核空间执行指令，要么它的状态被保存在context和trapframe中，并且没有执行任何指令。这里该怎么称呼它呢？你可以根据自己的喜好来称呼它，对于我来说，每个进程有两个线程，一个用户空间线程，一个内核空间线程，并且存在限制使得一个进程要么运行在用户空间线程，要么为了执行系统调用或者响应中断而运行在内核空间线程 ，但是永远也不会两者同时运行。</p>
+</blockquote>
+<h2 id="线程概述"><a href="#线程概述" class="headerlink" title="线程概述"></a>线程概述</h2><h3 id="为什么需要线程"><a href="#为什么需要线程" class="headerlink" title="为什么需要线程"></a>为什么需要线程</h3><ul>
+<li>有可能计算机需要执行分时复用的任务，例如MIT的公共计算机系统Athena允许多个用户同时登陆一台计算机，并运行各自的进程。</li>
+<li>多线程可以让程序的结构变得简单（比如fork实现素数筛）</li>
+<li>使用多线程可以通过并行运算，在拥有多核CPU的计算机上获得更快的处理速度</li>
+</ul>
+<p>一个线程可以认为是串行执行代码的单元，它<strong>只占用一个CPU</strong>并且以普通的方式一个接一个的执行指令</p>
+<h3 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h3><p>我们可以随时保存线程的状态并暂停线程的运行，并在之后通过恢复状态来恢复线程的运行</p>
+<ul>
+<li>PC寄存器，表示当前线程执行指令的位置</li>
+<li>保存变量的寄存器</li>
+<li>栈（通常来说每个线程都有属于自己的stack）</li>
+</ul>
+<h3 id="线程管理"><a href="#线程管理" class="headerlink" title="线程管理"></a>线程管理</h3><p>我们主要关注一个CPU在多个线程之间来回切换</p>
+<p>多个线程都在这一个地址空间内运行，并且它们可以看到彼此的更新。比如说共享一个地址空间的线程修改了一个变量，共享地址空间的另一个线程可以看到变量的修改。所以当多个线程运行在一个共享地址空间时，我们需要用到锁。</p>
+<p>XV6内核共享了内存，并且XV6支持内核线程的概念，对于每个用户进程都有一个内核线程来执行来自用户进程的系统调用。所有的内核线程都共享了内核内存，所以XV6的内核线程的确会共享内存</p>
+<p>另一方面，XV6还有另外一种线程。每一个用户进程都有独立的内存地址空间，并且包含了一个线程，这个线程控制了用户进程代码指令的执行。所以XV6中的用户线程之间没有共享内存</p>
+<blockquote>
+<p>还有一些其他的方式可以支持在一台计算机上交织的运行多个任务，可以搜索event-driven programming或者state machine</p>
+</blockquote>
+<h2 id="线程调度"><a href="#线程调度" class="headerlink" title="线程调度"></a>线程调度</h2><blockquote>
+<p>主要解决：</p>
+<ol>
+<li>如何实现线程切换，停止一个线程的运行然后启动另一个线程的运行？</li>
+<li>切换线程时涉及到保存和回复线程状态，你要决定哪些信息是必须保存的，在哪里保存？ context上下文，保存在proc或者cpu中</li>
+<li>如何处理运算密集型线程（compute bound thread），这样的线程并不能自愿的出让CPU给其他的线程运行。所以这里需要能从长时间运行的运算密集型线程撤回对于CPU的控制，将其放置于一边，稍后再运行它</li>
+</ol>
+</blockquote>
+<p>如何处理运算密集型线程（我的理解就是长时间占用CPU的线程）：</p>
+<p>利用定时器中断。位于内核的定时器中断处理程序，会自愿的将CPU出让（yield）给线程调度器，并告诉线程调度器说，你可以让一些其他的线程运行了。</p>
+<p>基本流程是，定时器中断将CPU控制权给到内核，内核再自愿的出让CPU</p>
+<p>XV6为<strong>每个CPU</strong>核都创建了一个线程调度器（Scheduler），他本身就是一个线程，不过专门用来调度的。每个线程都运行<code>scheduler</code>函数</p>
+<p>在执行线程调度的时候，操作系统需要能<strong>区分几类线程</strong>：</p>
+<ul>
+<li>RUNNING：当前在CPU上运行的线程</li>
+<li>RUNABLE：一旦CPU有空闲时间就想要运行在CPU上的线程</li>
+<li>SLEEPING：以及不想运行在CPU上的线程，因为这些线程可能在等待I/O或者其他事件</li>
+</ul>
+<p>定时器中断实际上就是把一个RUNNING线程转换成一个RUNABLE线程</p>
+<p>当用户程序在运行时，实际上是用户进程中的一个用户线程在运行</p>
+<p>如果XV6内核决定从一个用户进程a切换到另一个用户进程b</p>
+<ul>
+<li><p>第一个用户进程a通过中断/系统调用等从用户空间陷入内核空间，此时是他对应的内核线程 a’</p>
+</li>
+<li><p>内核线程 a’ 通过swtch函数切换到了调度器线程，调度器线程执行scheduler来寻找要切换到的线程b</p>
+</li>
+<li><p>调度器线程通过swtch函数切换到了另一个用户进程b</p>
+</li>
+<li><p>之后再在第二个进程的内核线程中返回到用户空间的第二个进程，这里返回也是通过恢复trapframe中保存的用户进程状态完成。</p>
+</li>
+</ul>
+<blockquote>
+<p>为什么需要一个调度器线程作为媒介？</p>
+<p>因为我们要执行调度程序scheduler，如果在旧进程的内核栈上执行是不安全的：其他一些核心可能会唤醒进程并运行它，而在两个不同的核心上使用同一个栈将是一场灾难，因此需要一个专门的调度线程专门调度</p>
+</blockquote>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405281501825.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>也就是在XV6中，任何时候都需要经历：</p>
+<ol>
+<li>从一个用户进程切换到另一个用户进程，都需要从第一个用户进程接入到内核中，保存用户进程的状态并运行第一个用户进程的内核线程。</li>
+<li>再从第一个用户进程的内核线程切换到第二个用户进程的内核线程。</li>
+<li>之后，第二个用户进程的内核线程暂停自己，并恢复第二个用户进程的用户寄存器。</li>
+<li>最后返回到第二个用户进程继续执行。</li>
+</ol>
+<p>一个线程切换的例子：</p>
+<p>时钟中断在usertrap中调用了yield -&gt; yield调用sched -&gt; sched调用swtch保存当前上下文，并且切换到调度器线程的上下文 -&gt; 调度器执行调度程序scheduler找到一个可以运行的进程 -&gt; 然后调度器线程swtch到找到的线程 -&gt; 如果找到的这个线程以前执行过，那么他一定也是从swtch这里进入的（因为如果要暂停这个进程需要任务调度使用swtch切换），现在返回也是到他以前调用swtch指令的地方</p>
+<p><strong>以<code>cc</code>切换到<code>ls</code>为例，且<code>ls</code>此前运行过</strong></p>
+<ol>
+<li><p>XV6将<code>cc</code>程序的内核线程的内核寄存器保存在一个<code>context</code>对象中</p>
+</li>
+<li><p>因为要切换到<code>ls</code>程序的内核线程，那么<code>ls</code> 程序现在的状态必然是<code>RUNABLE</code> ，表明<code>ls</code>程序之前运行了一半。这同时也意味着：</p>
+<p>a. <code>ls</code>程序的用户空间状态已经保存在了对应的trapframe中</p>
+<p>b. <code>ls</code>程序的内核线程对应的内核寄存器已经保存在对应的<code>context</code>对象中</p>
+<p>所以接下来，XV6会恢复<code>ls</code>程序的内核线程的<code>context</code>对象，也就是恢复内核线程的寄存器。</p>
+</li>
+<li><p>之后<code>ls</code>会继续在它的内核线程栈上，完成它的中断处理程序</p>
+</li>
+<li><p>恢复<code>ls</code>程序的trapframe中的用户进程状态，返回到用户空间的<code>ls</code>程序中</p>
+</li>
+<li><p>最后恢复执行<code>ls</code></p>
+</li>
+</ol>
+<h3 id="线程切换的核心函数"><a href="#线程切换的核心函数" class="headerlink" title="线程切换的核心函数"></a>线程切换的核心函数</h3><p><code>void swtch(struct context *old, struct context *new)</code>（switch 是C 语言关键字，因此这个函数命名为swtch 来避免冲突）：这是用汇编来写的</p>
+<ul>
+<li><p><code>swtch</code>函数会保存用户进程 P1 对应内核线程的寄存器至<code>context</code>对象。</p>
+<p>所以目前为止有两类寄存器：</p>
+<ul>
+<li>用户寄存器存在<code>trapframe</code>中</li>
+<li>内核线程的寄存器存在<code>context</code>中</li>
+</ul>
+</li>
+<li><p>实现很简单，就是把当前<code>context</code>里面的寄存器保存在以<code>a0(old)</code>为基址的地方，然后从<code>a1(new)</code>里面恢复寄存器的值</p>
+</li>
+<li><p>实际上<code>swtch</code>函数并不是直接从一个内核线程切换到另一个内核线程。XV6中，一个CPU上运行的内核线程可以直接切换到的是这个CPU对应的<strong>调度器线程</strong></p>
+</li>
+<li><p>所以如果我们运行在CPU0，<code>swtch</code>函数会恢复CPU0的调度器线程保存的寄存器和stack pointer，之后就在调度器线程的context下执行schedulder函数中</p>
+<ul>
+<li><p><strong>为什么会跳到scheduler函数</strong>呢，调度器线程的 ra 事先保存的</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202405281503145.png" srcset="/img/loading.gif" lazyload alt="image-20240528150342109"></p>
+<p>调度器线程的ra被设置为了scheduler函数的入口，从而在swtch返回时通过ra跳到了这里</p>
+</li>
+</ul>
+</li>
+<li><p>为什么RISC-V中有32个寄存器，但是swtch函数中只保存并恢复了14个寄存器？</p>
+<blockquote>
+<p>学生回答：因为switch是按照一个普通函数来调用的，对于有些寄存器，swtch函数的调用者默认swtch函数会做修改，所以调用者已经在自己的栈上保存了这些寄存器，当函数返回时，这些寄存器会自动恢复。所以swtch函数里只需要保存Callee Saved Register就行</p>
+</blockquote>
+</li>
+<li><p>为什么swtch函数要用汇编来实现，而不是C语言？</p>
+<p>Robert教授：C语言中很难与寄存器交互。可以肯定的是C语言中没有方法能更改sp、ra寄存器。所以在普通的C语言中很难完成寄存器的存储和加载，唯一的方法就是在C中嵌套汇编语言。所以我们也可以在C函数中内嵌switch中的指令，但是这跟我们直接定义一个汇编函数是一样的。或者说swtch函数中的操作是在C语言的层级之下，所以并不能使用C语言</p>
+</li>
+<li><p>swtch函数是线程切换的核心，但是swtch函数中只有保存寄存器，再加载寄存器的操作。线程除了寄存器以外的还有<a href="###%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81">很多其他状态</a>，它有变量，堆中的数据等等，但是所有的这些数据<strong>都在内存中</strong>，并且会保持不变</p>
+<p>我们没有改变线程的任何栈或者堆数据。所以线程切换的过程中，<strong>处理器中的寄存器是唯一的不稳定状态</strong>，且需要保存并恢复。而所有其他在内存中的数据会保存在内存中不被改变，所以不用特意保存并恢复。我们只是保存并恢复了处理器中的寄存器，因为我们想在新的线程中也使用相同的一组寄存器。</p>
+</li>
+<li><p>值得注意的是，调用swtch之前，都持有<code>p-&gt;lock</code>这个锁，很疑惑，按照常理来说一般获取锁的线程还要负责释放锁，但是这里是swtch了，把释放锁的工作交给切换的线程，why？</p>
+<ul>
+<li><p>因为<code>p-&gt;lock</code>保护进程<code>state</code>和<code>context</code>字段上的不变量，而这些不变量在<code>swtch</code>中执行时不成立</p>
+<ul>
+<li>如果在<code>swtch</code>期间没有保持<code>p-&gt;lock</code>，可能会出现一个问题：在<code>yield</code>将其状态设置为<code>RUNNABLE</code>之后，但在<code>swtch</code>使其停止使用自己的内核栈之前，另一个CPU可能会决定运行该进程（因为他看到这个进程的状态是<code>RUNNABLE</code>）。结果将是两个CPU在同一栈上运行，这是致命的</li>
+</ul>
+</li>
+<li><p>这也是为什么在 forkret 最开头需要 release 锁，锁都是在这里释放的吗？</p>
+</li>
+</ul>
+</li>
+<li><p>考虑调度代码结构的一种方法是，它为每个进程强制维持一个不变量的集合，并在这些不变量不成立时持有<code>p-&gt;lock</code></p>
+</li>
+</ul>
+<p><code>void scheduler(void)</code>：</p>
+<ul>
+<li><p>通过进程表单找到下一个RUNABLE进程P2，然后swtch到这个找到的进程</p>
+<ol>
+<li><p>先保存自己的寄存器到调度器线程的context对象</p>
+</li>
+<li><p>找到进程P2之前保存的context，恢复其中的寄存器</p>
+</li>
+<li><p>因为进程P2在进入RUNABLE状态之前，如刚刚介绍的进程P1一样，必然也调用了swtch函数。所以之前的swtch函数会被恢复，并返回到进程P2所在的系统调用或者中断处理程序中（注，<strong>因为P2进程之前调用swtch函数必然在系统调用或者中断处理程序中</strong>）。</p>
+</li>
+<li><p>不论是系统调用也好中断处理程序也好，在从用户空间进入到内核空间时会保存用户寄存器到trapframe对象。所以当内核程序执行完成之后，trapframe中的用户寄存器会被恢复。</p>
+</li>
+<li><p>最后用户进程P2就恢复运行了。</p>
+</li>
+</ol>
+</li>
+</ul>
+<p><code>void sched(void)</code>：做一些合理性检查，发现异常则panic，然后swtch到当前CPU的调度器线程</p>
+<ul>
+<li>检查：想要放弃CPU的进程必须先获得自己的进程锁<code>p-&gt;lock</code>，并释放它持有的任何其他锁，更新自己的状态（<code>p-&gt;state</code>）</li>
+<li>并检查这些条件的隐含条件：由于锁被持有，中断应该被禁用</li>
+</ul>
+<h3 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h3><p>内核线程总是在<code>sched</code>中放弃其CPU，并总是切换到调度程序中的同一位置，而调度程序（几乎）总是切换到以前调用<code>sched</code>的某个内核线程。在两个线程之间进行这种样式化切换的过程有时被称为<strong>协程</strong>（coroutines），XV6中 sched<code>和</code>scheduler`是彼此的协同程序。</p>
+<p>调度器线程——内核线程的一种</p>
+<ul>
+<li>每一个CPU都有一个完全不同的调度器线程。调度器线程也是一种内核线程，它也有自己的context对象。任何运行在CPU1上的进程，当它决定让出CPU，它都会切换到CPU1对应的调度器线程，并由调度器线程切换到下一个进程。</li>
+<li>每一个调度器线程都有自己独立的栈。这个栈是在<code>entry.S</code>设置的调度器线程栈，即调度器线程运行在CPU对应的bootstack上</li>
+</ul>
+<p>context保存在哪？（每一个内核线程都有一个context对象）</p>
+<ul>
+<li>用户线程对应的内核线程：保存在用户进程对应的proc结构体中</li>
+<li>调度器线程：没有对应的进程和proc结构体，所以调度器线程的context对象保存在cpu结构体中</li>
+</ul>
+<p>在XV6的代码中，context对象总是由swtch函数产生，所以context总是保存了内核线程在执行swtch函数时的状态。当我们在恢复一个内核线程时，对于刚恢复的线程所做的第一件事情就是从之前的swtch函数中返回</p>
+<p>调度器线程调用了swtch函数，但是我们从swtch函数返回时，实际上是返回到了对于swtch的另一个调用，而不是调度器线程中的调用。我们返回到的是pid为4的进程在很久之前对于switch的调用。这里可能会有点让人困惑，但是这就是线程切换的核心。</p>
+<h2 id="xv6线程第一次调用swtch函数"><a href="#xv6线程第一次调用swtch函数" class="headerlink" title="xv6线程第一次调用swtch函数"></a>xv6线程第一次调用swtch函数</h2><p>思考一下swtch函数，实际上是从一个线程对于swtch的调用返回到了另一个线程对于swtch的调用（通过保存的ra）。那么线程第一次调用swtch函数时，需要伪造一个“另一个线程”对于switch的调用，是吧？因为也不能通过swtch函数随机跳到其他代码去。</p>
+<p>那么特别重要的就是ra，swtch通过这个返回</p>
+<p>在创建一个线程时，<code>allocproc</code>会设置好它的pid，trapframe page，user page table，然后是context</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">static</span> <span class="hljs-keyword">struct</span> proc*<br><span class="hljs-title function_">allocproc</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span>&#123;<br>    ...<br>  <span class="hljs-comment">// Set up new context to start executing at forkret,</span><br>  <span class="hljs-comment">// which returns to user space.</span><br>  <span class="hljs-built_in">memset</span>(&amp;p-&gt;context, <span class="hljs-number">0</span>, <span class="hljs-keyword">sizeof</span>(p-&gt;context));<br>  p-&gt;context.ra = (uint64)forkret;<br>  p-&gt;context.sp = p-&gt;kstack + PGSIZE; <br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>可以看到 ra 被设置为了 forkret，说明第一次swtch到这个新的线程时都会返回forkret的开头</p>
+</li>
+<li><p>forkret只会在启动线程的时候以这种看起来奇怪的方式运行</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-type">void</span><br><span class="hljs-title function_">forkret</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-type">static</span> <span class="hljs-type">int</span> first = <span class="hljs-number">1</span>;<br><br>  <span class="hljs-comment">// Still holding p-&gt;lock from scheduler.</span><br>  release(&amp;myproc()-&gt;lock);<br><br>  <span class="hljs-keyword">if</span> (first) &#123;<br>    <span class="hljs-comment">// File system initialization must be run in the context of a</span><br>    <span class="hljs-comment">// regular process (e.g., because it calls sleep), and thus cannot</span><br>    <span class="hljs-comment">// be run from main().</span><br>    first = <span class="hljs-number">0</span>;<br>    fsinit(ROOTDEV);<br>  &#125;<br><br>  usertrapret();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><p>释放调度器之前获取的锁</p>
+</li>
+<li><p>if(first)是什么意思？</p>
+<ul>
+<li>XV6只能在进程的context下执行文件系统操作，比如等待I/O。所以初始化文件系统需要等到我们有了一个进程才能进行。而这一步是在第一次调用forkret时完成的，所以在forkret中才有了if(first)判断</li>
+</ul>
+</li>
+<li><p>forkret 其实伪造了我们从usertrapret，使程序看起来像从trap中返回，跳到用户的第一个指令，注意pc需要被设置为0</p>
+</li>
+<li><p>因为fork拷贝的进程会同时拷贝父进程的程序计数器，所以我们唯一不是通过fork创建进程的场景就是创建第一个进程的时候。这时需要设置程序计数器为0</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-comment">// Set up first user process.</span><br><span class="hljs-type">void</span><br><span class="hljs-title function_">userinit</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">proc</span> *<span class="hljs-title">p</span>;</span><br><br>  p = allocproc();<br>  initproc = p;<br>  <br>  <span class="hljs-comment">// allocate one user page and copy initcode&#x27;s instructions</span><br>  <span class="hljs-comment">// and data into it.</span><br>  uvmfirst(p-&gt;pagetable, initcode, <span class="hljs-keyword">sizeof</span>(initcode));<br>  p-&gt;sz = PGSIZE;<br><br>  <span class="hljs-comment">// prepare for the very first &quot;return&quot; from kernel to user.</span><br>  p-&gt;trapframe-&gt;epc = <span class="hljs-number">0</span>;      <span class="hljs-comment">// user program counter</span><br>  p-&gt;trapframe-&gt;sp = PGSIZE;  <span class="hljs-comment">// user stack pointer</span><br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>可以看到把epc设置为了0</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>具体示例可以看<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1rS4y1n7y1/?p=10&vd_source=7a39dbfc457222c1894595f42f7958fd">Lecture 11 - Thread Switching 中文版_哔哩哔哩_bilibili</a></p>
+<p>44分之后</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E4%BB%BB%E5%8A%A1%E5%88%87%E6%8D%A2/" class="print-no-link">#任务切换</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>xv6-multithread-switch</div>
+      <div>http://example.com/2024/05/28/xv6-multithread-switch/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jianhui Yin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>May 28, 2024</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/05/28/xv6-locks/" title="xv6-locks">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">xv6-locks</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/25/latex-in-typora/" title="latex in typora">
+                        <span class="hidden-mobile">latex in typora</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>rain</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
