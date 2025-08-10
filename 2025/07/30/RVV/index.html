@@ -1,0 +1,1316 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Jianhui Yin">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="RISC-V的Vector扩展、架构介绍、intrinsic实战、开发环境配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RVV概念与intrinsic入门">
+<meta property="og:url" content="http://example.com/2025/07/30/RVV/index.html">
+<meta property="og:site_name" content="yinsist">
+<meta property="og:description" content="RISC-V的Vector扩展、架构介绍、intrinsic实战、开发环境配置">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302104026.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302116141.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507292148200.png">
+<meta property="og:image" content="https://img2023.cnblogs.com/blog/2294744/202504/2294744-20250412160758618-110184224.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302131446.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302131543.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302140787.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302143580.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302148770.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302224643.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302201047.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302214608.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302229889.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302251411.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302321023.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302346009.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302355505.png">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202508021311319.png">
+<meta property="article:published_time" content="2025-07-30T03:24:28.000Z">
+<meta property="article:modified_time" content="2025-08-10T15:39:18.839Z">
+<meta property="article:author" content="Jianhui Yin">
+<meta property="article:tag" content="BST">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302104026.png">
+  
+  
+  
+  <title>RVV概念与intrinsic入门 - yinsist</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Yinsist</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>Home</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>Archives</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>Categories</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>Tags</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>About</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="RVV概念与intrinsic入门"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-30 11:24" pubdate>
+          July 30, 2025 am
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.1k words
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          77 mins
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>Table of Contents</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">RVV概念与intrinsic入门</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>RISC-V的Vector扩展、架构介绍、intrinsic实战、开发环境配置</p>
+<span id="more"></span>
+
+<h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><p>参考：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/sureZ-learning/p/18822215">https://www.cnblogs.com/sureZ-learning/p/18822215</a></p>
+<p><strong>环境配置</strong></p>
+<p>需要安装riscv-gnu-toolchain和qemu</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># riscv-gnu-toolchain的安装</span><br><br><span class="hljs-comment"># step1：下载预编译好的包</span><br>$ https://github.com/riscv-collab/riscv-gnu-toolchain<br>选择 riscv64-glibc-ubuntu-22.04-gcc-nightly-2025.01.20-nightly.tar.xz<br><br><span class="hljs-comment"># step2：解压并配置工具链路径</span><br>$ tar -xvf riscv64-glibc-ubuntu-22.04-gcc-nightly-2025.01.20-nightly.tar.xz<br><span class="hljs-built_in">export</span> PATH=/xxx/:<span class="hljs-variable">$PATH</span><br></code></pre></td></tr></table></figure>
+
+<p>qemu没有预编译好的版本，需要自己手动编译，为了方便，这里我们选择qemu-user模式。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs sh">$ sudo apt-get install -y build-essential pkg-config libglib2.0-dev zlib1g-dev libpixman-1-dev autoconf automake libtool bison flex texinfo gcc g++ git<br><br>$ git <span class="hljs-built_in">clone</span> -b stable-9.0 https://github.com/qemu/qemu.git<br>$ <span class="hljs-built_in">cd</span> qemu<br><br>$ <span class="hljs-built_in">mkdir</span> build &amp;&amp; <span class="hljs-built_in">cd</span> build<br><br>$ ../configure --prefix=/path/to/qemu/build/linux_qemu --disable-pa --disable-linux-aio --disable-rbd --disable-vnc --disable-sdl --disable-sdl-image --target-list=riscv64-linux-user<br><br>$ make -j<br><br><span class="hljs-comment"># 在 qemu/build 路径下生成 qemu-riscv64  </span><br><span class="hljs-comment"># 配置工具链路径</span><br>$ <span class="hljs-built_in">export</span> PATH=/path/to/qemu/build/:<span class="hljs-variable">$PATH</span><br><br><span class="hljs-comment"># 测试</span><br>$ ./qemu-riscv64 --version<br>qemu-riscv64 version 9.0.4 (v9.0.4)<br>Copyright (c) 2003-2024 Fabrice Bellard and the QEMU Project developers<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>编译：</strong></p>
+<p>使用如下命令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sh">riscv64-unknown-linux-gnu-gcc -march=rv64imafdcv -mabi=lp64d *.c -o vadd_example.elf -lm -static -O2 -g<br></code></pre></td></tr></table></figure>
+
+<p>其中，<code>-march=rv64imafdcv</code> 中的v表示支持RVV</p>
+<p><strong>运行：</strong></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-regexp">/root/</span>qemu<span class="hljs-regexp">/bin/</span>qemu-riscv64 -cpu rv64,g=<span class="hljs-keyword">true</span>,c=<span class="hljs-keyword">true</span>,v=<span class="hljs-keyword">true</span>,vlen=<span class="hljs-number">128</span>,elen=<span class="hljs-number">64</span>,vext_spec=v1.<span class="hljs-number">0</span> ./vadd_example.elf<br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="学习资料合集"><a href="#学习资料合集" class="headerlink" title="学习资料合集"></a><strong>学习资料合集</strong></h1><p>RVV指令集</p>
+<ul>
+<li><p>手册：RISC-V “V” Vector Extension Version</p>
+</li>
+<li><p>分享会介绍：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1U18jzDEuW/?vd_source=7a39dbfc457222c1894595f42f7958fd">https://www.bilibili.com/video/BV1U18jzDEuW/?vd_source=7a39dbfc457222c1894595f42f7958fd</a></p>
+</li>
+<li><p>RVV专栏博客：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/sureZ-learning/category/2453794.html">https://www.cnblogs.com/sureZ-learning/category/2453794.html</a></p>
+</li>
+<li><p>简短但清晰的介绍：<a target="_blank" rel="noopener" href="https://fprox.substack.com/p/risc-v-vector-in-a-nutshell">https://fprox.substack.com/p/risc-v-vector-in-a-nutshell</a></p>
+</li>
+<li><p>快速体验RVV：<a target="_blank" rel="noopener" href="https://youtu.be/Ozj_xU0rSyY?si=_45RpCPw3JheZMnm">https://youtu.be/Ozj_xU0rSyY?si=_45RpCPw3JheZMnm</a></p>
+<blockquote>
+<p>观后感：</p>
+<ul>
+<li>RVV的意义：SIMD允许在一条指令中，对多个数据执行相同的操作</li>
+<li>类比一次烤一个饼干，一次用大托盘烤几十个饼干（矢量处理）；固定长度的vector register类似于固定大小的烤盘</li>
+<li>x86使用固定长度，随着时间推移，逐渐增加了更大的版本（1997：MMX 64bits，1999：SSE 128bits，2008：AVX 256 bits，2013：AVX 512 bits）；这样有一个问题，为了向后兼容，后面的设计也会涵盖前面所有的设计，这会使得硬件相当复杂；而RV使用长度不固定的寄存器，也就是我们可以调整到任何尺寸的托盘</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p>RVV intrinsic编程</p>
+<ul>
+<li>RVV intrinsic api查询：<a target="_blank" rel="noopener" href="https://dzaima.github.io/intrinsics-viewer/#riscv">https://dzaima.github.io/intrinsics-viewer/#riscv</a></li>
+<li>RVV intrinsic文档：<a target="_blank" rel="noopener" href="https://github.com/riscv-non-isa/rvv-intrinsic-doc">https://github.com/riscv-non-isa/rvv-intrinsic-doc</a></li>
+</ul>
+<hr>
+<h1 id="1-RVV常用缩略词"><a href="#1-RVV常用缩略词" class="headerlink" title="1.  RVV常用缩略词"></a>1.  RVV常用缩略词</h1><p>以下表格参考自：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/sureZ-learning/p/18822201">https://www.cnblogs.com/sureZ-learning/p/18822201</a></p>
+<table>
+<thead>
+<tr>
+<th>单词缩写</th>
+<th>全称</th>
+<th>含义</th>
+<th>约束</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VLEN</td>
+<td>Vector Length in bits</td>
+<td>向量寄存器长度，单位bits</td>
+<td>VLEN≥ELEN；VLEN必须是2的幂，且VLEN &lt;= 65536（即2^16^）</td>
+</tr>
+<tr>
+<td>ELEN</td>
+<td>Element Length</td>
+<td><strong>最大</strong>元素宽度，单位bits，常见的ELEN=32 和 ELEN=64，即最大元素宽度就是XLEN值</td>
+<td>ELEN &gt;= 8，且ELEN是2的幂</td>
+</tr>
+<tr>
+<td>SEW</td>
+<td>Selected Element Width</td>
+<td>被选中的元素位宽，可以取8/16/32/64</td>
+<td></td>
+</tr>
+<tr>
+<td>EEW</td>
+<td>Effective Element Width</td>
+<td>与SEW类似，<strong>有效的</strong>元素位宽，用于向量操作数。对于加宽指令，目的数据元素的位宽会加宽一倍</td>
+<td></td>
+</tr>
+<tr>
+<td>LMUL</td>
+<td>Vector Length Multiplier</td>
+<td>寄存器组乘系数，表示一个寄存器组由多少个向量寄存器组成</td>
+<td>ELEN * EMUL &gt;= SEW（你选的寄存器组合至少能够放下一个 SEW 大小的元素）</td>
+</tr>
+<tr>
+<td>EMUL</td>
+<td>Effective Element Width</td>
+<td>与LMUL类似，表示<strong>有效</strong>寄存器组乘系数，对于加宽指令，目的寄存器组乘系数会加宽一倍</td>
+<td></td>
+</tr>
+<tr>
+<td>AVL</td>
+<td>Application Vector Length</td>
+<td>应用程序向量长度，指的是应用程序希望处理的数据元素总数</td>
+<td></td>
+</tr>
+<tr>
+<td>VL</td>
+<td>Vector Length</td>
+<td>向量长度，<code>vl</code>（Vector Length）是一个关键的控制寄存器，RVV并不能设置<code>vl</code>寄存器的，而是将AVL参数传递给vsetvl指令来设置正确的<code>vl</code>值</td>
+<td></td>
+</tr>
+<tr>
+<td>VLMAX</td>
+<td>Vector MAX Length</td>
+<td>表示VL向量长度的最大值；VLMAX = LMUL*VLEN/SEW</td>
+<td></td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>注意<code>VLEN</code>在芯片设计好之后就是一个确定的值了，如何获取<code>VLEN</code>的值？</p>
+<ul>
+<li>RVV有一个<code>vlenb</code>寄存器，此寄存器存的是<code>VLEN/8</code>的值，读取该寄存器值再乘8就得到<code>VLEN</code></li>
+</ul>
+</li>
+<li><p>未来V扩展可能允许使用多个向量寄存器来保存一个元素，<code>ELEN</code> &gt; <code>VLEN</code>，但当前版本不支持这么做</p>
+</li>
+<li><p><code>SEW</code> <code>EEW</code> <code>LMUL</code> <code>EMUL</code> 这四个参数有如下关系：EEW/EMUL = SEW/LMUL</p>
+<ul>
+<li>一般指令，<code>EEW</code>=<code>SEW</code> 且 <code>EMUL</code>=<code>LMUL</code></li>
+<li>加宽指令，对于源操作数：<code>EEW</code>=<code>SEW</code> 且 <code>EMUL</code>=<code>LMUL</code>， 对于目的操作数：<code>EEW</code>=2 * <code>SEW</code> 且 <code>EMUL</code>= 2 * <code>LMUL</code></li>
+<li>缩减指令，对于源操作数：<code>EEW</code>=2 * <code>SEW</code> 且 <code>EMUL</code>= 2 * <code>LMUL</code>，对于目的操作数：<code>EEW</code>=<code>SEW</code> 且 <code>EMUL</code>=<code>LMUL</code></li>
+</ul>
+</li>
+</ul>
+<p><strong>例子：加宽指令</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302104026.png" srcset="/img/loading.gif" lazyload alt="image-20250730210444955"></p>
+<h1 id="2-RVV编程模型"><a href="#2-RVV编程模型" class="headerlink" title="2. RVV编程模型"></a>2. RVV编程模型</h1><h2 id="2-1RVV状态寄存器"><a href="#2-1RVV状态寄存器" class="headerlink" title="2.1RVV状态寄存器"></a>2.1RVV状态寄存器</h2><h3 id="2-1-1-misa-v字段"><a href="#2-1-1-misa-v字段" class="headerlink" title="2.1.1 misa.v字段"></a>2.1.1 <strong>misa.v字段</strong></h3><p>如果硬件支持V扩展指令，misa寄存器的V字段要置1，如果misa.v=0，说明硬件不支持</p>
+<p>查表可得misa.v字段位于第21位</p>
+<img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302116141.png" srcset="/img/loading.gif" lazyload alt="img" style="zoom: 67%;" />
+
+<p>如何验证：在M态下读misa寄存器，可以进入gdb键入<code>info reg misa</code></p>
+<h3 id="2-1-2-mstatus-10-9"><a href="#2-1-2-mstatus-10-9" class="headerlink" title="2.1.2 mstatus[10:9]"></a>2.1.2 mstatus[10:9]</h3><p><code>mstatus</code>寄存器中的向量上下文状态域（Vector Status, VS）位于<code>mstatus[10:9]</code>。这个VS域可写，指示当前上下文 1）是否使用了V扩展指令集 2）向量寄存器的状态</p>
+<table>
+<thead>
+<tr>
+<th><code>mstatus[10:9]</code></th>
+<th>VS Meaning</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>Off</td>
+<td>表示向量指令集未被启用，尝试执行任何向量指令或访问向量CSR（Control and Status Registers）将导致非法指令异常。</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Initial</td>
+<td>表示向量指令集处于初始状态，这意味着虽然尚未执行任何会改变向量状态的指令，但是可以开始执行这些指令。</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Clean</td>
+<td>表示向量指令集已经被使用过，但目前没有未保存的变化。如果执行了任何更改向量状态的指令，VS会被自动设置为Dirty。</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Dirty</td>
+<td>表示向量指令集已经被使用，并且存在未保存的变化。在这种状态下，必须保存向量寄存器内容才能安全地切换上下文。</td>
+</tr>
+</tbody></table>
+<p>这里涉及到一个状态的转移：</p>
+<ul>
+<li>在VS=Initial 或 Clean状态，执行任何向量指令（包括访问向量CSR寄存器）将会将VS状态置为VS=Dirty状态</li>
+<li>当VS=Dirty时，这通常意味着需要保存向量寄存器的内容，以避免在上下文切换过程中丢失数据。一旦向量状态被正确保存，VS域可以被清零(软件手动清0)，以便其他进程可以安全地使用向量资源。正确保存后就又回到了Clean的状态。</li>
+<li>注意当处于VS=off时使用向量指令，会触发指令异常</li>
+</ul>
+<h3 id="2-1-3-sstatus-和-vsstatus"><a href="#2-1-3-sstatus-和-vsstatus" class="headerlink" title="2.1.3 sstatus 和 vsstatus"></a>2.1.3 sstatus 和 vsstatus</h3><ul>
+<li><code>sstatus</code>寄存器中的向量上下文状态域位于<code>sstatus[10:9]</code>，这个寄存器是<code>mstatus</code>寄存器VS域的映射，作用与<code>mstatus</code>寄存器VS域相同</li>
+<li>在存在Hypervisor扩展的情况下，还有一个类似的<code>vsstatus</code>寄存器，其中也包含了一个VS字段，用于管理第二级虚拟化的向量状态。</li>
+</ul>
+<h2 id="2-2-RVV数据寄存器"><a href="#2-2-RVV数据寄存器" class="headerlink" title="2.2 RVV数据寄存器"></a>2.2 RVV数据寄存器</h2><p>32个向量寄存器（v0-v31），每个寄存器的宽度<strong>固定</strong>，宽度为<code>VLEN</code> bits</p>
+<blockquote>
+<p>我们不是说RVV可以处理变长的数据吗，为什么每个寄存器的宽度又是固定的？</p>
+<p>向量寄存器的数量和 VLEN 在芯片设计时就确定了，这是物理资源，不能在运行时改变。</p>
+<p>变长不是指硬件寄存器的长度变，而是指：1）<strong>处理的数据长度是“逻辑上的可变”</strong> 2）支持不同的 SEW</p>
+<ul>
+<li><p>假设：</p>
+<ul>
+<li><code>VLEN = 128</code></li>
+<li>你想处理 13 个 <code>int16_t</code> 元素（SEW=16）</li>
+</ul>
+<p>此时：</p>
+<ul>
+<li>一个寄存器能放下 <code>128 / 16 = 8</code> 个元素</li>
+<li>但你只设置 <code>vl = 13</code>（通过 <code>vsetvl</code> 设置）</li>
+<li>编译器和指令会自动帮你分两轮处理（前 8 个和后 5 个）</li>
+</ul>
+<p>你不需要知道实际有多少个寄存器，<strong>你只写一次循环</strong>，RVV 自动处理长度不对齐问题。</p>
+<p>这就是“<strong>VLA 向量长度不可知编程模型</strong>”的魅力：</p>
+<blockquote>
+<p><strong>程序员只写逻辑处理逻辑个数，底层硬件决定怎么执行。</strong></p>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<h2 id="2-3-RVV-CSR寄存器"><a href="#2-3-RVV-CSR寄存器" class="headerlink" title="2.3 RVV CSR寄存器"></a>2.3 RVV CSR寄存器</h2><p>7个 unprivileged CSRs (vstart, vxsat, vxrm, vcsr, vtype, vl, vlenb) <img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507292148200.png" srcset="/img/loading.gif" lazyload alt="image-20250729214820145"></p>
+<p>整体的描述如下：</p>
+<table>
+<thead>
+<tr>
+<th>寄存器名字</th>
+<th>寄存器描述</th>
+<th>寄存器的位域</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>vstart</strong></td>
+<td>用来指示第一个参与运算的元素索引</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>vxsat</strong></td>
+<td>用来表示向量定点饱和标志</td>
+<td>目前只用了一位，vxsat[0]：用于指示定点指令是否做饱和处理；其他XLEN-1位为0（vxsat[XLEN-1:1]为0）</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>vxrm</strong></td>
+<td>用来表示向量定点数舍入模式</td>
+<td><img src="https://img2023.cnblogs.com/blog/2294744/202504/2294744-20250412160758618-110184224.png" srcset="/img/loading.gif" lazyload alt="vxrm_reg"></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>vcsr</strong></td>
+<td>向量状态控制寄存器，目前包含<code>vxsat</code>与<code>vxrm</code>两个寄存器的镜像</td>
+<td><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302131446.png" srcset="/img/loading.gif" lazyload alt="vcsr_reg"></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>vl</strong></td>
+<td>向量长度寄存器，用来记录在向量寄存器中处理的<strong>元素</strong>的数量</td>
+<td></td>
+<td>只能被<code>vsetvl</code>指令或者<code>fault-only-first</code>指令更新</td>
+</tr>
+<tr>
+<td><strong>vtype</strong></td>
+<td>向量元素类型寄存器，用来描述向量寄存器数据元素类型</td>
+<td><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302131543.png" srcset="/img/loading.gif" lazyload alt="vtype_reg"></td>
+<td>只能使用<code>vsetvl</code>指令来动态配置vtype寄存器；<code>vtype</code>寄存器位宽与架构位宽一致</td>
+</tr>
+<tr>
+<td><strong>vlenb</strong></td>
+<td>向量寄存器长度，用来指定一个向量寄存器有多少个<strong>字节</strong></td>
+<td></td>
+<td><code>vsetvl</code>指令需要用到<code>vlenb</code>寄存器，用来计算<code>vl</code> 和 <code>vtype</code></td>
+</tr>
+</tbody></table>
+<p>具体描述：</p>
+<h3 id="vlenb"><a href="#vlenb" class="headerlink" title="vlenb"></a>vlenb</h3><p>如上表格所述</p>
+<h3 id="vl"><a href="#vl" class="headerlink" title="vl"></a>vl</h3><p>如上表格所述</p>
+<h3 id="vstart"><a href="#vstart" class="headerlink" title="vstart"></a>vstart</h3><ul>
+<li>一般情况下，<code>vstart</code>寄存器只能由硬件执行向量指令时写入，软件不需要管。举例：当硬件执行向量指令时遇到中断或异常，硬件可以将已经处理的元素索引写入<code>vstart</code>寄存器，等中断或异常处理完成后，将从<code>vstart</code>开始恢复处理</li>
+<li>所有vector指令都是从<code>vstart</code>中给定的元素索引开始执行，并在执行结束时将vstart CSR重置为零。另外目的寄存器的0-vstart元素采取不打扰策略。</li>
+<li>所有向量指令，包括vset{i}vl{i}，都将vstart CSR<u>重置为零</u>。应用程序不应该修改<code>vstart</code>，当<code>vstart!=0</code>时，一些向量指令可能会引发非法指令异常。</li>
+</ul>
+<p><strong>Prestart部分，Body部分，Tail 部分，Active 元素， Inactive元素：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302140787.png" srcset="/img/loading.gif" lazyload alt="image-20250730214006753"></p>
+<p>注意mask的语义是，每个bit对应一个<strong>元素</strong>，而不是每个bit对应一个bit</p>
+<p>下图摘自:<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/674158689%E3%80%82%E5%85%B7%E4%BD%93%E5%9C%B0%EF%BC%8Cvstart">https://zhuanlan.zhihu.com/p/674158689。具体地，vstart</a>, vl和遮罩向量（mask）控制了如何写到目的位置</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302143580.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>例子：<code>VLEN = 128 bits, SEW = 32, LMUL = 8, vstart = 2</code></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs css">Prestart部分<span class="hljs-selector-attr">[a0,a1]</span><br><span class="hljs-selector-tag">Body</span>部分 <span class="hljs-selector-attr">[a2,a28]</span><br>Tail部分 <span class="hljs-selector-attr">[a29, a31]</span><br><br>其中<span class="hljs-selector-tag">Body</span>部分，可以设置一部分参与运算，一部分不参与运算，由v0寄存器里的<span class="hljs-attribute">mask</span>指定<br>Inactive 元素 <span class="hljs-selector-attr">[a8,a10]</span>, 不参与运算<br>Active 元素 <span class="hljs-selector-attr">[a2-a28除去a8与a10]</span>, 参与运算<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="vtype"><a href="#vtype" class="headerlink" title="vtype"></a>vtype</h3><ul>
+<li>描述向量寄存器中数据元素的类型</li>
+<li>只能使用vsetvl指令来动态配置vtype寄存器</li>
+<li><code>vtype</code>寄存器的位宽与架构的位宽一致</li>
+</ul>
+<p><strong>vtype.vsew字段：</strong></p>
+<p>动态设置数据元素的位宽。目前支持{8, 16, 32, 64}几种位宽。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302148770.png" srcset="/img/loading.gif" lazyload alt="vtype_sew"></p>
+<p>位宽对应C语言变量类型为：</p>
+<table>
+<thead>
+<tr>
+<th>SEW</th>
+<th>对应的C语言类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>8</td>
+<td>i8，u8</td>
+</tr>
+<tr>
+<td>16</td>
+<td>i16，u16，_Float16</td>
+</tr>
+<tr>
+<td>32</td>
+<td>i32，u32，float</td>
+</tr>
+<tr>
+<td>64</td>
+<td>i64，u64，double</td>
+</tr>
+</tbody></table>
+<p><strong>vtype.vlmul字段：</strong></p>
+<p>指示具体多少个向量寄存器为一组；<code>LMUL</code>也可以是一个分数值{1/8，1/4， 1/2}，但是需要满足如下约束条件：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">ELEN * EMUL &gt;= SEW<br></code></pre></td></tr></table></figure>
+
+<p>RVV支持扩宽或缩减指令，意味着向量指令的源操作数和目的操作数可能具有不同的位宽<code>SEW</code>，<strong>但元素个数是相同的</strong>，这意味着源操作数和目的操作数的<code>LMUL</code>可能不一致。具体见之前第一节加宽指令的例子。</p>
+<p>注意：</p>
+<ul>
+<li><p>当<code>LMUL</code> = 2时，寄存器分组的第一个序号Vn必须为2的整数倍；样当<code>LMUL</code> = 4，Vn索引号必须为4的整数倍；同样当<code>LMUL</code> = 8，Vn索引号必须为8的整数倍。</p>
+</li>
+<li><p>当<code>LMUL</code> &lt; 1，意味着只使用单个向量寄存器的一部分。向量寄存器中剩余部分（下图画横线部分）被视为尾部（Tail部分）的一部分，尾部元素必须服从vta设置。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302224643.png" srcset="/img/loading.gif" lazyload alt="image-20250730222449606"></p>
+</li>
+</ul>
+<p><strong>vtype.vma 和 vtype.vta字段：</strong></p>
+<p><code>vta</code>(vector tail agnostic) 表示目标向量寄存器中<code>tail</code>数据元素的处理策略</p>
+<p><code>vma</code>(vector mask agnostic)表示<code>inactive</code>数据元素处理策略</p>
+<p>分为两种策略：</p>
+<ul>
+<li>不打扰策略（undisturbed）： 目标向量寄存器中相应的数据元素保持原值不变</li>
+<li>未知策略（agnostic）：目标向量寄存器中相应的数据元素可以保持原值不变，也可以写入1</li>
+</ul>
+<p>为什么要这样设置，有什么好处？见<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1rjEWzeEGk/?spm_id_from=333.337.search-card.all.click&amp;vd_source=7a39dbfc457222c1894595f42f7958fd">https://www.bilibili.com/video/BV1rjEWzeEGk/?spm_id_from=333.337.search-card.all.click&amp;vd_source=7a39dbfc457222c1894595f42f7958fd</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302201047.png" srcset="/img/loading.gif" lazyload alt="image-20250730220103014"></p>
+<p>反汇编指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs asm">ta # Tail agnostic，即末尾元素未知<br>tu # Tail undisturbed，即末尾元素不打扰<br>ma # Mask agnostic，即非活跃元素未知<br>mu # Mask undisturbed，即非活跃元素不打扰<br>vsetvli t0, a0, e32, m4, ta, ma # Tail agnostic, mask agnostic，即末尾元素未知，非活跃元素未知<br>vsetvli t0, a0, e32, m4, tu, ma # Tail undisturbed, mask agnostic，即末尾元素不打扰，非活跃元素未知<br>vsetvli t0, a0, e32, m4, ta, mu # Tail agnostic, mask undisturbed，即末尾元素未知，非活跃元素不打扰<br>vsetvli t0, a0, e32, m4, tu, mu # Tail undisturbed, mask undisturbed，即末尾元素不打扰，非活跃元素不打扰<br></code></pre></td></tr></table></figure>
+
+<p>注意：在v0.9 之前的spec版本，如果在<code>vsetvl</code>指令中没有指定<code>vta</code>和<code>vma</code>字段，则默认设置为<code>tu</code>和<code>mu</code>，即末尾元素不打扰，非活跃元素不打扰；但在v1.0 spec版本，不指定<code>vta</code>和<code>vma</code>字段的<code>vsetvl</code>指令已经被弃用，现在必需要设置，默认值可能是<code>ta</code>和<code>ma</code>，<u>建议在使用<code>vsetvl</code>指令时明确指定<code>vta</code>和<code>vma</code>字段</u></p>
+<p><strong>vtype.vill字段：</strong></p>
+<p>当<code>vsetvl</code>指令尝试写入一个非法值到<code>vtype</code>寄存器中，<code>vill</code>字段会被置位，之后任何依赖这个<code>vtype</code>寄存器执行的指令都会触发一个非法指令异常。</p>
+<p><code>vill</code>字段被置位时，<code>vtype</code>寄存器中其他XLEN-1位为0</p>
+<p>注意：<code>vsetvl</code> 以及 <code>Vector Load/Store Whole Register</code> 指令不依赖<code>vtype</code>寄存器，也即不受<code>vill</code>置位影响。</p>
+<h3 id="vxsat"><a href="#vxsat" class="headerlink" title="vxsat"></a>vxsat</h3><p>只有第0位有效，其他位都为0；<code>vxsat[0]</code>用于指示定点指令是否做饱和处理；同时<code>vxsat[0]</code>位被镜像到<code>vcsr</code>寄存器中</p>
+<h3 id="vsrm"><a href="#vsrm" class="headerlink" title="vsrm"></a>vsrm</h3><p>[1:0]位有效；<code>vxrm[1:0]</code>用于设置定点计算的rounding模式；<code>vxrm[1:0]</code>也被镜像到<code>vcsr</code>寄存器中</p>
+<p>舍入（rounding）模式的计算公式如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c">roundoff_unsigned(v, d) = (<span class="hljs-type">unsigned</span>(v) &gt;&gt; d) + r<br>roundoff_signed(v, d) = (<span class="hljs-type">signed</span>(v) &gt;&gt; d) + r<br></code></pre></td></tr></table></figure>
+
+<p>其中：<code>v</code> 是输入值，<code>d</code> 是要右移的位数，<code>r</code>由舍入模式决定，<code>r</code>的取值在最后一列，有4种舍入模式：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302214608.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h3 id="vcsr"><a href="#vcsr" class="headerlink" title="vcsr"></a>vcsr</h3><p>目前就仅仅包含<code>vxsat[0]</code>与<code>vxrm[1:0]</code>的镜像</p>
+<h3 id="复位时各CSR寄存器的值"><a href="#复位时各CSR寄存器的值" class="headerlink" title="复位时各CSR寄存器的值"></a>复位时各CSR寄存器的值</h3><ul>
+<li>建议硬件设计在reset时<code>vtype.vill</code>位拉高，<code>vtype</code>寄存器中剩余的位为零，<code>vl</code>被设置为0。</li>
+<li>大多数向量指令在使用时都需要使用<code>vsetvl</code>指令初始化，<code>vsetvl</code>指令会重置<code>vstart</code> <code>vxrm</code> <code>vxsat</code> 寄存器。</li>
+</ul>
+<h2 id="2-4-混合宽度运算"><a href="#2-4-混合宽度运算" class="headerlink" title="2.4 混合宽度运算"></a>2.4 混合宽度运算</h2><p>RVV允许不同宽度也就是不同<code>SEW</code>的元素进行运算，但是需要满足元素个数一致。即只要<code>VLEN*LMUL/SEW</code>相等，由于<code>VLEN</code>是一个常数，即<code>SEW/LMUL</code> 相等</p>
+<p>下图每种分组都可以互相运算</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302229889.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<h1 id="3-向量操作与标量操作"><a href="#3-向量操作与标量操作" class="headerlink" title="3. 向量操作与标量操作"></a>3. 向量操作与标量操作</h1><p>RVV指令分类：LOAD-FP，STORE-FP，向量操作指令OP-V，向量设置指令OP-V</p>
+<p>RVV指令操作分类：一般分为两大类，一类是向量(vector)运算指令，另一类是标量(scalar)运算指令</p>
+<p><strong>向量与标量操作</strong></p>
+<ul>
+<li>向量运算：正对向量寄存器中<u>所有通道</u>的数据<u>同时</u>进行运算</li>
+<li>标量运算：只对向量寄存器中第0个通道（最小编号）的数据或者与通用寄存器进行运算</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>对象</th>
+<th>是否受LMUL参数控制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>标量操作</td>
+<td>立即数，标量寄存器器（x0-x31），浮点寄存器（f0-f31），或向量寄存器的0号元素</td>
+<td>否</td>
+</tr>
+<tr>
+<td>向量操作</td>
+<td>向量寄存器中所有通道的数据、同时</td>
+<td>是</td>
+</tr>
+</tbody></table>
+<p>示例：指令中的<code>x</code>表示通用寄存器，<code>s</code>表示视作标量的向量寄存器组即第0个，<code>v</code>表示向量寄存器组，<code>i</code>表示立即数</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs gcode">标量运算：在标量x寄存器与向量寄存器的元素<span class="hljs-number">0</span>之间传输单个值，不受LMUL参数影响<br>vmv.x.s rd, <span class="hljs-attr">vs2</span> <span class="hljs-attr"># x[rd] = vs2</span>[<span class="hljs-number">0</span>] <span class="hljs-comment">(vs1=0)</span> <br>vmv.s.x vd, rs<span class="hljs-number">1</span> <span class="hljs-attr"># vd[0</span>] = x[rs<span class="hljs-number">1</span>] <span class="hljs-comment">(vs2=0)</span> <br><br>向量运算：对向量寄存器中所有通道的数据同时进行运算，所以受LMUL参数的控制<br>vmv.v.v vd, <span class="hljs-attr">vs1</span> <span class="hljs-attr"># vd[i] = vs1</span>[i] <span class="hljs-attr">vs1</span>中所有通道的元素同时搬移到vd向量寄存器中<br>vmv.v.x vd, rs<span class="hljs-number">1</span> <span class="hljs-attr"># vd[i] = x[rs1</span>] 把通用寄存器rs<span class="hljs-number">1</span>的值同时搬移到vd向量寄存器的所有通道<br>vmv.v.i vd, imm <span class="hljs-attr"># vd[i] = imm 立即数imm同时搬移到vd向量寄存器的所有通道</span><br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>向量操作中的 SEW EEW LMUL EMUL参数</strong></p>
+<p>RVV向量操作都需要设置<code>EEW</code>(有效的元素位宽)和<code>EMUL</code>(有效寄存器组乘系数)。用来确定元素位宽和摆放位置，对于大多数指令<code>EEW</code>=<code>SEW</code>和<code>EMUL</code>=<code>LMUL</code></p>
+<p><strong>注意：</strong> <code>EMUL</code>可以取不同值{1/8, 1/4, 1/2, 1, 2, 4, 8} 表明，向量操作数可能占据一个或多个向量寄存器，但编码中<u>使用编号小的寄存器</u>来指定这个向量寄存器组</p>
+<p>比如：</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs armasm"><span class="hljs-symbol">vmv1r.v</span> <span class="hljs-built_in">v1</span>, <span class="hljs-built_in">v2</span>    # 将<span class="hljs-built_in">v1</span>寄存器内容拷贝到<span class="hljs-built_in">v2</span><br><span class="hljs-symbol">vmv2r.v</span> v10, v12  # 将v10 v11 寄存器内容拷贝到 v11 v12 <br><span class="hljs-symbol">vmv4r.v</span> <span class="hljs-built_in">v4</span>, <span class="hljs-built_in">v8</span>    # 将<span class="hljs-built_in">v4</span> <span class="hljs-built_in">v5</span> <span class="hljs-built_in">v6</span> <span class="hljs-built_in">v7</span> 寄存器内容拷贝到 <span class="hljs-built_in">v8</span> v9 v10 v11<br><span class="hljs-symbol">vmv8r.v</span> v0, <span class="hljs-built_in">v8</span>    # 将v0-<span class="hljs-built_in">v7</span> 寄存器内容拷贝到 <span class="hljs-built_in">v8</span>-v15<br></code></pre></td></tr></table></figure>
+
+<p>向量操作<code>EMUL</code>（或<code>LMUL</code>）满足如下约束：最大组数为8</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">EMUL &lt;= <span class="hljs-number">8</span> (LMUL &lt;= <span class="hljs-number">8</span>)<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong></p>
+<ol>
+<li>Prestart部分不会拷贝到目的寄存器</li>
+<li>Tail 部分是否拷贝到目的寄存器受<code>vta</code>参数控制</li>
+<li>Inactive 元素是否拷贝到目的寄存器受<code>vma</code>参数控制</li>
+</ol>
+<p><strong>向量掩码操作</strong></p>
+<p>向量指令的bit25位<code>vm</code>用来表明是否存在掩码操作。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302251411.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>当向量指令的bit25位<code>vm</code> = 0 代表指令存在掩码操作，<code>vm</code> = 1 表示一般指令（非掩码操作）</p>
+<p>如下汇编指令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs asm">vop.v* v1, v2, v3, v0.t # enabled where v0.mask[i]=1, vm=0<br>vop.v* v1, v2, v3       # unmasked vector operation, vm=1<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>v0.t 表示掩码有效</strong>，其中.t表示ture，当<strong>v0</strong>.mask[i] = 1，控制的第i个元素进行vop操作</li>
+<li>如果没有v0.t掩码，表示不进行掩码操作(vm=1)</li>
+</ul>
+<p><strong>注意：</strong>当前的RVV只支持一个向量掩码寄存器v0</p>
+<h1 id="4-向量设置指令-vset-i-vl-i"><a href="#4-向量设置指令-vset-i-vl-i" class="headerlink" title="4. 向量设置指令 vset{i}vl{i}"></a>4. 向量设置指令 vset{i}vl{i}</h1><p><strong>总结：设置vtype和vl</strong></p>
+<p>应用程序特性将要处理的元素总数（应用程序向量长度或<code>AVL</code>）作为输入，通过vsetvl指令计算，然后将计算得到的结果写入<code>vl</code>寄存器，每次处理<code>vl</code>个元素，迭代继续，直到所有元素都被处理完毕</p>
+<p>RVV 提供3种形式的vsetvl指令用来设置<code>vl</code> 与 <code>vtype</code>寄存器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs asm">vsetvli rd, rs1, vtypei   # rd = new vl, rs1 = AVL, vtypei = new vtype setting<br>vsetivli rd, uimm, vtypei # rd = new vl, uimm = AVL, vtypei = new vtype setting<br>vsetvl rd, rs1, rs2       # rd = new vl, rs1 = AVL, rs2 = new vtype value<br></code></pre></td></tr></table></figure>
+
+<p>总结起来就是<code>vset&#123;i&#125;vl&#123;i&#125;</code>，第一个<code>i</code>表示AVL是不是立即数，第二个<code>i</code>表示<code>vtype</code>是不是立即数</p>
+<p>指令格式：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302321023.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>指令中：</p>
+<ul>
+<li>入参AVL，即指令中的rs1或uimm，表示要处理的元素总数；</li>
+<li>入参vtype，即指令中的vtypei 或 rs2，包含了元素宽度<code>vsew</code> 和 寄存器组乘系数<code>vlmul</code>等参数</li>
+</ul>
+<p>指令完成动作：将vtypei值设置到<code>vtype</code>寄存器，计算得到vl值并写入<code>vl</code>寄存器，</p>
+<ul>
+<li>返回值：将计算的vl值写入rd寄存器返回</li>
+</ul>
+<p><strong>设置vtype</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs asm"> e8  # SEW=8b<br> e16 # SEW=16b<br> e32 # SEW=32b<br> e64 # SEW=64b<br><br> mf8 # LMUL=1/8<br> mf4 # LMUL=1/4<br> mf2 # LMUL=1/2<br> m1  # LMUL=1, assumed if m setting absent<br> m2  # LMUL=2<br> m4  # LMUL=4<br> m8  # LMUL=8<br><br><br>Examples:<br> vsetvli t0, a0, e8               # SEW= 8, LMUL=1<br> vsetvli t0, a0, e8, m2           # SEW= 8, LMUL=2<br> vsetvli t0, a0, e32, mf2         # SEW=32, LMUL=1/2<br> vsetvli t0, a0, e16, m4, ta, ma  # SEW=16, LMUL=4, unmasked, tail-agnostic<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>如果设置不支持vtype值，则<code>vtype</code>中vill位将会被置位，<code>vtype</code>中剩余的其余位被设置为0，<code>vl</code>寄存器也被设置为0</p>
+<p><strong>如何计算<code>vl</code>值</strong></p>
+<p>注意RVV并不是能设置<code>vl</code>寄存器的，而是将AVL参数传递给vsetvl指令来设置正确的<code>vl</code>值</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302346009.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>简单解释如下：</p>
+<ol>
+<li>当rs1 非x0时，AVL = x[rs1]，计算得到vl值，写入<code>vl</code>寄存器，新的vl值也被写入rd寄存器中。</li>
+<li>当rs1 为x0，rd 为非x0时，AVL = ~0，即AVL设置为最大整数值，这样将<u>vlmax</u>写入<code>vl</code>寄存器，新的vl值也被写入rd寄存器中。</li>
+<li>当rs1 rd 都为x0，表示<code>vl</code>值不变，vl值不会更新到rd寄存器中（vtype 可能改变）</li>
+</ol>
+<p><strong>vl与AVL的关系：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c">vl = min(AVL, VLMAX)  <span class="hljs-comment">// 其中VLMAX = LMUL*VLEN/SEW</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+<h1 id="5-向量加载存储指令"><a href="#5-向量加载存储指令" class="headerlink" title="5. 向量加载存储指令"></a>5. 向量加载存储指令</h1><p><strong>RVV优化的关键点是：</strong>数据的布局很重要，SIMD只适合处理规整的数据，我们需要将数据摆放“整齐”，然后进行向量运算。所以需要我们比较熟悉load &amp; store指令。</p>
+<p>指令格式：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202507302355505.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p><strong>RVV优化的关键点是：</strong>数据的布局很重要，SIMD只适合处理规整的数据，我们需要将数据摆放“整齐”，然后进行向量运算。所以需要我们比较熟悉load &amp; store指令。</p>
+<h2 id="5-1RVV-load-amp-store-三种寻址模式"><a href="#5-1RVV-load-amp-store-三种寻址模式" class="headerlink" title="5.1RVV load &amp; store 三种寻址模式"></a>5.1RVV load &amp; store 三种寻址模式</h2><p>RVV load &amp; store 指令支持三种寻址模式，分别为：</p>
+<ul>
+<li>Unit-Stride load &amp; store, 即单位步长的load&amp;store</li>
+<li>Strided load &amp; store, 即跨步长的load&amp;store</li>
+<li>Indexed load &amp; store，即按索引的load &amp; store，也称聚合加载/离散存储模式（gather-load/scatter-store）</li>
+</ul>
+<h3 id="5-1-1单位步长的load-amp-store"><a href="#5-1-1单位步长的load-amp-store" class="headerlink" title="5.1.1单位步长的load&amp;store"></a>5.1.1单位步长的load&amp;store</h3><p>load&amp;store<strong>连续</strong>的内存数据</p>
+<p>指令举例 <code>v[l|e]e[8|16|32|64].v vd, (rs1), vm</code></p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs gcode"><span class="hljs-attr"># vd 表示目的向量寄存器，rs1</span>表示内存基地址, vm 表示掩码操作数 <span class="hljs-comment">(v0.t or 空)</span><br>vle<span class="hljs-number">8.</span>v vd, <span class="hljs-comment">(rs1)</span>, vm  <span class="hljs-attr"># 加载8</span>位宽的数据元素<br>vle<span class="hljs-number">16.</span>v vd, <span class="hljs-comment">(rs1)</span>, vm <span class="hljs-attr"># 加载16</span>位宽的数据元素<br>vle<span class="hljs-number">32.</span>v vd, <span class="hljs-comment">(rs1)</span>, vm <span class="hljs-attr"># 加载32</span>位宽的数据元素<br>vle<span class="hljs-number">64.</span>v vd, <span class="hljs-comment">(rs1)</span>, vm <span class="hljs-attr"># 加载64</span>位宽的数据元素<br><br><span class="hljs-attr"># vs3</span> 表示向量寄存器元素, rs<span class="hljs-number">1</span>表示内存基地址, vm 表示掩码操作数 <span class="hljs-comment">(v0.t or 空)</span><br><span class="hljs-attr">vse8</span>.v <span class="hljs-attr">vs3</span>, <span class="hljs-comment">(rs1)</span>, vm  <span class="hljs-attr"># 存储8</span>位宽的数据元素<br><span class="hljs-attr">vse16</span>.v <span class="hljs-attr">vs3</span>, <span class="hljs-comment">(rs1)</span>, vm <span class="hljs-attr"># 存储16</span>位宽的数据元素<br><span class="hljs-attr">vse32</span>.v <span class="hljs-attr">vs3</span>, <span class="hljs-comment">(rs1)</span>, vm <span class="hljs-attr"># 存储32</span>位宽的数据元素<br><span class="hljs-attr">vse64</span>.v <span class="hljs-attr">vs3</span>, <span class="hljs-comment">(rs1)</span>, vm <span class="hljs-attr"># 存储64</span>位宽的数据元素<br></code></pre></td></tr></table></figure>
+
+<p><strong>intrinsics 示例：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> DATALEN 16</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-type">int32_t</span> vec1[DATALEN] = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>, <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">15</span>, <span class="hljs-number">16</span>&#125;;<br>  <span class="hljs-type">int32_t</span> res[DATALEN] = &#123;<span class="hljs-number">0</span>&#125;;<br><br>  <span class="hljs-type">vint32m4_t</span> vx;<br>  <span class="hljs-type">size_t</span> avl = DATALEN;<br><br>  <span class="hljs-type">size_t</span> vl = __riscv_vsetvl_e32m4(avl);  <span class="hljs-comment">// 设置参数</span><br><br>  vx = __riscv_vle32_v_i32m4(vec1, vl);   <span class="hljs-comment">// load</span><br><br>  __riscv_vse32_v_i32m4 (res, vx, vl);    <span class="hljs-comment">// store数据，可以将vx线性化，顺序装到MEM地址为pDes的地方</span><br>	<br>  <span class="hljs-comment">// 数据打印</span><br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; DATALEN; i++) &#123;<br>  	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d, &quot;</span>, res[i]);<br>  &#125;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\r\n&quot;</span>);<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs log">res[16] = &#123;1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16&#125;;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-1-2-即跨步长的load-amp-store"><a href="#5-1-2-即跨步长的load-amp-store" class="headerlink" title="5.1.2 即跨步长的load&amp;store"></a>5.1.2 即跨步长的load&amp;store</h3><p>跨步长的load&amp;store 指令用来load&amp;store间隔相等步长的内存数据（支持0间距或者步长为负值）。这个步长由 rs2 指定（单位为字节）</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs gcode"><span class="hljs-attr"># Vector strided loads and stores</span><br><span class="hljs-attr"># vd destination, rs1</span> base address, rs<span class="hljs-number">2</span> byte stride<br>vlse<span class="hljs-number">8.</span>v vd, <span class="hljs-comment">(rs1)</span>, rs<span class="hljs-number">2</span>, vm  <span class="hljs-attr"># 8</span>位宽的数据跨步长的load<br>vlse<span class="hljs-number">16.</span>v vd, <span class="hljs-comment">(rs1)</span>, rs<span class="hljs-number">2</span>, vm <span class="hljs-attr"># 16</span>位宽的数据跨步长的load<br>vlse<span class="hljs-number">32.</span>v vd, <span class="hljs-comment">(rs1)</span>, rs<span class="hljs-number">2</span>, vm <span class="hljs-attr"># 32</span>位宽的数据跨步长的load<br>vlse<span class="hljs-number">64.</span>v vd, <span class="hljs-comment">(rs1)</span>, rs<span class="hljs-number">2</span>, vm <span class="hljs-attr"># 64</span>位宽的数据跨步长的load<br><br><span class="hljs-attr"># vs3</span> store data, rs<span class="hljs-number">1</span> base address, rs<span class="hljs-number">2</span> byte stride<br><span class="hljs-attr">vsse8</span>.v <span class="hljs-attr">vs3</span>, <span class="hljs-comment">(rs1)</span>, rs<span class="hljs-number">2</span>, vm  <span class="hljs-attr"># 8</span>位宽的数据跨步长的store<br><span class="hljs-attr">vsse16</span>.v <span class="hljs-attr">vs3</span>, <span class="hljs-comment">(rs1)</span>, rs<span class="hljs-number">2</span>, vm <span class="hljs-attr"># 16</span>位宽的数据跨步长的store<br><span class="hljs-attr">vsse32</span>.v <span class="hljs-attr">vs3</span>, <span class="hljs-comment">(rs1)</span>, rs<span class="hljs-number">2</span>, vm <span class="hljs-attr"># 32</span>位宽的数据跨步长的store<br><span class="hljs-attr">vsse64</span>.v <span class="hljs-attr">vs3</span>, <span class="hljs-comment">(rs1)</span>, rs<span class="hljs-number">2</span>, vm <span class="hljs-attr"># 64</span>位宽的数据跨步长的store<br></code></pre></td></tr></table></figure>
+
+
+
+<p>示例如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> DATALEN 16</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-type">int32_t</span> vec1[DATALEN] = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>, <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">15</span>, <span class="hljs-number">16</span>, &#125;;<br>  <span class="hljs-type">int32_t</span> res[DATALEN] = &#123;<span class="hljs-number">0</span>&#125;;<br><br>  <span class="hljs-type">vint32m4_t</span> vx;<br>  <span class="hljs-type">size_t</span> avl = DATALEN;<br>  <span class="hljs-comment">// 以字节为单位，对于EEW=32bit，bstride = 16 表示跨过4个元素</span><br>  <span class="hljs-type">ptrdiff_t</span> bstride = <span class="hljs-number">16</span>;<br>  <span class="hljs-type">size_t</span> vl = __riscv_vsetvl_e32m4(avl);<br><br>  vx = __riscv_vlse32_v_i32m4(vec1, bstride, vl);<br><br>  __riscv_vse32_v_i32m4 (res, vx, vl);<br><br>  <span class="hljs-comment">// 数据打印</span><br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; DATALEN; i++) &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d, &quot;</span>, res[i]);<br>  &#125;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\r\n&quot;</span>);<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs log">res[4] = &#123;1, 5, 9, 13&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>步长bstride 需设置为 <code>SEW</code> （以字节为单位）的整数倍，否则结果可能不符合预期。可能会截断数据</p>
+<h3 id="5-1-3-按索引的load-amp-store"><a href="#5-1-3-按索引的load-amp-store" class="headerlink" title="5.1.3 按索引的load&amp;store"></a>5.1.3 按索引的load&amp;store</h3><p>可以对指定index的元素进行load&amp;store，指定的index存在一个向量里面，其每一个元素描述装载元素相对起始点的位置，index向量由<code>vs2</code>指定，单位为byte</p>
+<p>使用按索引的load &amp; store有如下几点要注意：</p>
+<ol>
+<li>按索引的load &amp; store 方式，首先需要先load index向量。（这一步是比单位步长和跨步长load多做的，所以按索引的load &amp; store性能是最差）</li>
+<li>index向量描述的是相对起点的偏移，只能是正整数（从intrinsic中的index变量类型为无符号类型可以看出这点）。</li>
+<li>按索引的load &amp; store 可以实现单位步长和跨步长的load&amp;store的效果，但性能是最差的；</li>
+</ol>
+<p>按索引的load &amp; store 支持以下两种形式：</p>
+<ul>
+<li>有序索引(indexed-ordered)：访问内存时按照索引的顺序有序地访问</li>
+<li>无序索引(indexed-unordered)：访问内存时不能保证数据元素的访问顺序</li>
+</ul>
+<p>note: “unordered” only applies to non-idempotent memory (e.g. MMIO), but otherwise the operation is still sequential</p>
+<blockquote>
+<p>默认情况下，这些元素的加载顺序是<strong>按地址顺序进行的</strong>。</p>
+<blockquote>
+<p>但在某些实现中，可以优化为 <strong>无序加载</strong>，以便更高的吞吐量，例如乱序执行或并行访问。</p>
+<p>如果你正在实现某个设备驱动或写操作系统内核（如访问 PLIC、UART 等），<strong>绝对不能用无序 load</strong>。需要显式屏蔽优化，保持顺序</p>
+</blockquote>
+</blockquote>
+<p>指令举例：</p>
+<ul>
+<li>无序索引(indexed-unordered)：访问内存时不能保证数据元素的访问顺序</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Vector indexed loads and stores</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">向量无序load</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">vd destination, rs1 base address, vs2 byte offsets</span><br>vluxei8.v vd, (rs1), vs2, vm  # unordered 8-bit indexed load of SEW data<br>vluxei16.v vd, (rs1), vs2, vm # unordered 16-bit indexed load of SEW data<br>vluxei32.v vd, (rs1), vs2, vm # unordered 32-bit indexed load of SEW data<br>vluxei64.v vd, (rs1), vs2, vm # unordered 64-bit indexed load of SEW data<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">向量有序load</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">vd destination, rs1 base address, vs2 byte offsets</span><br>vloxei8.v vd, (rs1), vs2, vm  # ordered 8-bit indexed load of SEW data<br>vloxei16.v vd, (rs1), vs2, vm # ordered 16-bit indexed load of SEW data<br>vloxei32.v vd, (rs1), vs2, vm # ordered 32-bit indexed load of SEW data<br>vloxei64.v vd, (rs1), vs2, vm # ordered 64-bit indexed load of SEW data<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">向量无序store</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">vs3 store data, rs1 base address, vs2 byte offsets</span><br>vsuxei8.v vs3, (rs1), vs2, vm  # unordered 8-bit indexed store of SEW data<br>vsuxei16.v vs3, (rs1), vs2, vm # unordered 16-bit indexed store of SEW data<br>vsuxei32.v vs3, (rs1), vs2, vm # unordered 32-bit indexed store of SEW data<br>vsuxei64.v vs3, (rs1), vs2, vm # unordered 64-bit indexed store of SEW data<br><span class="hljs-meta prompt_"></span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">向量有序store</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">vs3 store data, rs1 base address, vs2 byte offsets</span><br>vsoxei8.v vs3, (rs1), vs2, vm  # ordered 8-bit indexed store of SEW data<br>vsoxei16.v vs3, (rs1), vs2, vm # ordered 16-bit indexed store of SEW data<br>vsoxei32.v vs3, (rs1), vs2, vm # ordered 32-bit indexed store of SEW data<br></code></pre></td></tr></table></figure>
+
+<p>示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> DATALEN 16</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-type">int</span> vec1[DATALEN] = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>, <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">15</span>, <span class="hljs-number">16</span>&#125;;<br>  <span class="hljs-type">int</span> res[DATALEN] = &#123;<span class="hljs-number">0</span>&#125;;<br><br>  <span class="hljs-type">vint32m4_t</span> vx;<br>  <span class="hljs-type">size_t</span> avl = DATALEN;<br><br>  <span class="hljs-type">vuint32m4_t</span> bindex;<br>  <span class="hljs-comment">// 注意index单位为byte</span><br>  <span class="hljs-type">uint32_t</span> index_table[<span class="hljs-number">4</span>] = &#123;<span class="hljs-number">7</span> * <span class="hljs-number">4</span>, <span class="hljs-number">3</span> * <span class="hljs-number">4</span>, <span class="hljs-number">10</span> * <span class="hljs-number">4</span>, <span class="hljs-number">8</span> * <span class="hljs-number">4</span>&#125;;<br><br>  <span class="hljs-type">size_t</span> vl = __riscv_vsetvl_e32m4(avl);<br><br>  bindex = __riscv_vle32_v_u32m4(index_table, vl);<br><br>  vx = __riscv_vloxei32_v_i32m4(vec1, bindex, vl);<br><br>  __riscv_vse32_v_i32m4 (res, vx, vl);<br><br>  <span class="hljs-comment">// 数据打印</span><br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++) &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d, &quot;</span>, res[i]);<br>  &#125;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\r\n&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs log">8, 4, 11, 9<br><br># vtuple中结构类似<br>&#123;<br>  &#123;vec1[0], vec1[1]&#125;,<br>  &#123;vec1[2], vec1[3]&#125;,<br>  &#123;vec1[4], vec1[5]&#125;,<br>  ...<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-2-RVV-segment-load-amp-store"><a href="#5-2-RVV-segment-load-amp-store" class="headerlink" title="5.2 RVV segment load &amp; store"></a>5.2 RVV segment load &amp; store</h2><p>RVV segment load &amp; store：</p>
+<ul>
+<li>单位步长的Sgement load&amp;store (Sgement Unit-Stride load &amp; store)</li>
+<li>跨步长的Sgement load&amp;store (Sgement Strided load &amp; store)</li>
+<li>按索引的Sgement load &amp; store (Sgement Indexed load &amp; store)</li>
+</ul>
+<h3 id="5-2-1-单位步长的Sgement-load-amp-store"><a href="#5-2-1-单位步长的Sgement-load-amp-store" class="headerlink" title="5.2.1 单位步长的Sgement load&amp;store"></a>5.2.1 单位步长的Sgement load&amp;store</h3><p>nf：分成几个区域（可以理解为结构体里面有多少个元素，如struct {int a; int b}，有两个）</p>
+<p>eew：可以理解为每个元素多少bits</p>
+<p>rs1：base addr</p>
+<p>约束：nf * lmul &lt;= 8</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs gherkin"><span class="hljs-comment"># Format </span><br>vlseg<span class="hljs-variable">&lt;nf&gt;</span>e<span class="hljs-variable">&lt;eew&gt;</span>.v vd, (rs1), vm      <span class="hljs-comment"># Unit-stride segment load template </span><br>vsseg<span class="hljs-variable">&lt;nf&gt;</span>e<span class="hljs-variable">&lt;eew&gt;</span>.v vs3, (rs1), vm     <span class="hljs-comment"># Unit-stride segment store template</span><br> <br><span class="hljs-comment"># Examples </span><br>vlseg8e8.v vd, (rs1), vm   <span class="hljs-comment"># Load eight vector registers with eight byte fields. </span><br>vsseg3e32.v vs3, (rs1), vm  <span class="hljs-comment"># Store packed vector of 3*4-byte segments from vs3,vs3+1,vs3+2 to mem</span><br></code></pre></td></tr></table></figure>
+
+<p>示例如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> DATALEN 16</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-type">int</span> vec1[DATALEN] = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>, <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">15</span>, <span class="hljs-number">16</span>&#125;;<br>  <span class="hljs-type">int</span> res[DATALEN] = &#123;<span class="hljs-number">0</span>&#125;;<br><br>  <span class="hljs-type">size_t</span> avl = <span class="hljs-number">7</span>;<br><br>  <span class="hljs-type">size_t</span> vl = __riscv_vsetvl_e32m4(avl);  <span class="hljs-comment">// 设置参数</span><br><br>  <span class="hljs-type">vint32m4x2_t</span> vtuple = __riscv_vlseg2e32_v_i32m4x2 (vec1, vl);<br>  <br>  <span class="hljs-type">vint32m4_t</span> vx = __riscv_vget_v_i32m4x2_i32m4 (vtuple, <span class="hljs-number">0</span>);<br>  <span class="hljs-type">vint32m4_t</span> vy = __riscv_vget_v_i32m4x2_i32m4 (vtuple, <span class="hljs-number">1</span>);<br>  <br>  <span class="hljs-comment">// 数据打印</span><br>  __riscv_vse32_v_i32m4 (res, vx, vl);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;vx is:\r\n&quot;</span>);<br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">8</span>; i++) &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d, &quot;</span>, res[i]);<br>  &#125;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\r\n&quot;</span>);<br>  <br>  __riscv_vse32_v_i32m4 (res, vy, vl);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;vy is:\r\n&quot;</span>);<br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">8</span>; i++) &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d, &quot;</span>, res[i]);<br>  &#125;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\r\n&quot;</span>);<br> <br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印结果为：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sh"><span class="hljs-comment"># 结果如下，可以实现一次segment load 分奇偶的目的</span><br><span class="hljs-comment"># 15,16没算进来，因为avl为7而不是8</span><br>vx[16] = &#123;1, 3, 5, 7, 9, 11, 13, x&#125;<br>vy[16] = &#123;2, 4, 6, 8, 10, 12, 14, x&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-2-2-跨步长的Sgement-load-amp-store"><a href="#5-2-2-跨步长的Sgement-load-amp-store" class="headerlink" title="5.2.2 跨步长的Sgement load&amp;store"></a>5.2.2 跨步长的Sgement load&amp;store</h3><p>相比5.2.1的单位步长 vlseg 多了一个rs2：代表byte-offset，单位为字节</p>
+<p>注意load和store的单位是bytes，而不是c语言中的int &amp;这种，在+1时两种方式有区别</p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs gherkin"><span class="hljs-comment"># Format </span><br>vlsseg<span class="hljs-variable">&lt;nf&gt;</span>e<span class="hljs-variable">&lt;eew&gt;</span>.v vd, (rs1), rs2, vm          <span class="hljs-comment"># Strided segment loads </span><br>vssseg<span class="hljs-variable">&lt;nf&gt;</span>e<span class="hljs-variable">&lt;eew&gt;</span>.v vs3, (rs1), rs2, vm         <span class="hljs-comment"># Strided segment stores </span><br><br><span class="hljs-comment"># Examples </span><br>vsetvli a1, t0, e8, ta, ma <br>vlsseg3e8.v v4, (x5), x6   <span class="hljs-comment"># Load bytes at addresses x5+i*x6   into v4[i], </span><br><span class="hljs-comment">#  and bytes at addresses x5+i*x6+1 into v5[i], </span><br><span class="hljs-comment">#  and bytes at addresses x5+i*x6+2 into v6[i]. </span><br><br><span class="hljs-comment"># Examples </span><br>vsetvli a1, t0, e32, ta, ma <br>vssseg2e32.v v2, (x5), x6   <span class="hljs-comment"># Store words from v2[i] to address x5+i*x6 </span><br><span class="hljs-comment">#   and words from v3[i] to address x5+i*x6+4</span><br></code></pre></td></tr></table></figure>
+
+<p>示例如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> DATALEN 16</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-type">int</span> vec1[DATALEN] = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>, <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">15</span>, <span class="hljs-number">16</span>&#125;;<br>  <span class="hljs-type">int</span> res[DATALEN] = &#123;<span class="hljs-number">0</span>&#125;;<br><br>  <span class="hljs-type">size_t</span> avl = <span class="hljs-number">10</span>;<br><br>  <span class="hljs-type">size_t</span> vl = __riscv_vsetvl_e32m4(avl);  <span class="hljs-comment">// 设置参数</span><br>  <br>  <span class="hljs-type">ptrdiff_t</span> bstride = <span class="hljs-number">4</span>; <span class="hljs-comment">// 一个int32元素步长</span><br>  <span class="hljs-type">vint32m4x2_t</span> vtuple = __riscv_vlsseg2e32_v_i32m4x2 (vec1, bstride, vl);<br>  <br>  <span class="hljs-type">vint32m4_t</span> vx = __riscv_vget_v_i32m4x2_i32m4 (vtuple, <span class="hljs-number">0</span>);<br>  <span class="hljs-type">vint32m4_t</span> vy = __riscv_vget_v_i32m4x2_i32m4 (vtuple, <span class="hljs-number">1</span>);<br>  <br>  <span class="hljs-comment">// 数据打印</span><br>  __riscv_vse32_v_i32m4 (res, vx, vl);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;vx is:\r\n&quot;</span>);<br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; avl; i++) &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d, &quot;</span>, res[i]);<br>  &#125;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\r\n&quot;</span>);<br>  <br>  __riscv_vse32_v_i32m4 (res, vy, vl);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;vy is:\r\n&quot;</span>);<br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; avl; i++) &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d, &quot;</span>, res[i]);<br>  &#125;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\r\n&quot;</span>);<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs log">vx[16] = &#123;1, 2, 3, 4, 5, 6, 7, 8, 9, 10&#125;<br>vy[16] = &#123;2, 3, 4, 5, 6, 7, 8, 9, 10, 11&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-2-3-按索引的Sgement-load-amp-store"><a href="#5-2-3-按索引的Sgement-load-amp-store" class="headerlink" title="5.2.3 按索引的Sgement load &amp; store"></a>5.2.3 按索引的Sgement load &amp; store</h3><p>指令格式</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Format</span><br>vluxseg&lt;nf&gt;ei&lt;eew&gt;.v vd, (rs1), vs2, vm # Indexed-unordered segment loads<br>vloxseg&lt;nf&gt;ei&lt;eew&gt;.v vd, (rs1), vs2, vm # Indexed-ordered segment loads<br>vsuxseg&lt;nf&gt;ei&lt;eew&gt;.v vs3, (rs1), vs2, vm # Indexed-unordered segment stores<br>vsoxseg&lt;nf&gt;ei&lt;eew&gt;.v vs3, (rs1), vs2, vm # Indexed-ordered segment stores<br><span class="hljs-meta prompt_"># </span><span class="language-bash">Examples</span><br>vsetvli a1, t0, e8, ta, ma<br>vluxseg3ei32.v v4, (x5), v3 # Load bytes at addresses x5+v3[i] into v4[i],<br><span class="hljs-meta prompt_"># </span><span class="language-bash">and bytes at addresses x5+v3[i]+1 into v5[i],</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">and bytes at addresses x5+v3[i]+2 into v6[i].</span><br><span class="hljs-meta prompt_"># </span><span class="language-bash">Examples</span><br>vsetvli a1, t0, e32, ta, ma<br>vsuxseg2ei32.v v2, (x5), v5 # Store words from v2[i] to address x5+v5[i]<br><span class="hljs-meta prompt_"># </span><span class="language-bash">and words from v3[i] to address x5+v5[i]+4</span><br></code></pre></td></tr></table></figure>
+
+<p>示例如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> DATALEN 16</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-type">int</span> vec1[DATALEN] = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">11</span>, <span class="hljs-number">12</span>, <span class="hljs-number">13</span>, <span class="hljs-number">14</span>, <span class="hljs-number">15</span>, <span class="hljs-number">16</span>&#125;;<br>  <span class="hljs-type">int</span> res[DATALEN] = &#123;<span class="hljs-number">0</span>&#125;;<br><br>  <span class="hljs-type">size_t</span> avl = <span class="hljs-number">16</span>;<br><br>  <span class="hljs-type">vuint32m4_t</span> bindex;<br>  <span class="hljs-type">uint32_t</span> index_table[<span class="hljs-number">4</span>] = &#123;<span class="hljs-number">7</span> * <span class="hljs-number">4</span>, <span class="hljs-number">3</span> * <span class="hljs-number">4</span>, <span class="hljs-number">10</span> * <span class="hljs-number">4</span>, <span class="hljs-number">8</span> * <span class="hljs-number">4</span>&#125;; <span class="hljs-comment">// 注意index单位为byte</span><br><br>  <span class="hljs-type">size_t</span> vl = __riscv_vsetvl_e32m4(avl);                   <span class="hljs-comment">// 设置参数</span><br><br>  bindex = __riscv_vle32_v_u32m4(index_table, vl);<br>  <br>  <span class="hljs-type">vint32m4x2_t</span> vtuple = __riscv_vloxseg2ei32_v_i32m4x2 (vec1, bindex, vl);<br>  <br>  <span class="hljs-type">vint32m4_t</span> vx = __riscv_vget_v_i32m4x2_i32m4 (vtuple, <span class="hljs-number">0</span>);<br>  <span class="hljs-type">vint32m4_t</span> vy = __riscv_vget_v_i32m4x2_i32m4 (vtuple, <span class="hljs-number">1</span>);<br>  <br>  <span class="hljs-comment">// 数据打印</span><br>  __riscv_vse32_v_i32m4 (res, vx, vl);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;vx is:\r\n&quot;</span>);<br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; DATALEN; i++) &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d, &quot;</span>, res[i]);<br>  &#125;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\r\n&quot;</span>);<br>  <br>  __riscv_vse32_v_i32m4 (res, vy, vl);<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;vy is:\r\n&quot;</span>);<br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; DATALEN; i++) &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d, &quot;</span>, res[i]);<br>  &#125;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\r\n&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印结果为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs log">vx[16] = &#123;8, 4, 11, 9&#125;<br>vy[16] = &#123;9, 5, 12, 10&#125;<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-2-4-RVV-Load-Store-Whole-Register-指令"><a href="#5-2-4-RVV-Load-Store-Whole-Register-指令" class="headerlink" title="5.2.4 RVV Load/Store Whole Register 指令"></a>5.2.4 RVV Load/Store Whole Register 指令</h3><p>当向量寄存器中的数据元素位宽或数量未知或者修改vl以及vtype寄存器的开销很大时，我们不能使用前文介绍的加载指令。RVV提供了另外一种加载全部向量数据的指令。加载全部向量数据的指令常常用于保存和恢复向量寄存器的值（如操作系统上下文切换）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs asm"># Format of whole register load and store instructions.<br>vl1r.v v3, (a0) # Pseudoinstruction equal to vl1re8.v<br>vl2r.v v2, (a0) # Pseudoinstruction equal to vl2re8.v v2, (a0)<br>vl4r.v v4, (a0) # Pseudoinstruction equal to vl4re8.v<br>vl8r.v v8, (a0) # Pseudoinstruction equal to vl8re8.v<br><br>vs1r.v v3, (a1) # Store v3 to address in a1<br>vs2r.v v2, (a1) # Store v2-v3 to address in a1<br>vs4r.v v4, (a1) # Store v4-v7 to address in a1<br>vs8r.v v8, (a1) # Store v8-v15 to address in a1<br></code></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong>没有intrinsics API来对应RVV中的<code>vmv&lt;nr&gt;r.v</code>指令</p>
+<h3 id="5-2-5-首次异常加载指令-Unit-stride-Fault-Only-First-Loads"><a href="#5-2-5-首次异常加载指令-Unit-stride-Fault-Only-First-Loads" class="headerlink" title="5.2.5 首次异常加载指令(Unit-stride Fault-Only-First Loads)"></a>5.2.5 首次异常加载指令(Unit-stride Fault-Only-First Loads)</h3><p>有些场景我们无法确定要处理的数据长度，例如，在C语言中通过判断字符是否为’\0’确定字符串是否结束。而在向量加载指令中，如果加载了字符串结束后的数据，那么会造成非法访问，导致程序出错。</p>
+<p>RVV引入了首次异常加载指令。首次异常加载指令常常用于待处理数据元素长度不确定的场合。</p>
+<p>首次异常加载指令示例，可参考： <a target="_blank" rel="noopener" href="https://github.com/riscv-non-isa/rvv-intrinsic-doc/blob/main/examples/rvv_strcpy.c">https://github.com/riscv-non-isa/rvv-intrinsic-doc/blob/main/examples/rvv_strcpy.c</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs c"># Vector unit-stride fault-only-first loads<br><span class="hljs-meta"># vd destination, rs1 base address, vm is mask encoding (v0.t or <span class="hljs-string">&lt;missing&gt;</span>)</span><br>vle8ff.v vd, (rs1), vm # <span class="hljs-number">8</span>-bit unit-stride fault-only-first load<br>vle16ff.v vd, (rs1), vm # <span class="hljs-number">16</span>-bit unit-stride fault-only-first load<br>vle32ff.v vd, (rs1), vm # <span class="hljs-number">32</span>-bit unit-stride fault-only-first load<br>vle64ff.v vd, (rs1), vm # <span class="hljs-number">64</span>-bit unit-stride fault-only-firstdd load<br></code></pre></td></tr></table></figure>
+
+<h1 id="6-整数算术指令"><a href="#6-整数算术指令" class="headerlink" title="6. 整数算术指令"></a>6. 整数算术指令</h1><h1 id="7-定点算术指令"><a href="#7-定点算术指令" class="headerlink" title="7.定点算术指令"></a>7.定点算术指令</h1><h1 id="8-浮点算术指令"><a href="#8-浮点算术指令" class="headerlink" title="8.浮点算术指令"></a>8.浮点算术指令</h1><h1 id="9-Reduction指令"><a href="#9-Reduction指令" class="headerlink" title="9.Reduction指令"></a>9.Reduction指令</h1><p>向量reduction操作接收一个<u>向量寄存器组中的所有元素</u>和一个向量寄存器<u>第0个元素</u>作为入参，结果存放到目标向量寄存器的<u>第0个元素</u>中</p>
+<h3 id="9-1-单宽度整数reduction"><a href="#9-1-单宽度整数reduction" class="headerlink" title="9.1 单宽度整数reduction"></a>9.1 单宽度整数reduction</h3><p>单宽整数reduction指令所有操作数与结果具有相同的SEW宽度，vredsum 算术和运算可能存在溢出。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Simple reductions, <span class="hljs-built_in">where</span> [*] denotes all active elements:</span><br>vredsum.vs vd, vs2, vs1, vm # vd[0] = sum( vs1[0] , vs2[*] )<br>vredmaxu.vs vd, vs2, vs1, vm # vd[0] = maxu( vs1[0] , vs2[*] )<br>vredmax.vs vd, vs2, vs1, vm # vd[0] = max( vs1[0] , vs2[*] )<br>vredminu.vs vd, vs2, vs1, vm # vd[0] = minu( vs1[0] , vs2[*] )<br>vredmin.vs vd, vs2, vs1, vm # vd[0] = min( vs1[0] , vs2[*] )<br>vredand.vs vd, vs2, vs1, vm # vd[0] = and( vs1[0] , vs2[*] )<br>vredor.vs vd, vs2, vs1, vm # vd[0] = or( vs1[0] , vs2[*] )<br>vredxor.vs vd, vs2, vs1, vm # vd[0] = xor( vs1[0] , vs2[*] )<br></code></pre></td></tr></table></figure>
+
+<h3 id="9-2-扩宽整数reduction"><a href="#9-2-扩宽整数reduction" class="headerlink" title="9.2 扩宽整数reduction"></a>9.2 扩宽整数reduction</h3><p>对于vwredsumu.vs与vwredsum.vs两条指令，在求和之前，先扩宽为2SEW宽度，这样避免溢出。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">Unsigned <span class="hljs-built_in">sum</span> reduction into double-width accumulator</span><br>vwredsumu.vs vd, vs2, vs1, vm # 2*SEW = 2*SEW + sum(zero-extend(SEW))<br><span class="hljs-meta prompt_"># </span><span class="language-bash">Signed <span class="hljs-built_in">sum</span> reduction into double-width accumulator</span><br>vwredsum.vs vd, vs2, vs1, vm # 2*SEW = 2*SEW + sum(sign-extend(SEW))<br></code></pre></td></tr></table></figure>
+
+<p>还有浮点指令的单宽度和扩宽reduction，这里不再讲述</p>
+<h1 id="10-Mask指令"><a href="#10-Mask指令" class="headerlink" title="10.Mask指令"></a>10.Mask指令</h1><p>操作向量寄存器掩码值；掩码操作数只能使用v0向量寄存器存放掩码。</p>
+<p>汇编代码中有如下两种形式：</p>
+<ul>
+<li><p>汇编代码中带有v0.t</p>
+<p>v0.t 表示使用v0 向量寄存器作为掩码，每bit表示对应一个元素的状态。v0.mask[i]=1，表示第i个数据元素处于活跃状态；若v0.mask[i]=0，则表示第i个数据元素处于非活跃状态。</p>
+</li>
+<li><p>省略，即没有v0.t</p>
+<p>表示目标操作数和源操作数中所有的数据元素都处于活跃状态。</p>
+</li>
+</ul>
+<p>代码示例如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-keyword">define</span> DATALEN 32</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">(<span class="hljs-type">void</span>)</span><br>&#123;<br>  <span class="hljs-type">int32_t</span> vec1[DATALEN];<br>  <span class="hljs-type">int32_t</span> res[DATALEN] = &#123;<span class="hljs-number">0</span>&#125;;<br><br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; DATALEN; i++) &#123;<br>    vec1[i] = i;<br>  &#125;<br><br>  <span class="hljs-type">const</span> <span class="hljs-type">int32_t</span> *pSrcA = vec1;<br><br>  <span class="hljs-type">int32_t</span> *pDes = res;<br>  <span class="hljs-type">uint8_t</span> src1[<span class="hljs-number">4</span>] = &#123;<span class="hljs-number">0xFF</span>, <span class="hljs-number">0xFA</span>, <span class="hljs-number">0xFF</span>, <span class="hljs-number">0xFF</span>&#125;;<br><br>  <span class="hljs-type">size_t</span> avl = DATALEN;<br>  <span class="hljs-type">size_t</span> vl;<br>  <span class="hljs-type">vint32m8_t</span> op1, rd;<br><br>  vl = __riscv_vsetvl_e32m8(avl);<br>  <span class="hljs-comment">// load数据</span><br>  op1 = __riscv_vle32_v_i32m8(pSrcA, vl);<br>  pSrcA += vl;<br><br>  <span class="hljs-type">vbool4_t</span> mask = __riscv_vlm_v_b4(src1, vl);<br><br>  rd = __riscv_vadd_vx_i32m8_m (mask, op1, <span class="hljs-number">100</span>, vl);<br><br>  <span class="hljs-comment">// store数据</span><br>  __riscv_vse32_v_i32m8 (pDes, rd, vl);<br>  pDes += vl;<br><br><br>  <span class="hljs-comment">// 数据打印</span><br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; DATALEN; i++) &#123;<br>    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;%d, &quot;</span>, res[i]);<br>  &#125;<br>  <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;\r\n&quot;</span>);<br><br>  <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>日志打印如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs log">res[32] = &#123;100, 101, 102, 103, 104, 105, 106, 107, 8, 109, 10, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131,&#125;<br></code></pre></td></tr></table></figure>
+
+<p>可见，只有a8与a10 没有参与加100的运算。</p>
+<h3 id="10-1向量mask逻辑指令"><a href="#10-1向量mask逻辑指令" class="headerlink" title="10.1向量mask逻辑指令"></a>10.1向量mask逻辑指令</h3><p>操作掩码寄存器v0</p>
+<h1 id="11-排列指令"><a href="#11-排列指令" class="headerlink" title="11.排列指令"></a>11.排列指令</h1><p>v{f}mv.[f|s|x|v].[v|x|s|f]</p>
+<h3 id="11-1-标量mv指令"><a href="#11-1-标量mv指令" class="headerlink" title="11.1 标量mv指令"></a>11.1 标量mv指令</h3><p>向量-标量Move指令，在标量x寄存器与向量寄存器的<strong>元素0</strong>之间传输单个值（这条指令会忽略LMUL参数）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">vmv.x.s rd, vs2 # x[rd] = vs2[0] (vs1=0)  # 向量move到标量，注意：即使vstart&gt;=vl或者vl=0，这条指令都会执行操作。<br>vmv.s.x vd, rs1 # vd[0] = x[rs1] (vs2=0)  # 标量move到向量，注意：当vl=0时，无论vstart如何，目标向量寄存器组中都不会更新任何元素<br></code></pre></td></tr></table></figure>
+
+<h3 id="11-2-浮点标量mv指令"><a href="#11-2-浮点标量mv指令" class="headerlink" title="11.2 浮点标量mv指令"></a>11.2 浮点标量mv指令</h3><p>浮点-标量move指令，在标量f寄存器与向量寄存器的元素0之间传输单个值（这条指令会忽略LMUL参数）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">vfmv.f.s rd, vs2 # f[rd] = vs2[0] (rs1=0)<br>vfmv.s.f vd, rs1 # vd[0] = f[rs1] (vs2=0)<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="11-3-向量滑动指令"><a href="#11-3-向量滑动指令" class="headerlink" title="11.3 向量滑动指令"></a>11.3 向量滑动指令</h3><h3 id="11-4-向量寄存器收集指令"><a href="#11-4-向量寄存器收集指令" class="headerlink" title="11.4 向量寄存器收集指令"></a>11.4 向量寄存器收集指令</h3><h3 id="11-5-向量寄存器压缩指令"><a href="#11-5-向量寄存器压缩指令" class="headerlink" title="11.5 向量寄存器压缩指令"></a>11.5 向量寄存器压缩指令</h3><h3 id="11-6-整个向量寄存器移动指令"><a href="#11-6-整个向量寄存器移动指令" class="headerlink" title="11.6 整个向量寄存器移动指令"></a>11.6 整个向量寄存器移动指令</h3><h1 id="intrinsic-编程"><a href="#intrinsic-编程" class="headerlink" title="intrinsic 编程"></a>intrinsic 编程</h1><p>intrinsic：内嵌函数</p>
+<blockquote>
+<p>推荐：《RISC-V Vector Programming in C with Intrinsics.pdf》</p>
+<p><a target="_blank" rel="noopener" href="https://fprox.substack.com/p/risc-v-vector-programming-in-c-with">https://fprox.substack.com/p/risc-v-vector-programming-in-c-with</a></p>
+</blockquote>
+<p>intrinsics 编程：在汇编语言上封装了一层，允许程序员使用类似于C/C++等高级语言的语法来调用特定的CPU指令，上手更加简单，程序可读性和可维护性更高。</p>
+<p>RVV intrinsics其字段含义如下</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Ywinh/TyporaImages@main/202508021311319.png" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>可以看到intrinsics包含一些指令编码以外的信息，如<code>element size</code>和<code>lmu</code>，这样能够简化编程模型（所有关于操作矢量的配置信息都嵌入到内在函数中）</p>
+<p>大多数intrinsics都需要一个向量长度参数avl（即<strong>入参</strong>vl，vsetvl指令根据avl来设置<code>vl</code>寄存器）</p>
+<ul>
+<li><p>operand configuration：vv、vx、vi</p>
+</li>
+<li><p>element format：对应SEW</p>
+</li>
+<li><p>optional mask/tail suffix：</p>
+<table>
+<thead>
+<tr>
+<th>后缀</th>
+<th>寄存器值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>No suffix</td>
+<td><code>vm</code>=1,<code>vta</code>=1</td>
+<td>非掩码，尾部元素未知（unmasked, tail-agnostic）</td>
+</tr>
+<tr>
+<td>_tu</td>
+<td><code>vm</code>=1,<code>vta</code>=0</td>
+<td>非掩码，尾部元素不打扰（unmasked, tail-undisturbed）</td>
+</tr>
+<tr>
+<td>_m</td>
+<td><code>vm</code>=0,<code>vta</code>=1,<code>vma</code>=1</td>
+<td>掩码，尾部元素未知，非活跃元素未知（masked, tail-agnostic, mask-agnostic）</td>
+</tr>
+<tr>
+<td>_tum</td>
+<td><code>vm</code>=0,<code>vta</code>=0,<code>vma</code>=1</td>
+<td>掩码，尾部元素不打扰，非活跃元素未知（masked,tail-undisturbed, mask-agnostic）</td>
+</tr>
+<tr>
+<td>_mu</td>
+<td><code>vm</code>=0,<code>vta</code>=1,<code>vma</code>=0</td>
+<td>掩码，尾部元素未知，非活跃元素不打扰（masked,tail-agnostic, mask-undisturbed）</td>
+</tr>
+<tr>
+<td>_tumu</td>
+<td><code>vm</code>=0,<code>vta</code>=0,<code>vma</code>=0</td>
+<td>掩码，尾部元素不打扰，非活跃元素不打扰（masked,tail-undisturbed, mask-undisturbed）</td>
+</tr>
+</tbody></table>
+<p>vm，vta，vma都有两种取值，按照组合应该有2*2*2=8种，为什么表格中只列出了6种</p>
+<blockquote>
+<p>vma表示的是被掩码mask的元素策略，那么当没使用掩码，也就是vm=1时，vma取值是多少都无意义，也即没有这种后缀</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>从哪里查询RVV intrinsics APIs？</strong></p>
+<p>官方参考：<a target="_blank" rel="noopener" href="https://github.com/riscv-non-isa/rvv-intrinsic-doc/tree/main">https://github.com/riscv-non-isa/rvv-intrinsic-doc/tree/main</a></p>
+<p>在线查询API：<a target="_blank" rel="noopener" href="https://dzaima.github.io/intrinsics-viewer/">https://dzaima.github.io/intrinsics-viewer/</a></p>
+<p>分为显式命名方案与隐式命名方案</p>
+<ul>
+<li>显式intrinsics APIs 是不可重载的，显示的指明了<code>EEW</code> <code>LMUL</code> 等参数，由于显示intrinsics APIs在代码中显式地指定了执行状态，因此该方案可读性更好。如<code>__riscv_vadd_vv_i32m4</code>，推荐这种</li>
+<li>隐式 intrinsics APIs 是可重载的，其省略了对<code>vtype</code>的显示控制，旨在提供一个通用接口，让用户将不同的EEW和EMUL的值作为输入参数</li>
+</ul>
+<h3 id=""><a href="#" class="headerlink" title=""></a></h3>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/BST/" class="print-no-link">#BST</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>RVV概念与intrinsic入门</div>
+      <div>http://example.com/2025/07/30/RVV/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>Jianhui Yin</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 30, 2025</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>Licensed under</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/08/xv6-lab-trap/" title="xv6-lab-trap">
+                        <span class="hidden-mobile">xv6-lab-trap</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>rain</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
