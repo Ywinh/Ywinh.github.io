@@ -1,0 +1,69 @@
+name: Deploy Hexo Blog and Slidev Presentations
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [source]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      # Build Hexo blog
+      - name: Install Hexo dependencies
+        run: npm install
+
+      - name: Build Hexo blog
+        run: npx hexo generate
+
+      # Build gem5-sc Slidev presentation
+      - name: Install gem5-sc dependencies
+        working-directory: ./gem5-sc
+        run: npm install
+
+      - name: Build gem5-sc Slidev
+        working-directory: ./gem5-sc
+        run: npm run build -- --base /gem5-sc/
+
+      # Merge build outputs
+      - name: Merge build outputs
+        run: |
+          mkdir -p _site
+          cp -r public/* _site/
+          mkdir -p _site/gem5-sc
+          cp -r gem5-sc/dist/* _site/gem5-sc/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
