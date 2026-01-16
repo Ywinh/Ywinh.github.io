@@ -30,7 +30,7 @@ jobs:
         run: npm install
 
       - name: Build Hexo blog
-        run: npx hexo generate
+        run: npm run build
 
       # Build gem5-sc Slidev presentation
       - name: Install gem5-sc dependencies
