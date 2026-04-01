@@ -93,7 +93,7 @@ plugins:
       categories_toc: true # 分类页目录也并入侧栏
       archive_name: 归档
       categories_name: 分类
-      pagination_per_page: 5 # 首页每页显示 5 篇文章
+      pagination_per_page: 10 # 首页每页显示 5 篇文章
   # - rss: # 当前虚拟环境未安装 mkdocs-rss-plugin，如需启用请先安装对应依赖
   #     match_path: blog/posts/.*
   #     date_from_meta:
