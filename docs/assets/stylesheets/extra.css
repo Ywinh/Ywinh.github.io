@@ -9,29 +9,25 @@
 
 /* 收紧标题、时间、分类和正文之间的垂直间距，减少割裂感 */
 .md-post--excerpt .md-post__header {
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.1rem;
+  min-height: auto;
 }
 
 .md-post--excerpt .md-post__meta {
-  margin: 0.15rem 0 0;
-}
-
-.md-post--excerpt .md-post__content > h1,
-.md-post--excerpt .md-post__content > h2,
-.md-post--excerpt .md-post__content > h3,
-.md-post--excerpt .md-post__content > h4,
-.md-post--excerpt .md-post__content > h5,
-.md-post--excerpt .md-post__content > h6 {
-  margin-bottom: 0.2rem;
-}
-
-.md-post--excerpt .md-post__content > :not(.md-post__body):not(.md-post__action) {
-  margin-top: 0.2rem;
-  margin-bottom: 0.2rem;
+  margin: 0;
 }
 
 .md-post--excerpt .md-post__body > :first-child {
-  margin-top: 0;
+  margin-top: 0.05rem !important;
+}
+
+.md-post--excerpt .md-post__body > h1,
+.md-post--excerpt .md-post__body > h2,
+.md-post--excerpt .md-post__body > h3,
+.md-post--excerpt .md-post__body > h4,
+.md-post--excerpt .md-post__body > h5,
+.md-post--excerpt .md-post__body > h6 {
+  margin-bottom: 0.2rem;
 }
 
 .md-post--excerpt .md-post__action {
