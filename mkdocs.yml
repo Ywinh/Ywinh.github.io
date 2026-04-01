@@ -1,13 +1,13 @@
 # 项目信息
 site_name: yinsist-blog # 项目名称
-site_url: https://localhost:8000/ # 我在nginx中使用的是8000端口，如果你使用的是80端口，可以直接写成https://localhost/。
+site_url: https://ywinh.github.io/ # 我在nginx中使用的是8000端口，如果你使用的是80端口，可以直接写成https://localhost/。
 site_author: jianhui
 site_description: >- # 项目描述
   一个以中文写作为主的个人博客与知识记录站点。
 
 # 代码仓库信息
-repo_name: Shuaiwen-Cui/Infinity # 仓库名称
-repo_url: https://github.com/Shuaiwen-Cui/Infinity.git/ # 仓库地址
+repo_name: Ywinh/Ywinh.github.io # 仓库名称
+repo_url: https://github.com/Ywinh/Ywinh.github.io.git
 
 # 版权信息
 copyright: Copyright &copy; 2026 ~ now |  jianhui
