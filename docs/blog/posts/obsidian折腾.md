@@ -52,3 +52,4 @@ image-converter
 * 很逆天，不要以 ./pic 开头，这样会找不到，而是应该 pic/ ，并且选择subforder
 	![](./pic/obsidian折腾-1774840506322.png)
 * 然后把link format改为markdown，不然上川岛github无法渲染
+
