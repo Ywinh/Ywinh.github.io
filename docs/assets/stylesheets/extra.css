@@ -1,0 +1,8 @@
+/* 博客列表页只保留前三行摘要，下面保留“继续阅读”按钮 */
+.md-post--excerpt .md-post__body {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
