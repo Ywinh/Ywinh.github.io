@@ -83,17 +83,21 @@ theme:
 plugins:
   - tags # 标签功能插件
   - blog: # 博客功能插件
-      blog_dir: . # 把首页 index.md 当作博客索引页
-      post_dir: blog/posts # 后续新文章都放到 docs/blog/posts/ 下面
+      blog_dir: blog # blog 顶部导航页
+      post_dir: "{blog}/posts" # blog 文章目录
       post_excerpt: optional # 不强制写摘要分隔符；默认按样式在列表页截断显示
-      blog_toc: true # 在博客索引页生成文章目录，配合 toc.integrate 后显示在左侧
-      archive: true # 自动生成归档页
-      archive_toc: true # 归档页目录也并入侧栏
-      categories: true # 自动生成分类页
-      categories_toc: true # 分类页目录也并入侧栏
-      archive_name: 归档
-      categories_name: 分类
-      pagination_per_page: 10 # 首页每页显示 5 篇文章
+      blog_toc: true # 左侧直接显示当前栏目下的文章标题
+      archive: false # blog 栏目左侧不挂归档
+      categories: false # blog 栏目左侧不挂分类
+      pagination_per_page: 10 # 每页显示 10 篇文章
+  - blog: # 生活博客功能插件
+      blog_dir: life # life 顶部导航页
+      post_dir: "{blog}/posts" # life 文章目录
+      post_excerpt: optional # 不强制写摘要分隔符；默认按样式在列表页截断显示
+      blog_toc: true # 左侧直接显示当前栏目下的文章标题
+      archive: false # life 栏目左侧不挂归档
+      categories: false # life 栏目左侧不挂分类
+      pagination_per_page: 10 # 每页显示 10 篇文章
   # - rss: # 当前虚拟环境未安装 mkdocs-rss-plugin，如需启用请先安装对应依赖
   #     match_path: blog/posts/.*
   #     date_from_meta:
@@ -201,6 +205,12 @@ extra:
   #     make our documentation better.
 
 # 扩展
+nav:
+  - Home: index.md
+  - Blog: blog/index.md
+  - Life: life/index.md
+  - About: about.md
+
 markdown_extensions: # markdown extensions
   - abbr
   - admonition
@@ -256,10 +266,4 @@ extra_css:
   - assets/stylesheets/extra.css # 控制博客列表页只截断正文，并保留“继续阅读”按钮
 
 # 导航树
-# 这里控制顶部导航栏。
-# 如果你想新增一个顶栏页面，比如“项目”，就在这里继续加：
-#   - 项目: projects.md
-nav:
-  - home:
-      - index.md
-  - about: about.md
+# 顶部导航栏在上面的 nav 配置中统一维护。

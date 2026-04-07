@@ -36,3 +36,28 @@ gtkwave
 brew install --HEAD randomplum/gtkwave/gtkwave
 ```
 
+
+数据类型：
+* Bits：基本类型
+* UInt：无符号整型
+* SInt：有符号整型
+
+```Chisel
+Bits(8.W)  8-bit bits
+UInt(8.W)  8-bit unsigned int
+SInt(10.W) 10-bit signed int
+```
+
+常量：xxx.\[U,S\]
+```
+8.U(4.W) 表示4 width 的常量8
+```
+
+可能有误的地方 1.U(32) 不表示32位宽的常数1，而是表示从32位的bit提取，结果其实是0，1 => 000..01，其第32位为0
+
+主要的逻辑就是 数+`.`+类型
+
+
+bundle可以组织不同类型的信号（通过域访问，xx.xx），vec则组织相同类型的信号（每个元素可以通过索引访问）。bundle和vec可以任意交织
+
+var表示变量，val表示不变量
