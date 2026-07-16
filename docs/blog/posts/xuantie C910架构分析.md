@@ -5,6 +5,7 @@ categories:
 tags:
   - Writing
 ---
+
 来自：[Alibaba/T-HEAD's Xuantie C910](https://chipsandcheese.com/p/alibabat-heads-xuantie-c910?utm_source=publication-search)
 C910支持RVV0.7.1，C920支持1.0，但是其他的没变
 

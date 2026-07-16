@@ -8,7 +8,77 @@
         "type": "tabs",
         "children": [
           {
-            "id": "10dd7709bc02e98e",
+            "id": "db77e9c94648d07e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "blog/posts/systemc学习.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "systemc学习"
+            }
+          },
+          {
+            "id": "af6ab8693931e1bd",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "blog/posts/README.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "README"
+            }
+          },
+          {
+            "id": "34e671f0962aaa8a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "blog/posts/systemc学习.md",
+                "mode": "source",
+                "source": true
+              },
+              "icon": "lucide-file",
+              "title": "systemc学习"
+            }
+          },
+          {
+            "id": "da0a810dac658b87",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "blog/posts/玄铁920 wmb.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "玄铁920 wmb"
+            }
+          },
+          {
+            "id": "28d2f74e048c4578",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "blog/posts/玄铁920 wmb.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "玄铁920 wmb"
+            }
+          },
+          {
+            "id": "ce88ad4f26a8f3b0",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -22,63 +92,19 @@
             }
           },
           {
-            "id": "87a5b02715355acd",
+            "id": "d46b031a6f9da30c",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "image",
               "state": {
-                "file": "blog/posts/gem5性能建模分享.md",
-                "mode": "source",
-                "source": false
+                "file": "blog/posts/pic/gem5-systemc协同仿真-1780045378203.webp"
               },
-              "icon": "lucide-file",
-              "title": "gem5性能建模分享"
-            }
-          },
-          {
-            "id": "c2e098e919250509",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "blog/posts/gem5建模CPU——以ARM Neoverse V2为例.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "gem5建模CPU——以ARM Neoverse V2为例"
-            }
-          },
-          {
-            "id": "5df8d9aa05e2e111",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "blog/posts/xuantie C910架构分析.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "xuantie C910架构分析"
-            }
-          },
-          {
-            "id": "818dfb2f5a890939",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "blog/posts/gem5 访存梳理.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "gem5 访存梳理"
+              "icon": "lucide-image",
+              "title": "gem5-systemc协同仿真-1780045378203"
             }
           }
         ],
-        "currentTab": 4
+        "currentTab": 5
       }
     ],
     "direction": "vertical"
@@ -110,7 +136,7 @@
             "state": {
               "type": "search",
               "state": {
-                "query": "tag:#一般建模流程",
+                "query": "",
                 "matchingCase": false,
                 "explainSearch": false,
                 "collapseAll": false,
@@ -135,7 +161,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 279.5
   },
   "right": {
     "id": "519dc85c13f7bdf3",
@@ -213,13 +239,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "blog/posts/gem5 访存梳理.md",
+                "file": "blog/posts/Chisel.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "gem5 访存梳理 的大纲"
+              "title": "Chisel 的大纲"
             }
           },
           {
@@ -251,43 +277,52 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "ec5fabe06b2b96f1",
+  "active": "ce88ad4f26a8f3b0",
   "lastOpenFiles": [
-    "life/posts/mac快捷键.md",
-    "life/posts/摄影.md",
-    "life/posts/2026-04-07-life-section-init.md",
-    "index.md",
-    "gem5.md",
-    "about.md",
-    "blog/posts/gem5 访存梳理.md",
+    "blog/posts/性能建模分享 1.md",
+    "blog/posts/linux复习笔记.md",
+    "blog/posts/Systemc TLM2.0 AT.md",
     "blog/posts/xuantie C910架构分析.md",
-    "HW01_answer.md",
-    "life/posts",
-    "life/index.md",
-    "life",
-    "blog/index.md",
-    "blog/posts/gem5建模CPU——以ARM Neoverse V2为例.md",
-    "blog/posts/gem5性能建模分享.md",
-    "blog/posts/obsidian折腾.md",
-    "blog/posts/README.md",
-    "blog/posts/处理器建模资料.md",
-    "blog/posts/处理器乱序执行基础——香山报告.md",
-    "blog/posts/2026-04-01-site-setup.md",
-    "blog/posts/服务器代理.md",
-    "blog/posts/乱序访存.md",
-    "未命名",
-    "life/posts/pic/摄影-1775483005302.webp",
-    "life/posts/pic",
+    "blog/posts/systemc学习.md",
+    "blog/posts/Transformer.md",
+    "blog/posts/gem5与硬件仿真通用测试程序.md",
+    "blog/posts/Link script.md",
     "blog/posts/Chisel.md",
-    "blog/posts/智能计算系统lab.md",
-    "blog/posts/HW01_answer.md",
-    "2026-04-03.md",
+    "blog/posts/玄铁920 wmb.md",
+    "blog/posts/性能建模分享.md",
+    "blog/posts/超标量处理器设计读书笔记.md",
+    "blog/posts/gem5-systemc协同仿真.md",
+    "blog/posts/性能建模分析-920与gem5.md",
+    "blog/posts/gem5工作梳理.md",
+    "about.md",
     "blog/posts/2026-03-28-writing-workflow.md",
-    "blog/posts/pic/obsidian折腾-1775057015425.webp",
+    "blog/posts/pic/gem5-systemc协同仿真-1780045378203.webp",
+    "blog/posts/pic/乱序访存-1775575922908.webp",
+    "blog/posts/pic/Transformer-1778121811800.webp",
+    "blog/posts/gem5接入nbu.md",
+    "blog/posts/脉动阵列的推导.md",
+    "blog/posts/pic/脉动阵列的前世今生-1784026036176.webp",
+    "blog/posts/pic/脉动阵列的前世今生-1784025954137.webp",
+    "blog/posts/pic/脉动阵列的前世今生-1784017488204.webp",
+    "blog/posts/pic/脉动阵列的前世今生-1784028917496.webp",
+    "blog/posts/pic/脉动阵列的前世今生-1784026813961.webp",
+    "blog/posts/pic/脉动阵列的前世今生-1784025996234.webp",
+    "blog/posts/pic/脉动阵列的前世今生-1784021187730.webp",
+    "blog/index.md",
+    "blog/posts/gem5-sc设计文档.md",
+    "blog/posts/cache介绍.md",
+    "未命名 1.md",
+    "Templates",
+    "blog/posts/智能计算系统lab.md",
+    "blog/posts/README.md",
+    "blog/posts/gem5性能建模分享.md",
+    "pic",
+    "life/posts",
+    "life",
+    "life/posts/pic",
     "未命名.base",
     "assets/stylesheets/extra.css",
     "assets/stylesheets",
-    "assets",
-    "blog/posts/欢迎.md"
+    "assets"
   ]
 }
