@@ -51,16 +51,16 @@ gem5每个port会有一个peer，这个peer，在端口通信时port本身会调
 
 ## sc的TLM2.0通信
 在sc建模中一般都使用TLM2.0通信，分为blocking和non-blocking，详见前面推荐的blog，下图是non-blocking，有4个phase
-![](gem5-systemc协同仿真-1780045378203.webp)
+![](./pic/gem5-systemc协同仿真-1780045378203.webp)
 
 ## 加入bridge的port通信流程
-![](gem5-systemc协同仿真-1780202372006.webp)
+![](./pic/gem5-systemc协同仿真-1780202372006.webp)
 如果要把二者结合起来，那么需要一个中介/bridge，因为两边通信协议不同，对于gem5 to tlm来说，gem5的sendtimingreq应该对应TLM的两个REQ阶段，TLM的BEGIN_RESP则会调用gem5的sendtimingresp 
-![](gem5-systemc协同仿真-1780045513078.webp)
+![](./pic/gem5-systemc协同仿真-1780045513078.webp)
 
 这个bridge其实做了很多事情：
 1. 将gem5的packet转为tlm的generic payload，二者的内容差不多但是需要转换一下数据类型
-	![](gem5-systemc协同仿真-1780046054080.webp)
+	![](./pic/gem5-systemc协同仿真-1780046054080.webp)
 2. 一侧通过gem5的port bind绑定到gem5，另一侧通过sc的port bind绑定到sc
 3. 将sc侧返回的事件插入gem5事件调度队列，比如当前这次req用时，resp用时，只是记录用于通信的事件，其他sc内部处理的事件由sc自己插入eventq
 
@@ -235,7 +235,7 @@ sensitive << externalSchedulingEvent;
 dont_initialize();
 ```
 
-![](gem5-systemc协同仿真-1780202323450.webp)
+![](./pic/gem5-systemc协同仿真-1780202323450.webp)
 通过一个sc thread run进入处理，然后执行simulate，在这里触发eventloop这个敏感事件，同时wait(exit_event)，敏感事件会触发eventloop回调函数，然后从eventq里面取出事件进行执行，此时会比较sc time和下一个事件预计发生time，分别进行不同的处理，注意可能同一tick对应多个事件同时执行，这也对应了sc中的delta cycle语义，等到exit event检测到了，就退出仿真。
 
 sc可能有多个eventq，但都由sc内核统一管理，由他来维护时间上各个事件从前到后执行的时间正确性。

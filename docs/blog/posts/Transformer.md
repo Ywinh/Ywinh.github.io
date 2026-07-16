@@ -10,16 +10,16 @@ tags:
 
 ## overview
 首先，我们将Transformer看成一个简单的黑盒模型。在机器翻译任务下，将源语言（法语）的一个句子A输入其中，产生一个目标语言（英语）的句子B。
-![](Transformer-1778121811800.webp)
+![](./pic/Transformer-1778121811800.webp)
 有多少个encoder取决于你的超参数，图中是6个，但是没有什么特殊意义。
 
 
 所有的encoder结构是一样的，但是不共享权重，每个encoder结构如下
-![](Transformer-1778121992898.webp)
+![](./pic/Transformer-1778121992898.webp)
 首先经过一个self-attention层（该层可以帮助encoder在对特定单词进行编码时查看输入句子中的其他单词），然后是一个前馈神经网络（feed-forward neural network，ffnn）ffnn主要用于对每个token自身的特征进行变换
 
 decoder的结构类似，但是在self-attention和ffnn之间多了一个attention层：
-![](Transformer-1778122523679.webp)
+![](./pic/Transformer-1778122523679.webp)
 
 ## encoder
 第一个encoder会有embedding层，用于把词转为向量
@@ -36,9 +36,9 @@ encoder的self-attention层各个word是有依赖的，不能并行？但是feed
 5. 当前计算token的 value 乘 softmax分数，保留关注词的value，削弱非相关词的value
 6. 该word相对于每个其他word经过第5步都会有一个结果，需要对对value加权求和形成一个，这也就是encoder的结果
 总结为一个公式：
-![](Transformer-1778064529314.webp)
+![](./pic/Transformer-1778064529314.webp)
 例子：
-![](Transformer-1778122846955.webp)
+![](./pic/Transformer-1778122846955.webp)
 
 
 ### 多头注意力
@@ -47,16 +47,16 @@ encoder的self-attention层各个word是有依赖的，不能并行？但是feed
 
 ### position encoding
 表示token在句子中的位置，一般是由一个position encoding向量与embedding之后的向量直接相加
-![](Transformer-1778123064766.webp)
+![](./pic/Transformer-1778123064766.webp)
 
 
 ### 残差结构
 encoder和decoder中的每个子层（Self-Attention，ffnn）在其周围都有残差连接与层归一化（[layer normalization](https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1607.06450)）操作
-![](Transformer-1778123206544.webp)
+![](./pic/Transformer-1778123206544.webp)
 可视化
-![](Transformer-1778123246577.webp)
+![](./pic/Transformer-1778123246577.webp)
 这也是用于decoder的子层
-![](Transformer-1778123290415.webp)
+![](./pic/Transformer-1778123290415.webp)
 
 ## decoder
 
@@ -66,4 +66,4 @@ encoder算出k，v矩阵之后就完成职责了，这些k，v会被decoder每�
 主要目的是把浮点向量变为一个词
 * 线性层是一个简单的完全连接的神经网络，它将解码器堆栈产生的向量投影到一个更大的向量中，称为logits向量。
 * softmax层将这些分数转换为概率（全部为正，全部相加为1.0）。 选择具有最高概率的单元，然后该单元对应的单词将作为该时间步的输出。
-![](Transformer-1778123395828.webp)
+![](./pic/Transformer-1778123395828.webp)
