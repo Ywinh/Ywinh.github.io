@@ -8,103 +8,105 @@
         "type": "tabs",
         "children": [
           {
-            "id": "db77e9c94648d07e",
+            "id": "3a926ff7ac9532ac",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/posts/systemc学习.md",
+                "file": "blog/posts/Systemc TLM2.0 AT.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "systemc学习"
+              "title": "Systemc TLM2.0 AT"
             }
           },
           {
-            "id": "af6ab8693931e1bd",
+            "id": "8989fdfb2e18b073",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/posts/README.md",
+                "file": "blog/posts/lcpu.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "README"
+              "title": "lcpu"
             }
           },
           {
-            "id": "34e671f0962aaa8a",
+            "id": "d2086383effeedda",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/posts/systemc学习.md",
+                "file": "blog/posts/coral-npu.md",
                 "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "coral-npu"
+            }
+          },
+          {
+            "id": "825f7c515e23911e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "blog/posts/gem5接入nbu.md",
+                "mode": "preview",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "systemc学习"
+              "title": "gem5接入nbu"
             }
           },
           {
-            "id": "da0a810dac658b87",
+            "id": "abb63829c5ae1255",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/posts/玄铁920 wmb.md",
-                "mode": "preview",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "玄铁920 wmb"
-            }
-          },
-          {
-            "id": "28d2f74e048c4578",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "blog/posts/玄铁920 wmb.md",
+                "file": "汇报.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "玄铁920 wmb"
+              "title": "汇报"
             }
           },
           {
-            "id": "ce88ad4f26a8f3b0",
+            "id": "f3b9c5795e03ab59",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "blog/posts/Chisel.md",
+                "file": "ai加速器负载.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Chisel"
+              "title": "ai加速器负载"
             }
           },
           {
-            "id": "d46b031a6f9da30c",
+            "id": "3866fa37f42a3d73",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "blog/posts/pic/gem5-systemc协同仿真-1780045378203.webp"
+                "file": "blog/posts/lcpu.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "gem5-systemc协同仿真-1780045378203"
+              "icon": "lucide-file",
+              "title": "lcpu"
             }
           }
         ],
-        "currentTab": 5
+        "currentTab": 6
       }
     ],
     "direction": "vertical"
@@ -124,7 +126,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "文件列表"
@@ -161,7 +165,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 279.5
+    "width": 279.5,
+    "collapsed": true
   },
   "right": {
     "id": "519dc85c13f7bdf3",
@@ -239,13 +244,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "blog/posts/Chisel.md",
+                "file": "blog/posts/chunked-prefill理解.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Chisel 的大纲"
+              "title": "大纲"
             }
           },
           {
@@ -277,46 +282,45 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "ce88ad4f26a8f3b0",
+  "active": "3866fa37f42a3d73",
   "lastOpenFiles": [
-    "blog/posts/性能建模分享 1.md",
-    "blog/posts/linux复习笔记.md",
-    "blog/posts/Systemc TLM2.0 AT.md",
-    "blog/posts/xuantie C910架构分析.md",
-    "blog/posts/systemc学习.md",
-    "blog/posts/Transformer.md",
-    "blog/posts/gem5与硬件仿真通用测试程序.md",
-    "blog/posts/Link script.md",
-    "blog/posts/Chisel.md",
-    "blog/posts/玄铁920 wmb.md",
-    "blog/posts/性能建模分享.md",
-    "blog/posts/超标量处理器设计读书笔记.md",
-    "blog/posts/gem5-systemc协同仿真.md",
-    "blog/posts/性能建模分析-920与gem5.md",
-    "blog/posts/gem5工作梳理.md",
-    "about.md",
-    "blog/posts/2026-03-28-writing-workflow.md",
-    "blog/posts/pic/gem5-systemc协同仿真-1780045378203.webp",
-    "blog/posts/pic/乱序访存-1775575922908.webp",
-    "blog/posts/pic/Transformer-1778121811800.webp",
+    "blog/posts/cerebras调研.md",
+    "ai加速器负载.md",
+    "pic/ai加速器负载-1789718354924.webp",
+    "pic/ai加速器负载-1789720591541.webp",
+    "blog/posts/chunked-prefill理解.md",
     "blog/posts/gem5接入nbu.md",
-    "blog/posts/脉动阵列的推导.md",
-    "blog/posts/pic/脉动阵列的前世今生-1784026036176.webp",
-    "blog/posts/pic/脉动阵列的前世今生-1784025954137.webp",
-    "blog/posts/pic/脉动阵列的前世今生-1784017488204.webp",
-    "blog/posts/pic/脉动阵列的前世今生-1784028917496.webp",
-    "blog/posts/pic/脉动阵列的前世今生-1784026813961.webp",
-    "blog/posts/pic/脉动阵列的前世今生-1784025996234.webp",
-    "blog/posts/pic/脉动阵列的前世今生-1784021187730.webp",
-    "blog/index.md",
-    "blog/posts/gem5-sc设计文档.md",
-    "blog/posts/cache介绍.md",
-    "未命名 1.md",
-    "Templates",
-    "blog/posts/智能计算系统lab.md",
-    "blog/posts/README.md",
-    "blog/posts/gem5性能建模分享.md",
+    "汇报.md",
+    "blog/posts/ai加速器负载学习（ai生成）.md",
+    "pic/chunked-prefill理解-1791363658016.webp",
+    "ai-inference-accelerators-research.zh.md",
+    "pic/ai加速器负载-1791346716508.webp",
+    "pic/ai加速器负载-1791256825920.webp",
+    "pic/ai加速器负载-1791256809058.webp",
+    "pic/ai加速器负载-1791256710704.webp",
+    "pic/ai加速器负载-1791253411699.webp",
+    "pic/ai加速器负载-1790927843262.webp",
+    "pic/ai加速器负载-1790927808989.webp",
+    "blog/posts/lcpu.md",
+    "blog/posts/ai-inference-accelerators-research.zh.md",
+    "blog/posts/2026-04-01-site-setup.md",
+    "blog/posts/2026-03-28-writing-workflow.md",
+    "blog/posts/MLC.md",
+    "blog/posts/微架构逆向benchmark.md",
+    "index.md",
+    "about.md",
+    "云服务器.md",
     "pic",
+    "blog/posts/Systemc TLM2.0 AT.md",
+    "blog/posts/coral-npu.md",
+    "blog/posts/systemc学习.md",
+    "blog/posts/linux复习笔记.md",
+    "blog/posts/CS336.md",
+    "blog/posts/on-chip network读书笔记.md",
+    "blog/posts/Chisel.md",
+    "blog/posts/超标量处理器设计读书笔记.md",
+    "blog/posts/性能建模分享 1.md",
+    "Templates",
     "life/posts",
     "life",
     "life/posts/pic",
