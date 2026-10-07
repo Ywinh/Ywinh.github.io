@@ -1,3 +1,10 @@
+---
+date: 2026-10-07
+categories:
+  - ai-infra
+tags:
+  - Writing
+---
 主要是学习“SARATHI”这篇论文，顺带补补 ai 基础知识，这篇论文是 23 年的，比较经典，但是有些计算架构比如 transofmer 内部的layer有些变化，不过大体骨架都是一致的。本文可以作为理解 vllm chunked prefill 的基础，后续会去看一下真实项目的代码。
 
 ## 背景：prefill 和 decode 计算特性区别
